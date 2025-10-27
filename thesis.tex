@@ -1,0 +1,114 @@
+\documentclass[letterpaper, 11pt]{uithesis}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{titlesec}
+\usepackage[numbers,sort]{natbib}
+\usepackage{subcaption}
+\usepackage{svg}
+\usepackage{float}
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{multirow}
+\usepackage{siunitx}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage{stmaryrd}
+\usepackage{tabularray}
+
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\DeclareUnicodeCharacter{2212}{-}
+
+% \usepackage[
+%     %backend=biber, 
+%     maxbibnames=99,
+%     natbib=true,
+%     style=numeric,
+%     sorting=none
+% ]{biblatex}
+
+% \addbibresource{biblio.bib}
+
+\nocite{*}
+
+\title{Title}
+\input{helper}
+
+\author{Your name}
+\date{Month Year}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  linkcolor=[rgb]{0.62,0.22,0.24},
+  urlcolor=[rgb]{0.16,0.20,0.36},
+  citecolor=[rgb]{0.95,0.65,0.07},
+  pdftitle={\thetitle},
+  pdfauthor={\theauthor}
+}
+\degree{Doctor of Philosophy}
+\concentration{Mechanical Engineering}
+
+% \ThesisSupervisor{Steve Professorson}
+\CommitteeMember{PI, Chair}
+\CommitteeMember{Member 1}
+\CommitteeMember{Member 2}
+\CommitteeMember{Member 3}
+\CommitteeMember{Member 4}
+
+
+\begin{document}
+
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+\maxsecnumdepth{subsection}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
+\titleformat{\subsection}{\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
+
+\titlepage
+
+\copyrightPage
+
+\frontmatter
+
+% \iowaEpigraph{\lipsum[1]}{Some wise dude}
+% \iowaEpigraph{}
+
+% \input{acknowledgments.tex}
+
+\input{abstract.tex}
+
+% \input{publicAbstract.tex}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+% \input{chapters/preface.tex}
+
+\mainmatter
+
+\input{chapters/01_introduction}
+\input{chapters/02_chapter_1}
+\input{chapters/03_chapter_2}
+\input{chapters/04_chapter_3}
+\input{chapters/05_proposed_work_and_timeline}
+
+
+\backmatter
+
+% \printbibliography
+\bibliographystyle{plainnat}
+\bibliography{ref, fgn_refs, gamd_refs, oformer_refs,classical_weather,ml_weather, misc, attention_and_transformer}
+
+\newpage
+
+
+\end{document}

@@ -1,0 +1,269 @@
+% for climate benchmark
+\usepackage{tikz}
+\usepackage{collcell}
+\usepackage{nicematrix}
+
+\definecolor{high}{HTML}{1034A6} 
+\definecolor{low}{HTML}{F0F8FF}
+\newcommand*{\minval}{0.0}%
+\newcommand*{\maxval}{1.0}%
+%
+%
+\newcommand{\wbf}[1]{\textbf{\protect\leavevmode\color[HTML]{000000}#1}}
+
+\newcommand{\gradientcell}[6]{
+    %
+    \ifdimcomp{#1pt}{>}{#3 pt}{#1}{
+    \ifdimcomp{#1pt}{<}{#2 pt}{#1}{
+         \pgfmathparse{int(round(100*((#1-#2)/(#3-#2))))))}%
+        \xdef\tempa{\pgfmathresult}%
+        \cellcolor{#5!\tempa!#4!#6}{#1}%
+    }}%
+ }
+ \newcommand{\rmsepressureone}[1]{
+ %
+ \gradientcell{#1}{39}{44}{high}{low}{50}%
+ }
+
+  \newcommand{\rmsepressurethree}[1]{
+ %
+ \gradientcell{#1}{123}{135}{high}{low}{50}%
+ }
+
+  \newcommand{\rmsepressurefive}[1]{
+ %
+ \gradientcell{#1}{268}{304}{high}{low}{50}%
+ }
+
+  \newcommand{\rmsepressureseven}[1]{
+ %
+ \gradientcell{#1}{433}{521}{high}{low}{50}%
+ }
+
+\newcommand{\rmsetemperatureone}[1]{
+ %
+ \gradientcell{#1}{0.51}{0.63}{high}{low}{50}%
+ }
+
+ \newcommand{\rmsetemperaturethree}[1]{
+ %
+ \gradientcell{#1}{0.93}{1.15}{high}{low}{50}%
+ }
+
+ \newcommand{\rmsetemperaturefive}[1]{
+ %
+ \gradientcell{#1}{1.53}{1.79}{high}{low}{50}%
+ }
+
+ \newcommand{\rmsetemperatureseven}[1]{
+ %
+ \gradientcell{#1}{2.11}{2.59}{high}{low}{50}%
+ }
+
+ \newcommand{\rmsetsurfaceone}[1]{
+ %
+ \gradientcell{#1}{0.51}{0.56}{high}{low}{50}%
+ }
+  \newcommand{\rmsetsurfacethree}[1]{
+ %
+ \gradientcell{#1}{0.82}{0.91}{high}{low}{50}%
+ }
+  \newcommand{\rmsetsurfacefive}[1]{
+ %
+ \gradientcell{#1}{1.20}{1.39}{high}{low}{50}%
+ }
+ \newcommand{\rmsetsurfaceseven}[1]{
+ %
+ \gradientcell{#1}{1.58}{1.97}{high}{low}{50}%
+ }
+ 
+\newcommand{\rmsepressuresurfaceone}[1]{
+ %
+ \gradientcell{#1}{48}{63}{high}{low}{50}%
+ }
+ \newcommand{\rmsepressuresurfacethree}[1]{
+ %
+ \gradientcell{#1}{130}{150}{high}{low}{50}%
+ }
+ \newcommand{\rmsepressuresurfacefive}[1]{
+ %
+ \gradientcell{#1}{270}{310}{high}{low}{50}%
+ }
+ \newcommand{\rmsepressuresurfaceseven}[1]{
+ %
+ \gradientcell{#1}{415}{508}{high}{low}{50}%
+ }
+
+ \newcommand{\rmsehumidityone}[1]{
+ %
+ \gradientcell{#1}{0.47}{0.56}{high}{low}{50}%
+ }
+ \newcommand{\rmsehumiditythree}[1]{
+ %
+ \gradientcell{#1}{0.80}{0.97}{high}{low}{50}%
+ }
+ \newcommand{\rmsehumidityfive}[1]{
+ %
+ \gradientcell{#1}{1.06}{1.28}{high}{low}{50}%
+ }
+ \newcommand{\rmsehumidityseven}[1]{
+ %
+ \gradientcell{#1}{1.22}{1.54}{high}{low}{50}%
+ }%
+  \newcommand{\rmseuwindone}[1]{
+ %
+ \gradientcell{#1}{1.0}{1.18}{high}{low}{50}%
+ }
+ \newcommand{\rmseuwindthree}[1]{
+ %
+ \gradientcell{#1}{1.93}{2.32}{high}{low}{50}%
+ }
+ \newcommand{\rmseuwindfive}[1]{
+ %
+ \gradientcell{#1}{3.09}{3.65}{high}{low}{50}%
+ }
+ \newcommand{\rmseuwindseven}[1]{
+ %
+ \gradientcell{#1}{3.96}{4.99}{high}{low}{50}%
+ }
+ 
+\newcommand{\rmsevwindone}[1]{
+ %
+ \gradientcell{#1}{1.02}{1.20}{high}{low}{50}%
+ }
+ \newcommand{\rmsevwindthree}[1]{
+ %
+ \gradientcell{#1}{1.93}{2.34}{high}{low}{50}%
+ }
+ \newcommand{\rmsevwindfive}[1]{
+ %
+ \gradientcell{#1}{3.13}{3.69}{high}{low}{50}%
+ }
+ \newcommand{\rmsevwindseven}[1]{
+ %
+ \gradientcell{#1}{4.03}{5.07}{high}{low}{50}%
+ }
+
+  \newcommand{\rmseusurfaceone}[1]{
+ %
+ \gradientcell{#1}{0.65}{0.83}{high}{low}{50}%
+ }
+ \newcommand{\rmseusurfacethree}[1]{
+ %
+ \gradientcell{#1}{1.32}{1.61}{high}{low}{50}%
+ }
+ \newcommand{\rmseusurfacefive}[1]{
+ %
+ \gradientcell{#1}{2.16}{2.56}{high}{low}{50}%
+ }
+ \newcommand{\rmseusurfaceseven}[1]{
+ %
+ \gradientcell{#1}{2.74}{3.50}{high}{low}{50}%
+ }
+
+  \newcommand{\rmsevsurfaceone}[1]{
+ %
+ \gradientcell{#1}{0.68}{0.87}{high}{low}{50}%
+ }
+ \newcommand{\rmsevsurfacethree}[1]{
+ %
+ \gradientcell{#1}{1.37}{1.67}{high}{low}{50}%
+ }
+ \newcommand{\rmsevsurfacefive}[1]{
+ %
+ \gradientcell{#1}{2.24}{2.66}{high}{low}{50}%
+ }
+ \newcommand{\rmsevsurfaceseven}[1]{
+ %
+ \gradientcell{#1}{2.87}{3.66}{high}{low}{50}%
+ }
+
+
+
+ \newcommand{\bcpressureone}[1]{
+ %
+ \gradientcell{#1}{51}{96}{high}{low}{50}%
+ }
+
+  \newcommand{\bcpressurethree}[1]{
+ %
+ \gradientcell{#1}{170}{244}{high}{low}{50}%
+ }
+
+  \newcommand{\bcpressurefive}[1]{
+ %
+ \gradientcell{#1}{348}{440}{high}{low}{50}%
+ }
+
+  \newcommand{\bcpressureseven}[1]{
+ %
+ \gradientcell{#1}{544}{599}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempone}[1]{
+ %
+ \gradientcell{#1}{0.59}{1.11}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempthree}[1]{
+ %
+ \gradientcell{#1}{1.04}{1.59}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempfive}[1]{
+ %
+ \gradientcell{#1}{1.71}{2.23}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempseven}[1]{
+ %
+ \gradientcell{#1}{2.47}{2.77}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempsurfone}[1]{
+ %
+ \gradientcell{#1}{0.49}{1.10}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempsurfthree}[1]{
+ %
+ \gradientcell{#1}{0.82}{1.43}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempsurffive}[1]{
+ %
+ \gradientcell{#1}{1.28}{1.83}{high}{low}{50}%
+ }
+
+  \newcommand{\bctempsurfseven}[1]{
+ %
+ \gradientcell{#1}{1.79}{2.18}{high}{low}{50}%
+ }
+
+   \newcommand{\bcusurfone}[1]{
+ %
+ \gradientcell{#1}{0.58}{1.41}{high}{low}{50}%
+ }
+
+  \newcommand{\bcusurfthree}[1]{
+ %
+ \gradientcell{#1}{1.28}{2.18}{high}{low}{50}%
+ }
+
+  \newcommand{\bcusurffive}[1]{
+ %
+ \gradientcell{#1}{2.15}{2.94}{high}{low}{50}%
+ }
+
+  \newcommand{\bcusurfseven}[1]{
+ %
+ \gradientcell{#1}{2.97}{3.43}{high}{low}{50}%
+ }
+
+\newcommand{\bcflops}[1]{
+ %
+ \gradientcell{#1}{0.61}{2.22}{high}{low}{50}%
+ }
+
+ 
+\newcommand{\zl}[1]{{\color{purple} Zijie: #1}}
