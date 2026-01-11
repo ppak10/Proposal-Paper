@@ -909,3 +909,117 @@ replica, known as a
 \textit{Product Twin}, would lead to dynamic process parameter optimization which
 can possibly fix and or prevent projected defects.
 
+\section{Appendix}
+\subsection{Input Cropping and Label Downsampling}
+The input thermal images were cropped from the original 85 px \texttimes\;60 px
+shape down to a 64 px \texttimes\;64 px shape to fit the desired input shape of
+the network. To achieve this 8 pixels (188.8 \textmu m) were cropped from both
+the top and bottom of the image and 1 pixel (23.6 \textmu m) was removed from
+the left hand side of the image. To match the cropped input, the corresponding
+CT label was first cropped then downscaled to align with the expected 64 px
+\texttimes\;64 px input. The crops of 8 pixels and 1 pixel were converted to
+their voxel equivalents and rounded to 52 voxels and 7 voxels respectively. This
+reduced the CT label a size of 520 voxels \texttimes\;423 voxels down to 416
+voxels \texttimes\;416 voxels (Fig.
+\ref{fig:input_cropping_label_downsampling}a). The resulting cropped CT was
+downscaled by a factor of 24 down to 18 voxels \texttimes\;18 voxels along the x
+and y directions and 1 voxel along the z direction. Further cropping was applied
+to the x and y directions by 1 voxel on each side to reduce the label down to 16
+voxels \texttimes\;16 voxels\texttimes\;1 voxel (Fig.
+\ref{fig:input_cropping_label_downsampling}b).
+
+\begin{figure}[bt]
+  \centering
+  \includegraphics[width=\textwidth]{chapters/2_thermopore/label_cropping.png}
+  \caption{
+  Relative porosity locations are derived from the raw CT data which are cropped
+  to capture a consistent area to match the input thermal data (Fig.
+  \ref{fig:input_cropping_label_downsampling}a). The CT data is further
+  downsampled factor of 24 and cropped to provide a 16 x 16 label shape (Fig.
+  \ref{fig:input_cropping_label_downsampling}b).
+  }
+  \label{fig:input_cropping_label_downsampling}
+\end{figure}
+
+\subsection{Calculating absolute temperature estimations with data
+obtained through Stratonics pyrometer}
+
+The estimation of absolute temperature was achieved with grey-body assumption
+where the emissivity remains constant at various wavelengths. Thus, with proper
+calibration using a NIST-traceable tungsten lamp, the pyrometer was able to read
+out a temperature estimation within 4\% accuracy for stainless steel.
+\cite{mitchell_linking_2020}. This temperature is estimated with the following
+formula for hybrid mode temperature estimation (Eq. \ref{eq:t_h}) where $p_2$ is
+a constant held at 14388 nm-K. Wien's approximation \cite{ikeuchi_computer_2021}
+of Planck's law is used to evaluate $A_\lambda$ (Eq. \ref{eq:a_lambda}) which
+takes into consideration emissivity and the instrument's detection factor with
+$\bar{I_1}$ representing the average intensity calculated over region
+$\Omega_p$. $I_1$ and $I_2$ here represent the the radiance from images over
+$\Omega_p$, for $\lambda_1 = 750 \text{nm}$ and $\lambda_2 = 900 \text{nm}$
+respectively. The temperature ratio $T_R$ (Eq. \ref{eq:t_r}) is calculated with
+$R$, the average of radiance from images $I_1$ and $I_2$ over $\Omega_p$, and
+hardware constants for contour levels $c_1$ and $c_2$ obtained from least
+squares fitting over calibration data\cite{zalameda_four-color_2016}. Contour
+level defines the region $\Omega_p$ with a $\beta$ value between 0 and 1 through
+means of marching squares (Eq. \ref{eq:c}). Our dataset utilizes images taken at
+$\beta = 0.7$ for its most accurate approximation of the meltpool by single
+contour as opposed to the multiple contours that appear at $\beta = 0.3$.
+
+\begin{equation}
+  T_H = \frac{p_2}{\lambda_2\ln\left({A_\lambda/I_2}\right)}
+  \label{eq:t_h}
+\end{equation}
+\begin{equation}
+  A_\lambda =  \bar{I}_1 e^{p_2/\lambda_1T_R}
+  \label{eq:a_lambda}
+\end{equation}
+\begin{equation}
+  T_R = \frac{1}{c_1 \ln R + c_2}
+  \label{eq:t_r}
+\end{equation}
+\begin{equation}
+  c = \beta \times \text{max}\left(I\right)
+  \label{eq:c}
+\end{equation}
+
+\subsubsection{
+  Sample alignment of thermal images to CT data along the X and Y
+  axes
+}
+CT data for both samples had a shape of 1410 \texttimes\;900 \texttimes\;430
+voxels with values ranging from 0 - 255 depending on data selection type of
+pore, sample, or pore segmented sample. Common alignment between the
+\textit{in-situ} pyrometry data and \textit{ex-situ} CT data was established by
+converting the pyrometry data into voxels and applying a consistent offset.
+The \textit{in-situ} pyrometry data was converted from pixels (80 px
+\texttimes\;65 px) to microns (1680 \textmu m \texttimes\;1365 \textmu m) to
+voxels (462.81 voxels \texttimes\;376.03 voxels). The CT data was then shifted
+to align with the pyrometry data by -18 voxels \texttimes\;0 voxels
+\texttimes\;63 voxels for the \textit{Spacing} dataset and -14 voxels
+\texttimes\;-2 voxels \texttimes\;73 voxels for the \textit{Velocity} dataset.
+
+\subsection{Trends of IoU scores of ViViT Dense models trained varying pore datasets}
+
+\begin{figure}[bt]
+    \centering
+    \includesvg[scale=0.40]{chapters/2_thermopore/figure_9.svg}
+    \caption{
+        ViViT Dense model IoU trends by build layer for various datasets with and
+        without rotational transforms without the application of a minimum pore
+        threshold.
+    }
+    \label{fig:pore_localization_results}
+\end{figure}
+
+\begin{figure}[bt]
+    \centering
+    \includesvg[scale=0.40]{chapters/2_thermopore/figure_11.svg}
+    \caption{
+        ViViT Dense model IoU trends by build layer for various datasets with
+        and without rotational transforms with the application of minimum
+        equivalent diameter pore threshold where equivalent sphere diameter of
+        pores are 1 standard deviation above the mean (\textit{$\mu + \sigma$
+        Pores}).
+    }
+    \label{fig:pore_localization_results_thresholded}
+\end{figure}

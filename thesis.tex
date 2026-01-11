@@ -17,7 +17,25 @@
 \usepackage{tikz}
 \usepackage{stmaryrd}
 \usepackage{tabularray}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
 
+\lstdefinestyle{mypython}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{red},
+    commentstyle=\color{gray}\itshape,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    breaklines=true,
+    frame=single,
+    showstringspaces=false,
+    captionpos=b
+}
 
 \renewcommand{\thesubsection}{\arabic{subsection}}
 
@@ -96,7 +114,7 @@
 \input{chapters/01_introduction}
 \input{chapters/2_thermopore/main.tex}
 \input{chapters/3_additivellm/main.tex}
-\input{chapters/04_chapter_3}
+\input{chapters/4_alloy_mcp/main.tex}
 \input{chapters/05_proposed_work_and_timeline}
 
 

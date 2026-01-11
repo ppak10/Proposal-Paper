@@ -742,3 +742,117 @@ numerical inputs.
 The models and dataset are available within a HuggingFace collection at
 % \url{https://huggingface.co/collections/ppak10/additivellm-6793c341ba5f8c22587a9d40}.
 \href{https://additivellm.ppak.net}{additivellm.ppak.net}.
+\clearpage
+
+\section{Appendix}
+\subsection{Model Training Resources and Runtimes}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l l c c}
+        \hline
+        \textbf{Model}  & \textbf{\textit{Nvidia} GPU(s)} & \textbf{Epochs} & \textbf{Runtime (s)} \\
+        \hline
+        \textit{DistilBERT} & & & \\
+        Baseline & RTX 2080 Ti 11 GB & 5 & 8886.8791 \\
+        Baseline & RTX 2080 Ti 11 GB & 10 & 17381.732 \\
+        Baseline & RTX 2080 Ti 11 GB & 20 & 34532.80 \\
+        Baseline & A6000 48 GB & 25 & 44721.41 \\
+        Prompt & RTX 2080 Ti 11 GB & 2 & 261917.09 \\
+        \hline
+        \textit{SciBERT} & & & \\
+        Baseline & RTX 2080 Ti 11 GB & 5 & 29574.32 \\
+        Baseline & RTX 2080 Ti 11 GB & 10 & 64870.11 \\
+        Baseline & RTX 2080 Ti 11 GB & 15 & 48722.28 \\
+        Baseline & A6000 48 GB & 20 & 36199.01 \\
+        Baseline & A6000 48 GB & 25 & 45431.34 \\
+        Prompt & A6000 48 GB & 2 & 302130.9155 \\
+        \hline
+        \textit{T5} & & & \\
+        Baseline & RTX 2080 Ti 11 GB & 5 & 6616.4776 \\
+        Baseline & RTX 2080 Ti 11 GB & 10 & 12668.9228 \\
+        Baseline & RTX 2080 Ti 11 GB & 15 & 18136.53 \\
+        Baseline & RTX 2080 Ti 11 GB & 20 & 25243.55 \\
+        Baseline & RTX 2080 Ti 11 GB & 25 & 28502.06 \\
+        Prompt & A6000 48 GB & 2 & 140927.38 \\
+        \hline
+        \textit{Llama} & & & \\
+        Baseline & A6000 48 GB & 5 & 100295.01 \\
+        Baseline & A6000 48 GB & 10 & 203343.7214 \\
+        Baseline & 2 x A800 40 GB & 15 & 187949.0901 \\
+        Baseline & A800 40 GB & 20 & 123264.0941 \\
+        Baseline & A6000 48 GB & 25 & 151826.5571 \\
+        Prompt & 2 x A6000 48 GB & 0.5 & 23913.9942 \\
+        Prompt & 4 x Quadro 6000 24 GB & 2 & 24081.6544 \\
+    \end{tabular}
+    \caption{
+        Hardware configurations used for fine-tuning the various large language
+        models along with their corresponding epochs and runtimes.
+    }
+    \label{tab:model_training_configurations}
+\end{table}
+\clearpage
+
+\subsection{Model Evaluation Runtimes}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{l c c}
+        \hline
+        \textbf{Model}  & \textbf{\textit{Baseline} (25 Epochs)} & \textbf{\textit{Prompt} (2 Epochs)} \\
+        \hline
+        DistilBERT & 1.295249 seconds & 1.539689 seconds\\
+        SciBERT & 4.968237 seconds & 4.791886 seconds \\
+        T5 & 0.882309 seconds & 0.180063 seconds \\
+        Llama & 3.231006 seconds & 3.161664 seconds \\
+    \end{tabular}
+    \caption{Sample inference times obtained from querying fine-tuned LLMs hosted on CPU.}
+    \label{tab:model_evaluation_runtimes}
+\end{table}
+\clearpage
+
+\subsection{Prediction Distribution of LLM fine-tuned on \textit{Baseline} Dataset}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/DistilBERT_baseline_classification.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/SciBERT_baseline_classifications.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/Llama_baseline_classifications.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/T5_baseline_classification.pdf}
+    \end{subfigure}
+    \caption{
+        LLMs fine-tuned on \textit{Baseline} dataset have prediction
+        distributions similar to that of the \textit{Augmented} dataset with
+        the exception on the T5 model.
+    }
+    \label{fig:baseline_prediction_distribution}
+\end{figure}
+\clearpage
+
+\subsection{Prediction Distribution of LLM fine-tuned on \textit{Prompt} Dataset}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/DistilBERT_prompt_classification.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/SciBERT_prompt_classifications.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/Llama_prompt_classifications.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\linewidth]{chapters/3_additivellm/T5_prompt_classification.pdf}
+    \end{subfigure}
+    \caption{
+        LLMs fine-tuned on \textit{Prompt} dataset exhibit a wider range of
+        classification distribution labels with DistilBERT and SciBERT most
+        closely resembling that of the \textit{Augmented} dataset.
+    }
+    \label{fig:prompt_prediction_distribution}
+\end{figure}
+\clearpage
