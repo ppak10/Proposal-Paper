@@ -1,4 +1,5 @@
 \chapter{AdditiveLLM: Large Language Models Predict Defects in Metals Additive Manufacturing}
+\label{chapter:additivellm}
 
 Within the process of Laser Powder Bed Fusion (L-PBF), the selection of optimal
 process parameters remains a key factor in the fabrication of defect free parts
@@ -93,7 +94,7 @@ contrast to the unidirectional approach that models such as GPT take in order to
 more align closer to the sequential nature of text generation
 \cite{radford_improving_nodate}.
 
-
+% TODO: Remake figure
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{chapters/3_additivellm/main_figure.pdf}
@@ -148,7 +149,7 @@ tune inputs specific to their use case.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{chapters/3_additivellm/baseline_template.pdf}
+  \includegraphics[width=\textwidth]{chapters/3_additivellm/baseline_template.png}
   \caption{
     The highlighted attributes are replaced with the appropriate values and
     corresponding units, unknown values are replaced with an empty string.
@@ -158,7 +159,7 @@ tune inputs specific to their use case.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{chapters/3_additivellm/prompt_template.pdf}
+  \includegraphics[width=\textwidth]{chapters/3_additivellm/prompt_template.png}
   \caption{
     The text of each input label pair is formatted to a set of prompt templates,
     taking in consideration the multiple ways an input query can be structured.

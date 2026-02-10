@@ -1,0 +1,264 @@
+\chapter{Proposed Work and Timeline}
+\label{chapter:proposal}
+
+%---------------------------------------------------------------------
+
+\section{
+Proposed Work: Agentic Process Optimization for Selective Laser Sintering
+}
+
+Within the additive manufacturing process there are many operational and
+environmental factors that can affect the build quality or build feasibility of
+the final part \cite{huang_keyhole_2022, cacace_lack_2022,
+tang_prediction_2017}. Mitigation of these effects is often achieved using
+feedforward process control where model based approaches are applied to
+anticipate problematic conditions that can lead to issues during the build
+process \cite{bostan_accurate_2025, yeung_residual_2020, ogoke_thermal_2021}.
+Feedback control addresses these issues during the build process utilizing
+visual \cite{jadhav_llm-3d_2025}, thermal \cite{zhong_using_2021,
+devesse_hardware---loop_2016}, or depth \cite{singh_toward_2023} information
+obtained through various sensors to dynamically adjust parameters and toolpath
+trajectories in an effort to resolve potential build defects. The use of
+specialized LLMs, referred to as \textit{agents}, has enabled the intelligent
+automation of tool orchestration and feedback control for complex tasks within
+the space of additive manufacturing \cite{jadhav_llm-3d_2025, pak_agentic_2026}
+as well as other fields such as catalyst discovery \cite{ock_adsorb-agent_2024}
+and mechanical design \cite{jadhav_large_2024}. These advances enable automated
+thought, action, and observation workflows within the research process,
+utilizing perception and reasoning to make informed decisions to ensure
+successful task execution \cite{ghafarollahi_atomagents_2024, pak_agentic_2026,
+ock_adsorb-agent_2024, jadhav_llm-3d_2025}. In this proposed work an agentic
+system enables the intelligent automation of parameter optimization and
+\textit{in-situ} process monitoring during the selective laser sintering
+process.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{chapters/5_proposal/agentic_sls_flow_portrait.png}
+    \caption{
+        Flow diagram depicts simplified user interaction with agentic system for
+        parameter selection and process monitoring for the Inova Mk1.
+        \textbf{(1)} The user prompt is provided as model input \textbf{(2)} and
+  \textbf{(4)}       query for the vector database. Results from the vector database is
+        appended to the model input and provided to a LLM. The LLM executes
+        relevant \textbf{(3)} tool calls via MCP with their results added to the
+        vector database. \textbf{(4)} Generated responses from the LLM are added
+        to the vector database for use with future prompts.
+    }
+    \label{fig:agentic_sls_flow}
+\end{figure}
+
+\subsection{Experimental Platform}
+\subsubsection{SLS4All Inova Mk1}
+The selective laser sintering process will be performed using the Inova Mk1
+(Fig. \ref{fig:inova_mk1}) for a range of materials such as PA12, PA12 GF, and
+other experimental powder compositions. The Inova Mk1 is an open source, low
+cost, selective laser sintering machine developed by SLS4All founders Tomas
+Starek and Pavel Dyntera \cite{starek_sls4all_2020}. This machine was purchased
+as kit from SLS4All and assembled over the course of several months producing
+successful prints (Fig. \ref{fig:inova_print_proteins}) using Formlab's PA12 GF
+\cite{formlabs_nylon_2026}. The Inova Mk1 utilizes a 450 nm blue diode laser
+capable of delivering 10 watts of power \cite{starek_sls4all_2020}. The machine
+is capable of an effective build volume of 150 mm x 150 mm x 185 mm and utilizes
+an array of 4 halogen lamps for surface heating control and a 5 heating elements
+for build chamber temperature control \cite{starek_sls4all_2020}. Surface
+temperature monitoring and control is achieved with a \textit{ThermoCam
+Waveshare MLX90640} \cite{noauthor_mlx90640_nodate} capable of producing a 32 x
+24 pixel thermal image for temperatures ranging from 0 \textdegree C to 300
+\textdegree C. The optical camera utilizes an Omnivision OV5647 sensor capable
+of streaming a 1920 x 1080 pixel image at 30 frames per second. Average scan
+speed is around 1,650 mm/s at 5 watts (250 \textmu m spot size) and 2,800 mm/s
+at 10 watts (350 \textmu m spot size) \cite{starek_sls4all_2020}. The firmware
+controlling the hardware components such as the galvometers, laser, stepper
+motors, sensors, and heating elements runs off a combination of open-source
+software programs including \texttt{Klipper}
+\cite{kevinoconnor_klipper3dklipper_2026}, \texttt{SLS4All.Compact}
+\cite{dyntera_sls4allsls4allcompact_2025}.
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/5_proposal/inova_mk1.JPEG}
+        \caption{SLS4All Inova Mk1}
+        \label{fig:inova_mk1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/5_proposal/inova_print_proteins.JPEG}
+        \caption{Printed \textbeta2 Protein Model}
+        \label{fig:inova_print_proteins}
+    \end{subfigure}
+    
+    \caption{
+    Inova Mk1 (a) assembled from kit prints complex geometries, such as the
+    \textbeta2 protein molecule (b), only capable through the SLS process.
+    }
+    \label{fig:inova_mk1}
+\end{figure}
+
+\subsubsection{Platform Limitations}
+The Inova Mk1 present several software and hardware limitations. Although the
+software is primarily open-source, modules disclosing specific feature
+implementations such as part slicing and tool path generation are considered
+proprietary and only provided in a compiled state. In addition, there is little
+documentation regarding the machine's exposed Application Programming Interface
+(API) as the dashboard web interface is streamed from the host. With regard to
+the installed sensors, relative to thermal and optical imaging equipment used in
+other \textit{in-situ} process monitoring works
+\cite{myers_high-resolution_2023, myers_two-color_2023, pak_thermopore_2024,
+bostan_accurate_2025, ogoke_deep_2024}, the resolution and frame rate that these
+sensors provide is comparatively coarse. This adds a potential constraint to the
+quality of real-time information that can be utilized by the agentic system when
+testing process parameters and executing builds. The manufacturer also suggest
+material restrictions to primarily polymer based powders with a melting
+temperature of 200 \textdegree C \cite{starek_sls4all_2020}.
+
+\subsection{Agentic System}
+The agentic system (Figure \ref{fig:agentic_sls_flow}) will allow for the
+intelligent automation of parameter selection and process monitoring through the
+guidance of a locally deployed large language model (potentially GPT-OSS 20b
+\cite{openai_gpt-oss-120b_2025}). Integration with a vector database (i.e.
+Pinecone) enables the use of dynamic memory such that previous system outputs
+and tool call results can be recalled for future prompts, providing additional
+context for the large language model to use during reasoning. Lastly, the system
+is able to interact with its environment through agentic tool calls following
+the Model Context Protocol. As indicated in Figure \ref{fig:agentic_sls_flow},
+these include tools for material selection, simulation, print profile
+configuration, parameter testing, and build monitoring.
+
+\subsubsection{Material Selection Tool}
+% TODO: Add more specific implementations
+The material selection tool allows for inference on specified materials and
+their approximate properties. For example, if provided a mixture of various
+powders and additives, an approximation of critical temperature values such as
+melting, glass transition, or solidus would be calculated. This would be
+achieved through a various ensemble of modeling tools ranging from a simple rule
+of mixtures to coarse resolution simulations depending on the argument
+complexity.
+
+\subsubsection{Simulation Tool}
+% TODO: Add more specific implementations
+The primary purpose of the simulation tool is to approximate the local
+dimensions of the sintered material after the application of heat. Various
+methods such as Finite Element Analysis \cite{kolossov_3d_2004} and other
+numerical modeling techniques \cite{kandis_simulation-based_1999,
+williams_advances_1998} specific to the selective laser sintering process and
+materials will be used to gather general feasibility insight on process
+parameters before testing.
+
+\subsubsection{Parameter Testing Tool}
+The parameter testing tool is a feature specific to the Inova Mk1 such that when
+experimenting with new powders, a 5 x 5 grid of labeled patches (Figure
+\ref{fig:inova_parameter_testing}) can be printed on the surface of the print
+bed. This allows for the rapid testing of print parameters through patch
+specific configurations such as outline and fill energy densities (Figure
+\ref{fig:inova_parameter_testing_config}). In addition to executing patch
+prints, the tool will utilize the available sensors to extract quality
+information regarding each printed patch to determine which patch configuration
+to test next.
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.56\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/5_proposal/inova_parameter_testing.JPEG}
+        \caption{Printed Parameter Testing Patches}
+        \label{fig:inova_parameter_testing}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4025\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/5_proposal/inova_parameter_testing_config.png}
+        \caption{Patch Configuration}
+        \label{fig:inova_parameter_testing_config}
+    \end{subfigure}
+    
+    \caption{
+        5 x 5 grid of patches (a) printed for testing PA12 GF powder, each with
+        their own parameter configuration (b).
+    }
+    \label{fig:inova_mk1}
+\end{figure}
+
+\subsubsection{Print Profile Tool}
+The print profile tool sets the various build parameters for a specific material
+within the Inova Mk1 for future use. Notable parameters include surface and
+chamber temperatures, energy densities for the fill and contours, desired layer
+height, and recoater speed. This tool is expected to be executed once successful
+use of the parameter testing tool is completed.
+
+\subsubsection{Build Monitoring Tool}
+The build monitoring tool will initialize the process for printing a specified
+part along with monitoring the process for potential anomalies. This tool will
+utilize the available sensors to observe each layer and terminate the build if
+failure is detected.
+
+\subsection{Evaluation}
+The agentic system will be evaluated on a range of polymers and polymer based
+composites with the mechanical properties tested to the ASTM 638-22 standard
+\cite{d20_committee_test_nodate}. The setup will first determine the necessary
+build parameters needed to print a specific material and validate the print
+profile using the build monitoring tool. The evaluated prints will consist of
+standard additive manufacturing benchmarking samples along with tensile
+specimens.
+
+%---------------------------------------------------------------------
+
+\section{
+Proposed Work: Continual Learning enabled Additive Manufacturing Large Language
+Model
+}
+
+In this work a continual learning pipeline will be developed to further
+integrate the collected results from agentic system into the large language
+model. Continual learning is the ability for a system to incrementally update
+and exploit available knowledge acquired throughout its lifetime
+\cite{wang_comprehensive_2024, wu_continual_2024, scialom_fine-tuned_2022}. This
+can be achieved through fine-tuning where the goal is to retain the existing
+capabilities and avoid catastrophic forgetting while retraining with new updated
+data \cite{scialom_fine-tuned_2022, jang_towards_2021, wang_comprehensive_2024}.
+This catastrophic forgetting issue can be mitigated through augmenting the
+original training data with the newly acquired data in a process called
+Continual Learning via Rehearsal (CLR) \cite{scialom_fine-tuned_2022,
+shin_continual_2017}
+
+With this, dataset curation is of upmost importance to ensure fidelity in the
+continual learning process. Background information regarding the expected
+outcomes of this specific selective laser sintering process will be curated from
+research articles and other technical specific to the polymer based SLS. Process
+parameter related outcomes such as the dimensions of the sintered volume will be
+sourced from simulations along with experimental literature finding if found.
+Lastly, successful iterations of the previously mentioned agentic system will be
+included as well in order to reinforce successful policy trajectories.
+Integration of this continual learning pipeline is expected to enable enhanced
+reasoning capabilities and this will be evaluated on the ratio of successful to
+incorrect policy trajectories of the agentic system with and without continual
+learning.
+
+%---------------------------------------------------------------------
+
+\section{Timeline}
+
+My proposed milestones and timeline for completing the thesis are shown in Table~\ref{tb:milestone_timeline}.
+
+\begin{table}[htb!]
+  \centering
+  \scriptsize
+  \resizebox{\textwidth}{!}{\begin{tabular}{llllllll}
+    \toprule
+    Milestone & Timeline \\
+    \midrule
+    Data collection and System Development & February - April 2026 \\
+    Experimental Testing and Evaluation & April - June 2026 \\
+    Thesis Writing & June - July 2026 \\
+    \midrule
+    Thesis Defense & July 2026 \\
+    \bottomrule
+  \end{tabular}}
+  \caption[Milestones and proposed timeline for completing the thesis]{Milestones and proposed timeline for completing the thesis.}
+  \label{tb:milestone_timeline}
+\end{table}

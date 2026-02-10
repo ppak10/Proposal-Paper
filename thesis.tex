@@ -20,6 +20,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{textgreek}
+\usepackage{textcomp}
 
 \lstdefinestyle{mypython}{
     language=Python,
@@ -51,13 +53,16 @@
 
 % \addbibresource{biblio.bib}
 
+% General TODO:
+% 1. Format units correctly and consistently (i.e. $\mu m$ is probably not correct)
+
 \nocite{*}
 
-\title{Agentic Composite Design for Selective Laser Sintering}
+\title{Continual Learning enabled Agentic Additive Manufacturing Process Optimization}
 \input{helper}
 
 \author{Peter Myung-Won Pak}
-\date{Month Year}
+\date{February 2026}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -111,11 +116,11 @@
 
 \mainmatter
 
-\input{chapters/01_introduction}
+\input{chapters/1_introduction/main.tex}
 \input{chapters/2_thermopore/main.tex}
 \input{chapters/3_additivellm/main.tex}
 \input{chapters/4_alloy_mcp/main.tex}
-\input{chapters/05_proposed_work_and_timeline}
+\input{chapters/5_proposal/main.tex}
 
 
 \backmatter

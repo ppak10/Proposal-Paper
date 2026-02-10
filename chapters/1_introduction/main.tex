@@ -1,0 +1,322 @@
+\chapter{Overview}
+
+%---------------------------------------------------------------------
+
+\section{Introduction}
+
+\subsection{Foundation of Powder Bed Additive Manufacturing}
+
+Many of the modern powder based additive manufacturing techniques such as Laser
+Powder Bed Fusion (LPBF), Selective Laser Sintering (SLS), and Electron Beam
+Melting (EBM) \cite{edwards_electron_2013, galati_literature_2018} inherit
+foundational concepts from an early process developed known as Stereolithography
+(SLA) \cite{hull_apparatus_1986, zakeri_comprehensive_2020}. Invented by Charles
+W. Hull, the SLA process was patented in 1984 and further developed into the
+company that known as 3D Systems Inc \cite{hull_apparatus_1986}. The general
+process outlined in the patent utilizes geometries defined in a computer-aided
+design (CAD) to iteratively fabricate a desired part layer by layer through
+precise forward control, relying on the phase change of the material after
+exposure to an energy source \cite{hull_apparatus_1986}.
+
+Specific to Stereolithography, also referred to by other names such as
+\textit{vat polymerization} or \textit{resin printing}, this process utilizes
+photopolymerizable monomers as its base material which is cured into a solid
+phase with the selective exposure of laser irradiation
+\cite{zakeri_comprehensive_2020, hull_apparatus_1986}. The liquid material is
+held in a vat and precise translational control (along the \texttt{z} direction)
+of the build plate prepares the next layer for selective exposure
+\cite{zakeri_comprehensive_2020, hull_apparatus_1986}. Selective exposure is
+controlled along the \texttt{x} and \texttt{y} directions using a scanning
+system, often times a mirror based galvometer setup, to project the sliced
+geometry into the given layer \cite{zakeri_comprehensive_2020,
+hull_apparatus_1986}. After exposure, the build plate moves down a prescribed
+distance defined by the layer height and a recoater blade passes over the layer
+to ensure even distribution of the material \cite{zakeri_comprehensive_2020,
+hull_apparatus_1986}. This process is repeated until the part is fully
+fabricated and subject to further post processing such as heat and UV curing
+before it can be used in its final assembly. Since the inception of this
+technique, the process of SLA has been further refined to improve efficiency by
+means of Directed Light Processing (DLP) \cite{chaudhary_additive_2023} for
+selective light exposure and reversing build direction for reduced initial
+material requirements \cite{zakeri_comprehensive_2020}. 
+
+% TODO: Include a SLA process figure in final thesis
+
+Selective Laser Sintering (or Solid Freeform Fabrication
+\cite{kumar_selective_2003}) is an additive manufacturing process which utilizes
+many of the techniques introduced in SLA with modifications to operate in a
+powder based environment \cite{beaman_selective_1990, beaman_additive_2020,
+hesselvig_efficient_2025, schmid_polymer_2015}. Developed at the University of
+Texas at Austin by Joseph J. Beaman and Carl R. Deckard, the 1990 patent
+describes a method and apparatus to produce a part by applying successive powder
+layers and selectively sintering powder within the cross-sectional regions until
+a part is fully formed \cite{beaman_selective_1990}. This approach expands the
+range of materials that can be utilized for additive manufacturing outside those
+of photopolymerizable monomers to that of polycarbonate \cite{ho_effects_1999,
+berzins_densification_1995}, silicon carbide \cite{vail_silicon_1993}, and
+various metal alloys \cite{niu_selective_2000, oneill_investigation_1999}.
+
+During the sintering process the powder particles agglomerate through partial
+melting of the material \cite{kumar_selective_2003, hesselvig_efficient_2025,
+kolossov_3d_2004}. For polymer based powders, a metastable temperature window
+between the onset of crystalline and melting phases known as the ``sintering
+window" producing a stable viscosity regime\cite{schmid_polymer_2015}. For
+metals, binding can be achieved through three mechanisms: solid state sintering,
+liquid phase sintering, and true melting \cite{kruth_progress_1998}. Solid state
+sintering relies on the solid state diffusion of atoms and is often too slow for
+much of the prescribed laser velocities \cite{kruth_progress_1998}. Liquid phase
+sintering utilizes two different materials (matrix and structure) with varying
+melting temperatures for the production of a ``green part"
+\cite{kruth_progress_1998}. The rapid scans of the laser melt the material with
+the lower melting temperature (matrix) allowing the capillary forces to
+infiltrate the higher melting temperature (structure) material where the two are
+then fused together in postprocessing heat treatment \cite{kruth_progress_1998}.
+Lastly, true melting occurs with a single material at higher energy levels as to
+completely fuse metal powder grains without the formation of a green part and
+aligns more to process of Laser Powder Bed Fusion. \cite{kruth_progress_1998}.
+
+% TODO: Include a SLS process figure in final thesis
+
+Laser Powder Bed Fusion, also referred to by other names such as Selective Laser
+Melting (SLM) \cite{lober_selective_2014, sefene_state---art_2022,
+tang_rapid_2016, shrestha_study_2019, vrancken_heat_2012} or Direct Metal Laser
+Sintering (DMLS) \cite{khaing_direct_2001, oneill_investigation_1999,
+beuth_process_2013}), is the process in which metal powder is fully melted
+through the application of localized heat with a laser creating a melt pool
+\cite{bostan_accurate_2025, yeung_residual_2020, zhang_engineering-guided_2024,
+huang_keyhole_2022, pak_additivellm_2025, pak_thermopore_2024}. This process of
+precise powder melting within each layer is repeated until a fully part is
+produced. However, this liquid phase of the material gives rise to melt pool
+dynamics such as keyholing \cite{huang_keyhole_2022, ki_modeling_2002,
+ogoke_inexpensive_2023, tempelman_detection_2022} and balling
+\cite{gu_balling_2007, bellini_additive_2021, lindstrom_simple_2023} which can
+result in downstream effects in the final part such as porosity.
+
+\subsection{Tokenization in Large Language Models}
+Tokenization is an essential component of the Natural Language Processing (NLP)
+pipeline as it converts strings of human-readable characters into token
+representations which are then embedded into vectors for the large language
+model \cite{sennrich_neural_2016, alqahtani_stop_2026,
+gastaldi_foundations_2025}. Raw text does not provide a suitable representation
+medium for models to train upon as it commands a large vocabulary and treats
+words as distinct units \cite{sennrich_neural_2016}. Thus, tokenization presents
+a more efficient representation of the data to the model as an embedding
+vector \cite{vaswani_attention_2023}. Tokenization methods include dividing
+character strings into word and subword units along with indexing frequently
+occuring sequences detected using Byte Pair Encoding (BPE)
+\cite{sennrich_neural_2016}. In order to retain positional data, methods such as
+sinusoidal positional encoding \cite{vaswani_attention_2023} or Rotary Position
+Embeddings (RoPE) \cite{su_roformer_2023} are added to the token embedding
+vectors. By converting the tokens to vector embeddings with positional data, the
+model is able to use the semantic and sequential patterns of the input to
+perform next token prediction from the representations learned during training
+\cite{vaswani_attention_2023, sennrich_neural_2016, su_roformer_2023}.
+
+\subsubsection{Subword Neural Machine Translation}
+\label{sec:snmt}
+Subword Neural Machine Translation is a preprocessing method which text is
+segmented into subword units, specifically useful in encoding out-of-vocabulary
+(OOV) words. The approach proposed by Senrich et al. \cite{sennrich_neural_2016}
+implements an adapted version of Byte Pair Encoding \cite{gage_new_1994} (BPE)
+(Section \ref{sec:bpe}) to first generate the pair table for frequently
+occurring character sequences within the train text. This is similar to the pair
+table seen in the compressed output that original BPE produces, however with
+slight adjustment of merging characters rather than bytes in order to suit the
+application of word segmentation \cite{sennrich_neural_2016}. Along with this,
+the compression routine is set to conclude after a given number of operations
+rather than the original BPE process of repeating until there are no more
+remaining bytes in the text \cite{gage_new_1994}. This provides a tunable
+\texttt{num\_operations} parameter which balances the frequency for complete
+words and subwords within the dictionary, improving the coverage of tokens
+during training. This allows for out-of-vocabulary words to be segmented into
+combinations of word and subword tokens
+
+\subsubsection{Byte Pair Encoding}
+\label{sec:bpe}
+Byte Pair Encoding was first introduced by Philip Gage \cite{gage_new_1994} as a
+method of data compression useful in memory constrained environments due to its
+fast expansion routine. The compression routine of the algorithm looks for most
+adjacent byte pairs that occur most frequently within a given pass and replaces
+the pair with a byte that doesn't already exist within the data. This repeats
+until there is either no more frequent byte pairs or there are no more remaining
+unused bytes \cite{gage_new_1994}. The expansion routine is performed over a
+single pass over the input file, where byte literals are passed directly to the
+output buffer and byte pairs are pushed onto a stack. Within each iteration, if
+the stack contains data the byte there is used as the next input byte, otherwise
+the next input byte is obtained from the input file.
+
+% Add further tokenization and training subsections
+
+\subsection{Reasoning and Prompting}
+\subsubsection{Chain-of-Thought}
+Chain-of-Thought (CoT) is multi-step prompting technique to elicit further
+developed answers from the large language model than simple standard
+prompting \cite{kojima_large_2023, wei_chain--thought_2023}. In this method, the
+prompt is formatted in a manner such that a step-by-step answer is provided to
+an example question before a similar question is posed in the
+input \cite{kojima_large_2023, wei_chain--thought_2023}. This facilitates
+reasoning within the model as it decomposes the prompt into a multi-step problem
+which allows for additional computations be allocated to these individual
+steps \cite{wei_chain--thought_2023}. For example, while constructing the prompt
+rather than simply stating the direct answer to a given problem, the answer is
+formatted in a way to provide the granular steps taken to arrive at an
+answer \cite{wei_chain--thought_2023} (Fig. \ref{fig:cot}). This method is
+particularly useful in facilitating fidelity in multi-step arithmetic problems
+along with providing interpretable insight into reasoning within the
+LLM \cite{wei_chain--thought_2023}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{chapters/1_introduction/chain_of_thought.png}
+    \caption{
+    Hypothetical comparison of outputs between standard prompting process to
+    that of the chain-of-thought reasoning process.
+    }
+    \label{fig:cot}
+\end{figure}
+
+In addition to formatted user prompts, CoT reasoning provides a useful avenue to
+monitor large language model outputs for potential exploits that may produce
+misaligned behavior output \cite{baker_monitoring_2025}. This has been shown with
+the monitoring of verbose CoT outputs from larger models (i.e. o3-mini) using
+weaker models (i.e. GPT-4o) to prevent reward hacking
+schemes \cite{baker_monitoring_2025}. For example, \textit{Baker et
+al.} \cite{baker_monitoring_2025} highlights an example where by monitoring the
+CoT of a model's trajectory using a separate agent, a reward hacking scheme of
+modifying unit tests to always pass is thwarted. This proves useful in directing
+the model to complete tasks using the correct approach rather than choosing the
+simpler, often incorrect, approach. However, the authors have found that given
+too much optimization the model can learn hide its intent within the CoT
+producing avenues where in which hallucination can
+occur \cite{baker_monitoring_2025, openai_gpt-oss-120b_2025}.
+
+\subsubsection{Zero-Shot Chain of Thought}
+With the increasing size of Large Language Models, Zero-Shot Chain-of-Thought
+has been shown to be sufficient in eliciting deeper thought responses without
+the need for step-by-step examples \cite{kojima_large_2023}. Rather, a simple
+addition to the prompt such as ``Let's think step by step" would be sufficient
+in encouraging the model to produce a more well formed answer
+\cite{kojima_large_2023}. This enables a minimalist approach to probe for
+complex reasoning with the large language model leveraging the large corpus of
+data that the model has been trained on \cite{kojima_large_2023,
+brown_language_2020}.
+
+\subsubsection{ReAct}
+\label{subsec:reasoning_architecture_react}
+ReAct (Reason + Act) is a general paradigm that combines reasoning and actions
+within the large language model to utilize feedback to make informed choices for
+the next set of actions \cite{yao_react_2022}. By utilizing prompt based approach
+to navigating through an action space, ReAct is able to update its current
+policy by reasoning over it's current context and
+observations \cite{yao_react_2022}. This is achieved by decomposing a given task
+into a smaller set of steps similar to the Chain-of-Thought
+process \cite{yao_react_2022, wei_chain--thought_2023}. At a given timestep
+($t$), each step consists of a language space action ($\hat{a}_t$) which Yao et
+al. \cite{yao_react_2022} refer to as \textit{thought} or \textit{reasoning
+trace}, an environmental action ($a_t$) such as a tool call, and an observation
+($o_t$) which is the result of action ($a_t$). The LLM generates a policy
+($\pi(a_t|c_t)$) for the next action ($a_t$) given the current context ($c_t$)
+which consist of all actions and observations from previous timesteps. A
+language space action or aformentioned \textit{thought} is performed to update
+the context ($c_{t+1} = (c_t, \hat{a}_t)$) allowing for dynamic policies which
+can be adjusted with feedback \cite{yao_react_2022}. Further implementation
+details for the ReAct paradigm is discussed in Section
+\ref{subsec:tool_calling_react}.
+
+% TODO
+% \subsubsection{Retrieval-Augmented Generation}
+
+\subsection{Agentic Tool Calling}
+
+\subsubsection{WebGPT}
+WebGPT is regarded as one of the earliest examples of LLM enabled tool
+calling \cite{nakano_webgpt_2022}. In this work a fine-tuned GPT3
+model \cite{brown_language_2020} utilizes a written summary of the browser based
+environment along with navigation commands to answer prompted
+questions \cite{nakano_webgpt_2022}. The model is capable of issuing a command
+such as \texttt{Search}, \texttt{Scrolled down <1, 2, 3>}, \texttt{Scrolled up
+<1, 2, 3>}, \texttt{End: Answer}, etc. to obtain information from the
+environment before composing a final answer \cite{nakano_webgpt_2022}.
+Reinforcement Learning from Human Feedback (RLHF) and behavior cloning is used
+to fine-tune of the GPT3 model provide more accurate answer and execute the
+correct commands. During evaluation, 56\% of these web enabled response produced
+answers that are preferred by human participants and provides benefits in
+reasoning transparency as the entire thought process for constructing answers is
+visible \cite{nakano_webgpt_2022}.
+
+\subsubsection{ReAct}
+As mentioned in Section \ref{subsec:reasoning_architecture_react}, the ReAct
+paradigm is a multi-step process that operates by dynamically adjusting its
+policy given the updated context within each step \cite{yao_react_2022}. Each
+step is composed of a ``Thought", ``Action" and ``Observation" which the LLM is
+prompted to complete \cite{yao_react_2022}. The ``Thought" is the language space
+action that the LLM produces to create the updated context from the existing
+context space after both an Action and Observation are
+performed \cite{yao_react_2022}. ``Actions" are then performed by parsing the
+subsequent output from the LLM to search for tools that match a specific syntax
+(i.e. \texttt{\textbf{search}[entity]}, \texttt{\textbf{lookup}[string]}, or
+\texttt{\textbf{finish}[answer]}). The respective function is then executed with
+the provided argument producing an ``Observation" which is then appended to the
+context before moving onto the next step. This ``Thought", ``Action" and
+``Observation" process is repeated until either the LLM produces an ``Action"
+consisting of \texttt{\textbf{finish}[answer]} or an iteration limit is
+reached \cite{yao_react_2022}. During this process, the CoT reasoning is visible
+throughout each step providing transparency into the mechanisms used to
+construct the final answer \cite{yao_react_2022}.
+
+\label{subsec:tool_calling_react}
+
+
+%---------------------------------------------------------------------
+
+\section{Structure of the Thesis Proposal}
+This proposal is structured to summarize prior research conducted to support the
+proposed work regarding agentic process monitoring. Specific to prior research,
+this proposal covers the use of a video transformer based model for
+\textit{in-situ} process monitoring, fine-tuning large language models for
+enhanced domain knowledge, and the development of an agentic system for
+intelligent automation.
+
+\textbf{Chapter} \ref{chapter:thermopore} describes the work done in process
+monitoring utilizing a video transformer based model for correlating
+\textit{in-situ} thermal images to \textit{ex-situ} porosity. The data is
+obtained experimentally with the thermal images taken using a two color
+pyrometer and the porosity data collected through computed tomography. The
+transformer based approach was able to achieve an $R^2$ score of 0.57 for
+porosity quantification and an Intersection over Union score of 0.32 which
+indicates that porosity in the final part can be detected from anomalies in
+thermal images \cite{pak_thermopore_2024}.
+
+\textbf{Chapter} \ref{chapter:additivellm} explores the application of
+fine-tuning on a range of large language models such as DistilBERT
+\cite{sanh_distilbert_2020}, SciBERT \cite{beltagy_scibert_2019}, T5
+\cite{noauthor_t5_nodate}, and Llama 3 \cite{grattafiori_llama_2024} for the
+prediction of potential defect regimes. These models were trained on a dataset
+of melt pool dimensions and their defect classification provided by MeltpoolNet
+\cite{akbari_meltpoolnet_2022} along dimensions and classification obtained
+through computational fluid dynamic simulations. The fine-tuned models displayed
+robust predictive capability with a \textit{Baseline} accuracy of 94\% and a
+\textit{Prompt} accuracy of 82\% showing that relatively small models can be
+fine-tuned to perform well on domain specific tasks in additive manufacturing
+\cite{pak_additivellm_2025}.
+
+\textbf{Chapter} \ref{chapter:alloy_mcp} investigates the use of an agentic
+system for the task of alloy evaluation in additive manufacturing. Here, the
+model context protocol is leveraged to enable a multi-agent system to analyze
+potential lack of fusion defect regimes of proposed element compositions. This
+is achieved through a set of tool calls to ThermoCalc
+\cite{thermo-calc_software_thermo-calc_2025} in order to obtain material
+properties and subsequent tool calls to a Rosenthal based melt pool equation for
+the approximation of melt pool dimensions. This work showcases the intelligent
+automation of alloy evaluation through the use of tool call enabled large
+language models.
+
+\textbf{Chapter} \ref{chapter:proposal} outlines the proposed works of
+developing an agentic system for process monitoring and parameter tuning for
+selective laser sintering (SLS) and further work to enable the large language
+model to continuously learn from previous iterations. For this the experimental
+process will utilize an open source SLS machine and utilize its available
+sensors for process monitoring and control. These interactions will stored in a
+vector database in order to deploy the large language model into a continuous
+learning environment where it is able to make informed decisions on past
+actions.
