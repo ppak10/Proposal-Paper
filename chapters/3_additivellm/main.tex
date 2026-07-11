@@ -66,7 +66,7 @@ devlin_bert_2019, brown_language_2020, liu_roberta_2019}. LLMs are able to
 understand textual descriptions of experimental results and respective context
 which enables its application as a more human accessible research tool in a wide
 domain of fields ranging from chemical engineering to robotics
-\cite{jadhav_llm-3d_2024, ock_catalyst_2023, car_plato_2024,
+\cite{jadhav_llm-3d_2025, ock_catalyst_2023, car_plato_2024,
 lorsung_explain_2024, shah_peptide-gpt_2024, farimani_large_2024,
 chandrasekhar_amgpt_2024, ock_multimodal_2024, balaji_gpt-molberta_2023,
 jadhav_large_2024, ock_adsorb-agent_2024}. Implementations such as
@@ -92,7 +92,7 @@ model to consider a more complete context window of a given sequence, providing
 tokens on both sides of an applied mask \cite{devlin_bert_2019}. This is
 contrast to the unidirectional approach that models such as GPT take in order to
 more align closer to the sequential nature of text generation
-\cite{radford_improving_nodate}.
+\cite{radford_improving_2018}.
 
 % TODO: Remake figure
 \begin{figure}[ht]
@@ -107,26 +107,26 @@ more align closer to the sequential nature of text generation
     incorporates the process parameters is provided as input to the model which
     in turn predicts the potential defect classification.
   }
-  \label{fig:main}
+  \label{fig:additivellm_main}
 \end{figure}
 
 In this work we propose AdditiveLLM, a comparison of large language models
 fine-tuned on experimental and simulation based L-PBF melt pool data that able
-to predict potential defects given a combination of process parameters (Figure \ref{fig:main}). We focus
-upon fine-tuning several models including:
+to predict potential defects given a combination of process parameters (Figure
+\ref{fig:additivellm_main}). We focus upon fine-tuning several models including:
 DistilBERT\cite{sanh_distilbert_2020}, SciBERT\cite{beltagy_scibert_2019}, LLama
-3.2\cite{noauthor_meta-llamallama-32-1b_2024}, and
-T5\cite{noauthor_google-t5t5-small_2024}. Our selection of models utilize the
-smaller parameter set variants as this best suits our need for an efficient and
-lightweight model for specific inferences regarding defect regimes in L-PBF
-Additive Manufacturing. This approach infers upon the corpus of L-PBF melt pool
-data formatted as a set of process parameters inputs and defect classification
-labels. The model predictions provide a classification to a combination of
-potential defect regimes of \textit{Keyholing}, \textit{Lack of Fusion},
-\textit{Balling}, and \textit{None} (for the case where no defects exist).
-Through inference the models are able to quickly provide insight on potential
-defects given a specific parameter combination without the need to perform
-additional simulations or experimental builds.
+3.2\cite{grattafiori_llama_2024}, and T5\cite{raffel_exploring_2023}. Our
+selection of models utilize the smaller parameter set variants as this best
+suits our need for an efficient and lightweight model for specific inferences
+regarding defect regimes in L-PBF Additive Manufacturing. This approach infers
+upon the corpus of L-PBF melt pool data formatted as a set of process parameters
+inputs and defect classification labels. The model predictions provide a
+classification to a combination of potential defect regimes of
+\textit{Keyholing}, \textit{Lack of Fusion}, \textit{Balling}, and \textit{None}
+(for the case where no defects exist). Through inference the models are able to
+quickly provide insight on potential defects given a specific parameter
+combination without the need to perform additional simulations or experimental
+builds.
 
 \section{Methodology}
 \subsection{Task}
@@ -191,18 +191,19 @@ classifications using estimations for \textit{Keyholing} (Eq. \ref{eq:keyhole}),
     potential defects that would arise from the combination of process
     parameters.
   }
-  \label{fig:dataset}
+  \label{fig:additivellm_dataset}
 \end{figure}
 
 A number of sources were used for our dataset which include literature and
 simulation data points curated by \textit{Akbari et al.} in
 \textit{MeltpoolNet}\cite{akbari_meltpoolnet_2022} and our own simulations
-obtained using FLOW-3D\cite{noauthor_flow-3d_nodate}. (Figure \ref{fig:dataset})
-This amounts to a total of 2,779 collected data points spanning over 20 different
-materials, primarily consisting of Ti-6Al-4V and Stainless Steel 316L (Figure \ref{fig:source_distributions}). With
-these sources, the dataset is comprised of over 20 different materials varying
-with powers and velocity values ranging from 25 W to 5000 W and 1 mm/s to 2000
-mm/s respectively.
+obtained using FLOW-3D\cite{flow_science_inc_flow-3d_2026}. (Figure
+\ref{fig:additivellm_dataset}) This amounts to a total of 2,779 collected data
+points spanning over 20 different materials, primarily consisting of Ti-6Al-4V
+and Stainless Steel 316L (Figure \ref{fig:source_distributions}). With these
+sources, the dataset is comprised of over 20 different materials varying with
+powers and velocity values ranging from 25 W to 5000 W and 1 mm/s to 2000 mm/s
+respectively.
 
 Upon analyzing the source dataset, the distribution of materials weighs heavily
 towards Stainless Steel 316L and Ti-6Al-4V with the remaining materials
@@ -280,7 +281,7 @@ language.
 The dataset consists of simulation and experimental data derived from sources
 such as \textit{MeltpoolNet}\cite{akbari_meltpoolnet_2022}
 (\texttt{meltpoolclassification.csv}, \texttt{meltpoolgeometry.csv}) and a
-number of our own FLOW-3D\cite{noauthor_flow-3d_nodate} simulations
+number of our own FLOW-3D\cite{flow_science_inc_flow-3d_2026} simulations
 (\texttt{dimensions\_ti64.pkl} and \texttt{dimensions\_ss316l\_10\_micron.csv}).
 The \texttt{meltpoolclassification.csv} provides the direct defect
 classification of a combination of process parameters, however in cases where
@@ -396,20 +397,20 @@ Llama-3.2-1B, a 1 billion parameter implementation of the the Llama 3 model that
 incorporates the logits of the 8 billion and 70 billion parameter Llama 3.1
 models during pretraining in order to retain a majority of their performance
 while reducing the hardware requirements for
-finetuning\cite{noauthor_meta-llamallama-32-1b_2024}. This model was fine-tuned
-with a batch size of 512 and a learning rate of 2E-5.
+finetuning\cite{grattafiori_llama_2024}. This model was fine-tuned with a batch
+size of 512 and a learning rate of 2E-5.
 
 \subsubsection{T5}
 Text to Text Transfer Transformer (T5) is an encoder-decoder large language
 model developed by Google specializing in simple text to text tasks such as
 translation, summarization, and sentiment analysis \cite{raffel_exploring_2023}.
 Variations of this model extend up to 11 billion parameters and for our
-experiment we utilize T5-Small\cite{noauthor_google-t5t5-small_2024} consisting
-of 60 million parameters for its efficient training speed and performance on a
-specialized task such as defect classification \cite{raffel_exploring_2023,
-noauthor_google-t5t5-small_2024}. This model was fine-tuned with a batch size of
-512 and a learning rate of 1E-4 following the guidelines outlined in the
-documentation \cite{noauthor_t5_nodate}.
+experiment we utilize T5-Small \cite{raffel_exploring_2023} consisting of 60
+million parameters for its efficient training speed and performance on a
+specialized task such as defect classification \cite{raffel_exploring_2023}.
+This model was fine-tuned with a batch size of 512 and a learning rate of 1E-4
+following the guidelines outlined in the documentation
+\cite{raffel_exploring_2023}.
 
 \subsection{Fine-Tuning}
 Each of the LLM models were attached with a classification head consisting of a

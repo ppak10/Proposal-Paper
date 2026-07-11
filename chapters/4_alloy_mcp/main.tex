@@ -48,43 +48,42 @@ information regarding various elements, alloys, and application properties.
 
 With the procurement of the material properties of a proposed alloy composition,
 its suitability for an AM build is assessed through numerical solvers. Solvers
-such as those developed by Eagar-Tsai\cite{eagar_temperature_1983} and
-Rosenthal\cite{rosenthal_theory_2022} provide preliminary information on the
+such as those developed by Eagar-Tsai \cite{eagar_temperature_1983} and
+Rosenthal \cite{rosenthal_theory_2022} provide preliminary information on the
 temperature field of a melt pool through an analytical solution. Whereas,
-OpenFOAM\cite{noauthor_openfoam_2025} and FLOW-3D\cite{noauthor_flow-3d_nodate}
-utilize Computational Fluid Dynamics (CFD) to provide a more detailed analysis
-of the underlying fluid flow, heat transfer, and solidification phenomena of the
-melt pool\cite{zhang_modeling_2019, strayer_accelerating_2022}. The obtained
-melt pool dimensions are used to calculate potential defect regimes within a
-process map of beam power and scanning velocity
-combinations\cite{cunningham_analyzing_2017, cunningham_defect_2018,
-tang_prediction_2017}. Specifically, the lack of fusion defect region is of
-primary concern as insufficient melting induces the formation of large pores and
-in extreme cases can cause the build process to fail\cite{tang_prediction_2017}.
-Insight into this defect regime is essential for the informed selection of
-optimal build parameters within the process window.
+OpenFOAM \cite{openfoam_openfoam_2025} and FLOW-3D
+\cite{flow_science_inc_flow-3d_2026} utilize Computational Fluid Dynamics (CFD)
+to provide a more detailed analysis of the underlying fluid flow, heat transfer,
+and solidification phenomena of the melt pool \cite{zhang_modeling_2019,
+strayer_accelerating_2022}. The obtained melt pool dimensions are used to
+calculate potential defect regimes within a process map of beam power and
+scanning velocity combinations \cite{cunningham_analyzing_2017,
+cunningham_defect_2018, tang_prediction_2017}. Specifically, the lack of fusion
+defect region is of primary concern as insufficient melting induces the
+formation of large pores and in extreme cases can cause the build process to
+fail \cite{tang_prediction_2017}. Insight into this defect regime is essential
+for the informed selection of optimal build parameters within the process
+window.
 
 Recent advances in multi-agent systems have demonstrated the potential of Large
 Language Models (LLMs) to perform complex, goal-oriented tasks that extend
-beyond the constraints of a single prompt\cite{jadhav_llm-3d_2025,
+beyond the constraints of a single prompt \cite{jadhav_llm-3d_2025,
 ock_catalyst_2023, ock_large_2025, chaudhari_modular_2025, george_llm_2025,
 bartsch_llm-craft_2025, chandrasekhar_automating_2025, merrill_llm-drone_2025}.
 This has been applied to the monitoring and adjustment of real-time Fuse
-Deposition Modeling (FDM) builds\cite{jadhav_llm-3d_2025}, search and discovery
-of potential catalyst and drug candidates\cite{ock_catalyst_2023,
-ock_large_2025}, and optimization of material and molecular design
-simulations\cite{chaudhari_modular_2025, chandrasekhar_automating_2025}. In
-these tasks, LLMs autonomously determine the next course of action by reasoning
-over the information available within the dynamic
-environment\cite{jadhav_llm-3d_2025, chaudhari_modular_2025, ock_large_2025}.
-The next course of action often involves utilizing functionality external to the
-LLM which is made accessible through a tool call. This can be done through
-various methods and solution providers include
-LangChain\cite{noauthor_langchain_nodate} and
-LlamaIndex\cite{noauthor_llamaindex_nodate}. This work utilizes the Model
-Context Protocol (MCP)\cite{anthropic_introducing_2024} as the library for
-creating and exposing tools for the LLM that allow seamless integration into
-any client with an MCP interface.
+Deposition Modeling (FDM) builds \cite{jadhav_llm-3d_2025}, search and discovery
+of potential catalyst and drug candidates \cite{ock_catalyst_2023,
+ock_large_2025}, and optimization of material and molecular design simulations
+\cite{chaudhari_modular_2025, chandrasekhar_automating_2025}. In these tasks,
+LLMs autonomously determine the next course of action by reasoning over the
+information available within the dynamic environment \cite{jadhav_llm-3d_2025,
+chaudhari_modular_2025, ock_large_2025}. The next course of action often
+involves utilizing functionality external to the LLM which is made accessible
+through a tool call. This can be done through various methods and solution
+providers include LangChain and LlamaIndex. This work utilizes the Model Context
+Protocol (MCP) \cite{anthropic_introducing_2024} as the library for creating and
+exposing tools for the LLM that allow seamless integration into any client with
+an MCP interface.
 
 With these established goals, this work aims to develop a multi-agent system for
 the search, proposal, and analysis of novel alloy compositions suitable for
@@ -118,7 +117,7 @@ manufacturing.
     properties from the Thermo-Calc subagent to generate a lack of fusion
     process map to send back to the LLM for analysis and final recommendation.
     }
-    \label{fig:main}
+    \label{fig:alloy_mcp_main}
 \end{figure}
 
 \section{Methodology}
@@ -126,7 +125,7 @@ manufacturing.
 \subsection{Calculation of Thermophysical Properties}
 \label{sec:thermo_calc_calcuation}
 For this task, given an hypothetical element composition of a specific alloy,
-Thermo-Calc\cite{thermo-calc_software_thermo-calc_2025} is expected to provide
+Thermo-Calc \cite{thermo-calc_software_thermo-calc_2025} is expected to provide
 the relevant material properties of density, thermal conductivity, specific heat
 capacity, electric resistivity, and the liquidus and solidus phase transition
 temperatures. Thermo-Calc utilizes a CALPHAD based solver to calculate
@@ -147,8 +146,8 @@ schmidtke_process_2011, hack_mechanical_2017, rodriguez_dynamic_2015,
 lu_microstructure_2015, tan_graded_2015, vrancken_heat_2012,
 edwards_electron_2013}. In this process, a suitable database (one of
 \texttt{TCFE14}, \texttt{TCNI12}, \texttt{TCAL9}, \texttt{TCTI6}, and
-\texttt{TCHEA7}, or \texttt{PURE5} \cite{calphad_textbook}) is selected to
-obtain the necessary phase and transport properties with the appropriate SI
+\texttt{TCHEA7}, or \texttt{PURE5} \cite{saunders_application_1998}) is selected
+to obtain the necessary phase and transport properties with the appropriate SI
 units. Database selection is determined through matching an alloy's primary
 element composition to its database counterpart. The element with the highest
 weight fraction is designated as the "top" element. A composition is deemed as
@@ -156,8 +155,7 @@ multi-principal if at least three elements have individual weight fractions
 \(\ge 0.15\). Then the appropriate database is selected by elimination in the
 order as described in Appendix C. The provided compositions and database values
 are then utilized in equilibrium calculations where the minimization of Gibbs
-Free Energy is iteratively calculated until convergence is met
-\cite{noauthor_cross_2023, noauthor_property_nodate}.
+Free Energy is iteratively calculated until convergence is met.
 
 Solidus and liquidus phase transition temperatures are extrapolated through
 tracking the liquid volume fraction. A one-dimensional temperature sweep is
@@ -353,8 +351,8 @@ melt pool with a depth 1.5 larger than the width is considered to be keyholing
 However, in order to properly model keyhole behavior within the melt pool, a
 computational fluid dynamics approach is required to capture effects such as
 solid/liquid interfaces and the driving force of recoil pressure from material
-vaporization\cite{ki_modeling_2002}. Solvers from
-FLOW-3D\cite{noauthor_flow-3d_nodate} and OpenFOAM\cite{noauthor_openfoam_2025}
+vaporization \cite{ki_modeling_2002}. Solvers from FLOW-3D
+\cite{flow_science_inc_flow-3d_2026} and OpenFOAM\cite{openfoam_openfoam_2025}
 provide the capability to model these fluid dynamics but present a non-trivial
 challenge to integrate into this agentic system as they require both significant
 time and computational cost.
@@ -384,32 +382,27 @@ occurrence of balling, however are not integrated in this approach for previousl
 mentioned reasons.
 
 \subsection{Model Context Protocol}
-The Model Context Protocol (MCP) is a standard introduced by
-Anthropic\cite{anthropic_anthropic_2025} which provides guidelines for
-used functionality such as tool calling and resource querying;
-Particularly suitable for agentic tasks\cite{anthropic_introducing_2024,
-noauthor_modelcontextprotocolpython-sdk_2025, ehtesham_survey_2025,
-hou_model_2025}. Along with these features, MCP is compatible with the wider
-ecosystem of LLM providers with integrations in Software Development Kits (SDKs)
-developed by Anthropic\cite{noauthor_modelcontextprotocolpython-sdk_2025},
-OpenAI\cite{noauthor_model_nodate}, Google\cite{hamsa_buvaraghan_mcp_2025}, and
-others\cite{hou_model_2025}.
+The Model Context Protocol (MCP) is a standard introduced by Anthropic
+\cite{anthropic_anthropic_2025} which provides guidelines for used functionality
+such as tool calling and resource querying; Particularly suitable for agentic
+tasks \cite{anthropic_introducing_2024, ehtesham_survey_2025, hou_model_2025}.
+Along with these features, MCP is compatible with the wider ecosystem of LLM
+providers with integrations in Software Development Kits (SDKs) developed by
+Anthropic, OpenAI, Google \cite{hamsa_buvaraghan_mcp_2025}, and others
+\cite{hou_model_2025}.
 
 \subsubsection{Tools}
 Tools are the primary means in which an LLM is able to perform actions via MCP,
 invoking external Application Programming Interfaces (APIs) or function calls
-with the user's approval \cite{hou_model_2025,
-noauthor_modelcontextprotocolpython-sdk_2025, ehtesham_survey_2025}. Complexity
+with the user's approval \cite{hou_model_2025, ehtesham_survey_2025}. Complexity
 of these tool calls can range from simple stateless actions (network requests to
-external APIs) or long-lived function operations (simulation
-runs)\cite{noauthor_modelcontextprotocolpython-sdk_2025}. Using the MCP Python
-SDK\cite{noauthor_modelcontextprotocolpython-sdk_2025}, these tools can be
-exposed to the LLM with the appropriate decorator function configuration as seen
-in \ref{apx:example_tool}. A minimal configuration consisting of the decorator
-wrapping a tool function is sufficient to register a tool for an LLM. However,
-additional annotations such as type declarations, docstring descriptions, and
-structured outputs significantly improve the model's comprehension and proper
-utilization of the defined tool.
+external APIs) or long-lived function operations (simulation runs). Using the
+MCP Python SDK, these tools can be exposed to the LLM with the appropriate
+decorator function configuration as seen in \ref{apx:example_tool}. A minimal
+configuration consisting of the decorator wrapping a tool function is sufficient
+to register a tool for an LLM. However, additional annotations such as type
+declarations, docstring descriptions, and structured outputs significantly
+improve the model's comprehension and proper utilization of the defined tool.
 
 % In this work the tools are controlled by Claude Code
 % \textit{Subagents}\cite{noauthor_subagents_nodate} which are defined as
@@ -439,14 +432,13 @@ utilization of the defined tool.
 \subsubsection{Resources}
 Resources provide the LLM capability to search for relevant information
 regarding a given task. Similar to GET requests established within the Hypertext
-Transfer Protocol (HTTP)\cite{noauthor_modelcontextprotocolpython-sdk_2025},
-this allows for the query of information stored within databases, filesystems,
-or other means to be accessible to the LLM\cite{hou_model_2025,
-ehtesham_survey_2025}. This is particularly useful during the tool calling
-process as it provides environmental state information regarding around the
-model. However, during experiments the LLM's utilization of the resource
-functionality proved unreliable and tools implementing the same functionality of
-each resource displayed consistently reliable responses.
+Transfer Protocol (HTTP), this allows for the query of information stored within
+databases, filesystems, or other means to be accessible to the LLM
+\cite{hou_model_2025, ehtesham_survey_2025}. This is particularly useful during
+the tool calling process as it provides environmental state information
+regarding around the model. However, during experiments the LLM's utilization of
+the resource functionality proved unreliable and tools implementing the same
+functionality of each resource displayed consistently reliable responses.
 
 \begin{figure}[htbp]
     \centering
@@ -463,15 +455,14 @@ each resource displayed consistently reliable responses.
 
 \subsection{Agentic Tools}
 Tools developed for this application are separated into three different MCP
-Servers with Python Package Index (PyPi)\cite{noauthor_pypi_nodate} identifiers:
+Servers with Python Package Index (PyPi) identifiers:
 \texttt{additive-manufacturing}, \texttt{thermo-calc}, and
 \texttt{workspace-agent}. Each of these packages maintain their own MCP server
-tools and \textit{Subagent}\cite{noauthor_subagents_nodate} (a simple markdown
-file providing additional context and system prompts to guide tool usage) and
-are capable of standalone usage. Claude Code\cite{noauthor_claude_nodate}
-provides a platform for coupling these tools into a multi-agent environment
-utilizing Claude Sonnet 4\cite{noauthor_introducing_nodate} as the primary large
-language model for orchestrating tool calls and performing response analysis. 
+tools and \textit{Subagent} (a simple markdown file providing additional context
+and system prompts to guide tool usage) and are capable of standalone usage.
+Claude Code provides a platform for coupling these tools into a multi-agent
+environment utilizing Claude Sonnet 4 as the primary large language model for
+orchestrating tool calls and performing response analysis. 
 
 \subsubsection{Workspace}
 The \texttt{workspace-agent} package, abbreviated to \texttt{wa} internally, is
@@ -520,17 +511,16 @@ This opinionated approach allows for MCP servers that utilize
 one MCP server's tool can be utilized as an input to another MCP server tool.
 
 \subsubsection{Thermo-Calc}
-For this project, the authors developed and published a package with the
-PyPI\cite{noauthor_pypi_nodate} identifier \texttt{thermo-calc} (aliased
-internally as \texttt{tc}) to facilitate the installation and use of
-Thermo-Calc's TC Python module\cite{thermo-calc_software_thermo-calc_2025}.
-Along with these installation scripts, Command Line Interface (CLI) and MCP
-bindings were also implemented for a subset of TC Python's functionality, those
-of which are outlined in Section \ref{sec:thermo_calc_calcuation}. With the set
-of tools managed by the thermo-calc subagent, the material properties of a given
-alloy composition can be calculated and saved to a shared material configuration
-that the tools from \texttt{additive-manufacturing} can then utilize for process
-map generation.
+For this project, the authors developed and published a package with the PyPI
+identifier \texttt{thermo-calc} (aliased internally as \texttt{tc}) to
+facilitate the installation and use of Thermo-Calc's TC Python module
+\cite{thermo-calc_software_thermo-calc_2025}. Along with these installation
+scripts, Command Line Interface (CLI) and MCP bindings were also implemented for
+a subset of TC Python's functionality, those of which are outlined in Section
+\ref{sec:thermo_calc_calcuation}. With the set of tools managed by the
+thermo-calc subagent, the material properties of a given alloy composition can
+be calculated and saved to a shared material configuration that the tools from
+\texttt{additive-manufacturing} can then utilize for process map generation.
 
 In this process, an hypothetical alloy composition element or an existing element
 name is provided to the large language model in order to create an alloy
@@ -900,7 +890,18 @@ user experience with these tools but establishes an automation framework enablin
 researcher to efficiently utilize their available tools.
 
 \subsection{Comparison to Existing Tool Integration Frameworks}
-Other alternatives to tool calling and agentic system frameworks exist to the Model Context Protocol (MCP) such as LangChain\cite{noauthor_langchain_nodate} and LlamaIndex\cite{noauthor_llamaindex_nodate}, however, these approaches lack first party integration into the LLM that MCP provides. The alternative approaches are no less capable than MCP and have their own specific features as seen in other various agentic works \cite{jadhav_llm-3d_2025, chandrasekhar_amgpt_2024}. The primary reasoning behind using MCP as the framework for designing the agentic tools is expected long term support and ease of use that the protocol provides when applied to other models and the broader support it has with providers such as Anthropic, Google, and OpenAI. Although much of these tests were performed with the Claude model from Anthropic, initial implementations show that these experiments can be performed on the latest models from OpenAI (ChatGPT) and Google (Gemini) as well.
+Other alternatives to tool calling and agentic system frameworks exist to the
+Model Context Protocol (MCP) such as LangChain and LlamaIndex, however, these
+approaches lack first party integration into the LLM that MCP provides. The
+alternative approaches are no less capable than MCP and have their own specific
+features as seen in other various agentic works \cite{jadhav_llm-3d_2025,
+chandrasekhar_amgpt_2024}. The primary reasoning behind using MCP as the
+framework for designing the agentic tools is expected long term support and ease
+of use that the protocol provides when applied to other models and the broader
+support it has with providers such as Anthropic, Google, and OpenAI. Although
+much of these tests were performed with the Claude model from Anthropic, initial
+implementations show that these experiments can be performed on the latest
+models from OpenAI (ChatGPT) and Google (Gemini) as well.
 
 \section{Conclusion}
 
@@ -909,10 +910,15 @@ evaluate known and novel alloy compositions for processing via additive
 manufacturing. This is achieved through invoking tool calls via the Model
 Context Protocol (MCP) to perform thermophysical calculations and melt pool
 dimensional approximations to generate a lack of fusion process map. In
-addition, these tools can leverage the generalized knowledge of LLMs to assist in more generalized tasks such as suggesting alloy compositions for desired material properties through
-querying its large base of knowledge. The predictions from this system provide a suitable starting point of process parameters for experimental trials that would avoid potential areas of lack of fusion. Expansions upon this work would explore a more comprehensive search for processing parameters that would also consider the keyholing and balling defect regimes. This work sets
-the foundation for complex tool usage and automated research within the additive
-manufacturing field.
+addition, these tools can leverage the generalized knowledge of LLMs to assist
+in more generalized tasks such as suggesting alloy compositions for desired
+material properties through querying its large base of knowledge. The
+predictions from this system provide a suitable starting point of process
+parameters for experimental trials that would avoid potential areas of lack of
+fusion. Expansions upon this work would explore a more comprehensive search for
+processing parameters that would also consider the keyholing and balling defect
+regimes. This work sets the foundation for complex tool usage and automated
+research within the additive manufacturing field.
 
 \section{Future Work}
 
@@ -934,10 +940,11 @@ evaluation through tensile tests.
 \subsubsection{Methodology}
 In order to obtain melt pool dimensions which more accurately match those
 created experimentally, a more comprehensive solver will need to be utilized.
-Options include CFD solvers developed by FLOW-3D \cite{noauthor_flow-3d_nodate},
-OpenFOAM\cite{noauthor_openfoam_2025}, or one specifically for the purpose of
-defining defect regimes. With each of these approaches, the tradeoff between
-computational cost and accuracy would be of primary concern.
+Options include CFD solvers developed by FLOW-3D
+\cite{flow_science_inc_flow-3d_2026}, OpenFOAM \cite{openfoam_openfoam_2025}, or
+one specifically for the purpose of defining defect regimes. With each of these
+approaches, the tradeoff between computational cost and accuracy would be of
+primary concern.
 
 Within the agentic system, the overall framework will still build upon the Model
 Context Protocol and further utilize features such as resources and tool
@@ -961,32 +968,11 @@ ultimately fabricated but under a certain process conditions not mentioned by
 the agentic system. After fabrication, the mechanical properties such as yield
 strength, ultimate tensile strength, and hardness would be evaluated as well.
 
-\subsubsection{Timeline}
-The objectives outlined within this technical roadmap such as improvements to
-the agentic system are currently in progress and will be expanded upon further
-in a future work. Other considerations such as part fabrication and mechanical
-testing relies on the selection or development of a CFD solver that can produce
-more accurate melt pool dimensions suitable for a more comprehensive process
-map.
-
-\section{Data Availability}
-The multi-agent system developed for this work along with the data associated
-with experimental prompts are available at the following link:
-\url{https://github.com/BaratiLab/Agentic-Additive-Manufacturing-Alloy-Evaluation}.
-The various tools within the agentic system are hosted on the Python Package
-Index (PyPI) and installable with their respective package names:
-\begin{itemize}
-    \item \texttt{additive-manufacturing}
-    \item \texttt{thermo-calc}
-    \item \texttt{workspace-agent}
-\end{itemize}
-\clearpage
-
 \section{Appendix}
 \subsection{Model Context Protocol Example Tool}
 \label{apx:example_tool}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[style=mypython]
@@ -1087,7 +1073,7 @@ R = \frac{\epsilon P}{2 \pi k \Delta T}
 
      \item \textbf{Fallback:} if none of the conditions above are met (maybe for MPEAs) $\rightarrow$ \texttt{TCHEA7}.
 \end{enumerate}
-\begin{figure}[h!]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.55\textwidth]{chapters/4_alloy_mcp/figure_decision_tree.png}
     \caption{Database selection decision tree}
@@ -1097,7 +1083,7 @@ R = \frac{\epsilon P}{2 \pi k \Delta T}
 
 \subsection{Validation of Predicted Absorptivity}
 \label{apx:validation_of_absorptivity}
-\begin{table}[h!]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{lccc}
 \hline
@@ -1160,7 +1146,7 @@ Lets look through a couple of alloy compositions to find a suitable candidate id
 
 \noindent{After successful tool calls, the LLM responded with the following:}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 \centering
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[style=mypython]
@@ -1183,7 +1169,7 @@ Based on my analysis of corrosion-resistant alloys, here are the top candidates:
   Key Findings:
 
   1. IN625 shows superior printability with fewer defect-prone parameter combinations
-  2. SS316L has more extensive lack-of-fusion regions, particularly at 55μm layer height
+  2. SS316L has more extensive lack-of-fusion regions, particularly at 55 micron layer height
   3. Both alloys offer excellent corrosion resistance, but IN625 provides better process reliability
 
   Recommendation: IN625 is the optimal choice, combining exceptional corrosion resistance with superior additive manufacturing printability.

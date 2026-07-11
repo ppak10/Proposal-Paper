@@ -5,10 +5,12 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{bbm}
-\usepackage{titlesec}
+% \usepackage{titlesec}
 \usepackage[numbers,sort]{natbib}
 \usepackage{subcaption}
 \usepackage{svg}
+\usepackage{float}
+\usepackage{threeparttable}
 \usepackage{float}
 \usepackage{booktabs}       % professional-quality tables
 \usepackage{multirow}
@@ -62,7 +64,7 @@
 \input{helper}
 
 \author{Peter Myung-Won Pak}
-\date{February 2026}
+\date{August 2026}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -89,7 +91,7 @@
 \maxsecnumdepth{subsection}
 \renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
 
-\titleformat{\subsection}{\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
+% \titleformat{\subsection}{\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
 
 \titlepage
 
@@ -120,7 +122,8 @@
 \input{chapters/2_thermopore/main.tex}
 \input{chapters/3_additivellm/main.tex}
 \input{chapters/4_alloy_mcp/main.tex}
-\input{chapters/5_proposal/main.tex}
+\input{chapters/5_dapt_am/main.tex}
+% \input{chapters/6_agentic_sls/main.tex}
 
 
 \backmatter

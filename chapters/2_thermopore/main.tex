@@ -62,18 +62,18 @@ indicating likely porosity given a thermal image of a melt pool
 \cite{mitchell_linking_2020} or material extrusion correction in large scale
 additive manufacturing\cite{borish_real-time_2020, borish_-situ_2019}.
 
-Analytical solutions such as Rosenthal's equation
-\cite{rosenthal_mathematical_1941} provide a foundational method to determine
-nominal process parameter regions within laser power and scanning velocity
-space. This equation can be adapted to provide depth and width estimates of the
-melt pool given specific process parameters such as preheat temperature, power,
-and velocity which can be applied to the selection of nominal parameters for
-hatch spacing and layer height. However, this method poses limitations as
-solutions provided by Rosenthal's equation are only suitable for melt pools
-within the conduction regime \cite{rosenthal_mathematical_1941,
-hekmatjou_comparative_2020, imani_shahabad_extended_2021}. This leaves areas out
-that are not captured through analytical models such as melt pool behavior in
-the keyhole mode and process conditions such as scan strategies.
+Analytical solutions such as Rosenthal's equation \cite{rosenthal_theory_2022}
+provide a foundational method to determine nominal process parameter regions
+within laser power and scanning velocity space. This equation can be adapted to
+provide depth and width estimates of the melt pool given specific process
+parameters such as preheat temperature, power, and velocity which can be applied
+to the selection of nominal parameters for hatch spacing and layer height.
+However, this method poses limitations as solutions provided by Rosenthal's
+equation are only suitable for melt pools within the conduction regime
+\cite{rosenthal_theory_2022, hekmatjou_comparative_2020,
+imani_shahabad_extended_2021}. This leaves areas out that are not captured
+through analytical models such as melt pool behavior in the keyhole mode and
+process conditions such as scan strategies.
 
 Much attention has been directed towards machine learning to fill this gap
 between the projection of these analytical models and their applied results some
@@ -150,12 +150,12 @@ manufacturing digital twin work, a data-based approach to develop
 phua_digital_2022, zhang_digital_2020}. This work focuses on the utilization
 \textit{in-situ} pyrometry data to construct characteristics for a
 \textit{product twin} such as pore count and pore localization. As outlined in
-Fig. \ref{fig:main}, the general architecture of this framework consists of two
-separate deep learning models (Fig. \ref{fig:main}d and \ref{fig:main}e) which
+Fig. \ref{fig:thermopore_main}, the general architecture of this framework consists of two
+separate deep learning models (Fig. \ref{fig:thermopore_main}d and \ref{fig:thermopore_main}e) which
 extract embeddings from a sequence of \textit{in-situ} thermal images (Fig.
-\ref{fig:main}c). These embeddings correspond to the quantitative and localized
+\ref{fig:thermopore_main}c). These embeddings correspond to the quantitative and localized
 information of pores obtained from the segmented computed tomography data (Fig.
-\ref{fig:main}b). The predictions from these models indicate the degree of
+\ref{fig:thermopore_main}b). The predictions from these models indicate the degree of
 porosity that can be anticipated from a given sequence of thermal images. By
 leveraging the capabilities of Convolutional Neural Networks and Video Vision
 Transformers, \textit{ThermoPore} enables efficient evaluation of laser powder
@@ -165,17 +165,17 @@ bed fusion printed parts.
   \centering
   \includegraphics[width=\textwidth]{chapters/2_thermopore/figure_1.pdf}
   \caption{
-    A sequence of 200 thermal pyrometry images (\ref{fig:main}c) providing
+    A sequence of 200 thermal pyrometry images (\ref{fig:thermopore_main}c) providing
     absolute temperature values of the build plate taken \textit{in-situ}
-    (\ref{fig:main}a) are provided as input data for models for pore
-    quantification (\ref{fig:main}d) and pore localization (\ref{fig:main}e).
+    (\ref{fig:thermopore_main}a) are provided as input data for models for pore
+    quantification (\ref{fig:thermopore_main}d) and pore localization (\ref{fig:thermopore_main}e).
     These two separate models utilize a CNN and ViViT with dense output heads to
     produce a scalar number of pores and 2D mapping of expected porosity regions
     respectively. Metrics derived from \textit{ex-situ} CT data for the
     corresponding build layer are used as ground truth values for each model
-    (\ref{fig:main}b).
+    (\ref{fig:thermopore_main}b).
   }
-  \label{fig:main}
+  \label{fig:thermopore_main}
 \end{figure}
 
 \section{Methodology}
@@ -395,7 +395,7 @@ shapes and contours associated with porosity, however this fine resolution also
 resulted in recording scattered distributions of small voids. Accurately
 predicting these small voids is a difficult task for a model as these defects
 could be the result of gas porosity \cite{iebba_influence_2017} or rogue flaws
-\cite{reutzel_application_2023} and may have precursors not visible to thermal
+\cite{seifi_application_2023} and may have precursors not visible to thermal
 imaging. To achieve greater correlation between the pyrometry data and CT data,
 our attention focused on larger diameter pores that can be attributed to factors
 such keyhole porosity or lack of fusion porosity. In keyholing, pores generated
@@ -613,13 +613,13 @@ $Softmax\left(\frac
 
 In the case of a Vision Transformer (ViT), an image is divided up into self
 attention patches via patch embedding, passed through the transformer encoder,
-and utilized through a classification head\cite{dosovitskiy_image_2021,
-arnab_vivit_2021}.  Within patch embedding, each patch has a fixed pixel size in
+and utilized through a classification head \cite{dosovitskiy_image_2020,
+arnab_vivit_2021}. Within patch embedding, each patch has a fixed pixel size in
 height and width and its embedding is derived through flattening and linear
-projection\cite{dosovitskiy_image_2021, arnab_vivit_2021}.  Class and position
+projection \cite{dosovitskiy_image_2020, arnab_vivit_2021}.  Class and position
 are applied to the embedding before passed through the transformer encoder
 composed blocks of layer norm, multi-head attention, and MLP layers after which
-a classification head is attached.\cite{dosovitskiy_image_2021}
+a classification head is attached \cite{dosovitskiy_image_2020}.
 
 The dataset utilizes the same 75 / 25 train test split within the sample steps
 for all the \textit{Spacing}, \textit{Velocity}, and \textit{All} variants. The
