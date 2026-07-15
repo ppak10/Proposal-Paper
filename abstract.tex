@@ -1,29 +1,39 @@
 \begin{abstract}
-The additive manufacturing process is a complex and multi-faceted fabrication
-challenge which expands in complexity at higher levels of precision.
-Specifically, powder based processes such as Laser Powder Bed Fusion and
-Selective Laser Sintering present challenges from overall build feasibility to
-defect mitigation within the final part. Approaches to combat potential issues
-have explored feedforward and feedback control of the build process utilizing
-\textit{in-situ} process monitoring data, multi-physics simulation, and machine
-learning models to detect and address potential defects before they arise in the
-build. These approaches have shown success in limited and controlled
-experimental trials and exploration of implementing these systems in a dynamic
-environment is yet to be done. In this work an agentic system will developed for
-the optimization of the selective laser sintering process and integrated into a
-continual learning environment to further account for changing enviromental
-variables.
+Additive Manufacturing enables efficient design and fabrication workflows within
+engineering, allowing for rapid iterative development of components by
+circumventing the need for rigid tooling, material waste, and long development
+cycles. Since its inception, this process has evolved from a quick method for
+drafting design prototypes to an industrial scale process capable of achieving
+high throughput and precision. Specifically, powder based processes such as
+Laser Powder Bed Fusion and Selective Laser Sintering offer micrometer-level
+precision for functional applications; however, present challenges in defect
+mitigation and process parameter optimization. Approaches to address these
+challenges have explored feedforward and feedback control of the build process
+utilizing in-situ process monitoring data, multi-physics simulation, and machine
+learning models to detect potential defects before they manifest in the final
+part. These approaches have shown success in controlled experimental trials with
+implementation of these tools yet to be done inside a continual learning enabled
+agentic system. This work introduces an agentic system developed for the
+optimization of process parameters and defect mitigation within the selective
+laser sintering process. The system enables the intelligent automation of data
+inference and tool calling orchestrated by various large language models to
+search for ideal print parameters evaluated through measured tensile and
+flextural properties of printed ASTM samples. Outputs and interactions are
+recorded to a database enabling continual learning which further improves the
+agentic system with each task. This composition of machine learning models,
+physical hardware, and user driven data establishes a foundation for continual
+learning enabled agentic systems in additive manufacturing.
 
-This proposal will first explore the works achieved to develop the individual
-components of this system starting from the process monitoring with
-\textit{in-situ} two-color pyrometry data, to fine-tuning large language models
-for domain knowledge integration, and agentic system implementation of the
-intelligent automation of research tasks. These works set the foundation for the
-proposed work for an agentic process optimization system within selective laser
-sintering where through experimental trials and prints, the capabilities of the
-system will be evaluated. The results obtained from these experiments will
-further expand the dataset used to fine-tune this system into a continual
-learning environment where system will better understand the dynamics of its
-environment.
+% This thesis will explores the works achieved to develop the individual
+% components of this system starting from the process monitoring with
+% \textit{in-situ} two-color pyrometry data, to fine-tuning large language models
+% for domain knowledge integration, and agentic system implementation of the
+% intelligent automation of research tasks. These works set the foundation for the
+% proposed work for an agentic process optimization system within selective laser
+% sintering where through experimental trials and prints, the capabilities of the
+% system will be evaluated. The results obtained from these experiments will
+% further expand the dataset used to fine-tune this system into a continual
+% learning environment where system will better understand the dynamics of its
+% environment.
 
 \end{abstract}
