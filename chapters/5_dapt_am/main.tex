@@ -1023,10 +1023,10 @@ forgetting \cite{french_catastrophic_1999}, building to a framework with which
 the agentic system can integrate the results of its actions into the LLM through
 fine-tuning.
 
-\appendix
+% \appendix
 
 % Redefine \thesection to include "Appendix"
-\renewcommand{\thesection}{Appendix \Alph{section}}
+% \renewcommand{\thesection}{Appendix \Alph{section}}
 
 % \section{Attention Mechanism}
 % \label{sec:attention-mechanism}
@@ -1039,7 +1039,8 @@ fine-tuning.
 % \label{sec:cross-attention}
 % % TODO: Explain cross attention
 
-\section{Tokenization}
+\section{Appendix}
+\subsection{Tokenization}
 \label{sec:tokenization}
 Tokenization is an essential component of the Natural Language Processing (NLP)
 pipeline as it converts strings of human-readable characters into token
@@ -1060,7 +1061,7 @@ data, the model is able to use the semantic and sequential patterns of the input
 to perform next token prediction from the representations learned during
 training\cite{vaswani_attention_2023, sennrich_neural_2016, su_roformer_2023}.
 
-\subsection{Subword Neural Machine Translation}
+\subsubsection{Subword Neural Machine Translation}
 \label{sec:snmt}
 Subword Neural Machine Translation is a preprocessing method which text is
 segmented into subword units, specifically useful in encoding out-of-vocabulary
@@ -1080,7 +1081,7 @@ the dictionary, improving the coverage of tokens during training. This allows
 for out-of-vocabulary words to be segmented into combinations of word and
 subword tokens.
 
-\subsection{Byte Pair Encoding}
+\subsubsection{Byte Pair Encoding}
 \label{sec:bpe}
 Byte Pair Encoding was first introduced by Philip Gage \cite{gage_new_1994} as a
 method of data compression useful in memory constrained environments due to its
@@ -1096,7 +1097,7 @@ the next input byte is obtained from the input file.
 This is the content for the first appendix.
 \clearpage
 
-\section{Chain of Thought Prompting}
+\subsection{Chain of Thought Prompting}
 % TODO: Update figure to be more domain appropriate
 \begin{figure}
     \centering
@@ -1109,7 +1110,7 @@ This is the content for the first appendix.
 \end{figure}
 \clearpage
 
-\section{Additional Dataset Information}
+\subsection{Additional Dataset Information}
 \label{sec:additional_dataset_Information}
 
 \begin{figure}
@@ -1147,7 +1148,7 @@ This is the content for the first appendix.
     \label{fig:keywords_top10}
 \end{figure}
 
-\section{Gemma 3 Pre-Trained Variant Results}
+\subsection{Gemma 3 Pre-Trained Variant Results}
 \label{sec:gemma_3_pt}
 With models developed from the base Gemma 3 model \cite{team_gemma_2025} with
 only pretraining applied (Fig. \ref{fig:gemma_3_results_pt}), the performance on all

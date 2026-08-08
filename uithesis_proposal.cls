@@ -65,7 +65,7 @@
 \let\old@frontmatter\frontmatter
 \renewcommand*{\frontmatter}{%
 \old@frontmatter
-\addtocounter{page}{2}
+\addtocounter{page}{1}
 }
 
 % The abstract is: on it's own page, double spaced, and indents every paragraph
@@ -109,8 +109,8 @@
 % ThesisSupervisor adds to the list while appending "Thesis Supervisor"
 % CommitteeMember adds to the list
 \newcommand{\thecommittee}{}
-\newcommand{\ThesisSupervisor}[1]{\listadd{\thecommittee}{Dr. #1, Chair}}
-\newcommand{\CommitteeMember}[1]{\listadd{\thecommittee}{Dr. #1}}
+\newcommand{\ThesisSupervisor}[1]{\listadd{\thecommittee}{#1, Thesis Supervisor}}
+\newcommand{\CommitteeMember}[1]{\listadd{\thecommittee}{#1}}
 
 % Title page stuff
 
@@ -120,66 +120,33 @@
 \newcommand{\degree}[1]{\def\thedegree{#1}}
 \newcommand{\concentration}[1]{\def\theconcentration{#1}}
 
-
-
-
 \newcommand{\titlepage}{%
 \begin{titlingpage}
   \centering
   { \LARGE 
-  \bfseries\scshape {\thetitle} }
-  % \sc\bf {\thetitle } }
-  % \textsc{\thetitle} }
+  \textit{Thesis Proposal}\\[1\baselineskip]
+  \textsc{\thetitle} }
   \par
   \vspace{\fill}
-  Submitted in partial fulfillment of the requirements for\\[0\baselineskip]
-  the degree of\\[0\baselineskip]
-  \thedegree{}\\[0\baselineskip]
-  in\\[0\baselineskip] 
-  Mechanical Engineering\\[8\baselineskip]
-  % \theconcentration\\[6\baselineskip]
+  {by}\\[0.6\baselineskip]{\theauthor\vspace{\fill}\\[0\baselineskip]
+  Department of Mechanical Engineering \\[0\baselineskip]
+  College of Engineering\\[0\baselineskip]
+  Carnegie Mellon University\\[0\baselineskip]
+  Pittsburgh, Pennsylvania, USA}\\[1\baselineskip]
+  \thedate\\[6\baselineskip]
+  Submitted in partial fulfillment of the requirements\\[0\baselineskip]
+  for the degree of \thedegree{}\\[0\baselineskip]
+  in \theconcentration\\[6\baselineskip]
   \par
 
-  {\theauthor\\[2\baselineskip]
-  B.S., Materials Science and Engineering, Carnegie Mellon University\\[0\baselineskip]
-  M.S., Materials Science and Engineering, Carnegie Mellon University\vspace{\fill}\\[0\baselineskip]
-  
-  Carnegie Mellon University\\[0\baselineskip]
-  Pittsburgh, PA}\\[1\baselineskip]
-  December 2026
+  % Including committee members
+  \renewcommand*{\do}[1]{& ##1\\[0\baselineskip]}
+  \begin{tabular}{r l}
+    Thesis Proposal Committee:{} \dolistloop{\thecommittee}
+  \end{tabular}
 
 \end{titlingpage}%
 }
-
-
-
-% \newcommand{\titlepage}{%
-% \begin{titlingpage}
-%   \centering
-%   { \LARGE 
-%   % \textit{Thesis Proposal}\\[1\baselineskip]
-%   \textsc{\thetitle} }
-%   \par
-%   \vspace{\fill}
-%   {by}\\[0.6\baselineskip]{\theauthor\vspace{\fill}\\[0\baselineskip]
-%   Department of Mechanical Engineering \\[0\baselineskip]
-%   College of Engineering\\[0\baselineskip]
-%   Carnegie Mellon University\\[0\baselineskip]
-%   Pittsburgh, Pennsylvania, USA}\\[1\baselineskip]
-%   \thedate\\[6\baselineskip]
-%   Submitted in partial fulfillment of the requirements\\[0\baselineskip]
-%   for the degree of \thedegree{}\\[0\baselineskip]
-%   in \theconcentration\\[6\baselineskip]
-%   \par
-
-%   % Including committee members
-%   \renewcommand*{\do}[1]{& ##1\\[0\baselineskip]}
-%   \begin{tabular}{r l}
-%     Thesis Proposal Committee:{} \dolistloop{\thecommittee}
-%   \end{tabular}
-
-% \end{titlingpage}%
-% }
 
 \titlingpageend{\clearforchapter}{\clearforchapter}
 
@@ -196,7 +163,7 @@
 \renewcommand{\listoffigures}{\clearpage\old@listoffigures}
 
 % For some reason the bibliography has to be single spaced
-\let\old@printbibliography\printbibliography
+% \let\old@printbibliography\printbibliography
 
 \let\old@mainmatter\mainmatter
 \renewcommand{\mainmatter}{\old@mainmatter\OnehalfSpacing}
@@ -214,12 +181,22 @@
   }
   {\clearpage}
 
-\newcommand{\iowaEpigraph}[2]{
+% \newcommand{\iowaEpigraph}[2]{
+%     \clearpage
+%     \vspace*{\fill}
+%       \SingleSpacing
+%       \noindent{}#1
+
+%     \hfill-- #2
+%     \vspace*{\fill}
+%   }
+
+\newcommand{\iowaEpigraph}[1]{
     \clearpage
+    \begin{center}
     \vspace*{\fill}
       \SingleSpacing
       \noindent{}#1
-
-    \hfill-- #2
     \vspace*{\fill}
+    \end{center}
   }

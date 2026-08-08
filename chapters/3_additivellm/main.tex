@@ -61,32 +61,31 @@ knowledge of the various domains within the L-PBF process, ranging from material
 properties to experimental trials. Large Language Models (LLM) present a
 suitable solution for encapsulating these domains and have demonstrated
 significant success in reasoning and generating precise responses based on a
-given prompt \cite{touvron_llama_2023, touvron_llama_2023-1, minaee_large_2024,
-devlin_bert_2019, brown_language_2020, liu_roberta_2019}. LLMs are able to
-understand textual descriptions of experimental results and respective context
-which enables its application as a more human accessible research tool in a wide
-domain of fields ranging from chemical engineering to robotics
-\cite{jadhav_llm-3d_2025, ock_catalyst_2023, car_plato_2024,
-lorsung_explain_2024, shah_peptide-gpt_2024, farimani_large_2024,
-chandrasekhar_amgpt_2024, ock_multimodal_2024, balaji_gpt-molberta_2023,
-jadhav_large_2024, ock_adsorb-agent_2024}. Implementations such as
-LLAMA\cite{touvron_llama_2023, touvron_llama_2023-1, grattafiori_llama_2024},
-GPT\cite{brown_language_2020}, T5\cite{raffel_exploring_2023} and
-BERT\cite{devlin_bert_2019} provide a foundation for general purpose use where
-it can then be fine-tuned for a specific downstream application.
+given prompt \cite{touvron_llama_2023, minaee_large_2024, devlin_bert_2019,
+brown_language_2020, liu_roberta_2019}. LLMs are able to understand textual
+descriptions of experimental results and respective context which enables its
+application as a more human accessible research tool in a wide domain of fields
+ranging from chemical engineering to robotics \cite{jadhav_llm-3d_2025,
+ock_catalyst_2023, car_plato_2024, lorsung_explain_2024, shah_peptide-gpt_2024,
+farimani_large_2024, chandrasekhar_amgpt_2024, ock_multimodal_2024,
+balaji_gpt-molberta_2023, jadhav_large_2024, ock_adsorb-agent_2026}.
+Implementations such as LLAMA \cite{touvron_llama_2023, grattafiori_llama_2024},
+GPT \cite{brown_language_2020}, T5\cite{raffel_exploring_2023} and BERT
+\cite{devlin_bert_2019} provide a foundation for general purpose use where it
+can then be fine-tuned for a specific downstream application.
 
-The Bidirectional Encoder Representations from Transformers
-(BERT)\cite{devlin_bert_2019} model is one way to architect a LLM and has
-garnered much attention creating the base for extensions such as RoBERTa
-(\textbf{R}obustly \textbf{o}ptimized \textbf{BERT}
-Approach)\cite{liu_roberta_2019}, ALBERT (\textbf{A} \textbf{L}ite
-\textbf{BERT})\cite{lan_albert_2020}, and DistilBERT\cite{sanh_distilbert_2020}.
-These models which improves upon the existing implementation by either employing
-specific training strategies such as a dataset, batch sizes, sequence lengths,
-and hyperparameter optimization\cite{liu_roberta_2019, lan_albert_2020,
+The Bidirectional Encoder Representations from Transformers (BERT)
+\cite{devlin_bert_2019} model is one way to architect a LLM and has garnered
+much attention creating the base for extensions such as RoBERTa
+(\textbf{R}obustly \textbf{o}ptimized \textbf{BERT} Approach)
+\cite{liu_roberta_2019}, ALBERT (\textbf{A} \textbf{L}ite \textbf{BERT})
+\cite{lan_albert_2020}, and DistilBERT \cite{sanh_distilbert_2020}. These models
+which improves upon the existing implementation by either employing specific
+training strategies such as a dataset, batch sizes, sequence lengths, and
+hyperparameter optimization \cite{liu_roberta_2019, lan_albert_2020,
 sanh_distilbert_2020}. The BERT model differs from the classical masked language
 model in that it randomly masks its input tokens in order to predict the
-original vocabulary based solely through context\cite{devlin_bert_2019}. The
+original vocabulary based solely through context \cite{devlin_bert_2019}. The
 bidirectional approach for representing inputs that BERT takes allows for the
 model to consider a more complete context window of a given sequence, providing
 tokens on both sides of an applied mask \cite{devlin_bert_2019}. This is
@@ -391,13 +390,12 @@ Llama 3 is the latest iteration of LLMs developed by the AI team at
 Meta\cite{grattafiori_llama_2024}. In comparison to the previous
 implementations, Llama 3 is trained on a much larger dataset of 15 trillion
 tokens, boasts a larger context window of up to 128K tokens, and consists of 405
-billion parameters for its largest model \cite{grattafiori_llama_2024,
-touvron_llama_2023, touvron_llama_2023-1}. For our implementations we utilize
-Llama-3.2-1B, a 1 billion parameter implementation of the the Llama 3 model that
-incorporates the logits of the 8 billion and 70 billion parameter Llama 3.1
-models during pretraining in order to retain a majority of their performance
-while reducing the hardware requirements for
-finetuning\cite{grattafiori_llama_2024}. This model was fine-tuned with a batch
+billion parameters for its largest model \cite{grattafiori_llama_2024}. For our
+implementations we utilize Llama-3.2-1B, a 1 billion parameter implementation of
+the the Llama 3 model that incorporates the logits of the 8 billion and 70
+billion parameter Llama 3.1 models during pretraining in order to retain a
+majority of their performance while reducing the hardware requirements for
+finetuning \cite{grattafiori_llama_2024}. This model was fine-tuned with a batch
 size of 512 and a learning rate of 2E-5.
 
 \subsubsection{T5}

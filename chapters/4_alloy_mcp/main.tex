@@ -68,16 +68,16 @@ window.
 Recent advances in multi-agent systems have demonstrated the potential of Large
 Language Models (LLMs) to perform complex, goal-oriented tasks that extend
 beyond the constraints of a single prompt \cite{jadhav_llm-3d_2025,
-ock_catalyst_2023, ock_large_2025, chaudhari_modular_2025, george_llm_2025,
+ock_catalyst_2023, ock_large_2025, chaudhari_modular_2026, george_llm_2025,
 bartsch_llm-craft_2025, chandrasekhar_automating_2025, merrill_llm-drone_2025}.
 This has been applied to the monitoring and adjustment of real-time Fuse
 Deposition Modeling (FDM) builds \cite{jadhav_llm-3d_2025}, search and discovery
 of potential catalyst and drug candidates \cite{ock_catalyst_2023,
 ock_large_2025}, and optimization of material and molecular design simulations
-\cite{chaudhari_modular_2025, chandrasekhar_automating_2025}. In these tasks,
+\cite{chaudhari_modular_2026, chandrasekhar_automating_2025}. In these tasks,
 LLMs autonomously determine the next course of action by reasoning over the
 information available within the dynamic environment \cite{jadhav_llm-3d_2025,
-chaudhari_modular_2025, ock_large_2025}. The next course of action often
+chaudhari_modular_2026, ock_large_2025}. The next course of action often
 involves utilizing functionality external to the LLM which is made accessible
 through a tool call. This can be done through various methods and solution
 providers include LangChain and LlamaIndex. This work utilizes the Model Context
@@ -382,13 +382,13 @@ occurrence of balling, however are not integrated in this approach for previousl
 mentioned reasons.
 
 \subsection{Model Context Protocol}
-The Model Context Protocol (MCP) is a standard introduced by Anthropic
-\cite{anthropic_anthropic_2025} which provides guidelines for used functionality
-such as tool calling and resource querying; Particularly suitable for agentic
-tasks \cite{anthropic_introducing_2024, ehtesham_survey_2025, hou_model_2025}.
-Along with these features, MCP is compatible with the wider ecosystem of LLM
-providers with integrations in Software Development Kits (SDKs) developed by
-Anthropic, OpenAI, Google \cite{hamsa_buvaraghan_mcp_2025}, and others
+The Model Context Protocol (MCP) is a standard introduced by Anthropic which
+provides guidelines for used functionality such as tool calling and resource
+querying; Particularly suitable for agentic tasks
+\cite{anthropic_introducing_2024, ehtesham_survey_2025, hou_model_2025}. Along
+with these features, MCP is compatible with the wider ecosystem of LLM providers
+with integrations in Software Development Kits (SDKs) developed by Anthropic,
+OpenAI, Google \cite{hamsa_buvaraghan_mcp_2025}, and others
 \cite{hou_model_2025}.
 
 \subsubsection{Tools}
