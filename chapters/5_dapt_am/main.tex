@@ -40,7 +40,7 @@ etc.) RAG enables up-to-date responses without additional pretraining
 generally static (journal articles, figures, textbooks, etc.) and the extra
 training cost done with Domain Adaptive Pretraining (DAPT) enables accurate
 response generation without additional context consumption seen with
-RAG\cite{gururangan_dont_2020}. Another consideration is the local use and
+RAG \cite{gururangan_dont_2020}. Another consideration is the local use and
 deployment of these LLMs as seen in cases where national security
 \cite{chen_survey_2025, caballero_large_2024}, patient data
 \cite{montagna_privacy-preserving_2025, qu_novel_2024, tahera_sok_2026}, or
@@ -85,12 +85,12 @@ within a given field.
 \section{Related Work}
 Previous works have explored the application of large language models to solving
 challenges within the domain of additive manufacturing. These include approaches
-such as in-context learning \cite{fang_large_2024},
-fine-tuning\cite{pak_additivellm_2025}, retrieval augmented generation
+such as in-context learning \cite{fang_large_2024}, fine-tuning
+\cite{pak_additivellm_2025}, retrieval augmented generation
 \cite{chandrasekhar_amgpt_2024, naghavi_khanghah_multimodal_2025}, the use of
 vision language models \cite{zheng_qa-vlm_2026, liu_visual_2023,
 pak_thermopore_2024}, and the development of agentic
-systems\cite{jadhav_llm-3d_2025, pak_agentic_2026}. To the best of the authors'
+systems \cite{jadhav_llm-3d_2025, pak_agentic_2026}. To the best of the authors'
 knowledge there exists no work which investigates the adaptation of large
 language models to domain of additive manufacturing within both the language and
 vision space through the use of continual pre-training and instruction tuning.
@@ -102,9 +102,9 @@ regimes. Data used for this fine-tuning process was obtained from the
 MeltpoolNet dataset \cite{akbari_meltpoolnet_2022} and FLOW-3D based
 simulations. This dataset was used to fine-tune models ranging in size from 60
 million parameters to 1 billion parameters: DistilBERT
-(66M)\cite{sanh_distilbert_2020}, SciBERT (110M) \cite{beltagy_scibert_2019},
-T5-Small (60M)\cite{raffel_exploring_2023}, and Llama 3.2
-(1B)\cite{grattafiori_llama_2024}. An accuracy of 82\% was achieved when
+(66M) \cite{sanh_distilbert_2020}, SciBERT (110M) \cite{beltagy_scibert_2019},
+T5-Small (60M) \cite{raffel_exploring_2023}, and Llama 3.2
+(1B) \cite{grattafiori_llama_2024}. An accuracy of 82\% was achieved when
 predicting defect regimes within laser powder bed fusion (keyholing, lack of
 fusion, balling, or none) given natural language formatted process parameters
 using the fine-tuned DistilBERT model \cite{pak_additivellm_2025}.
@@ -114,7 +114,7 @@ defects encountered during the vat photopolymerization process was explored by
 Fang et al. \cite{fang_large_2024} The authors utilize a camera mounted to the
 underside of the resin vat to obtain images of the resin deposition process,
 looking for defects such as debris and unfilled streaks within the build
-platform\cite{fang_large_2024}. The taken images are then provided to GPT-4o,
+platform \cite{fang_large_2024}. The taken images are then provided to GPT-4o,
 along with positive and negative image samples, in order to predict whether the
 current layer is normal or defective \cite{fang_large_2024}. These samples,
 along with text descriptions of both cases, provides additional contextual
@@ -161,353 +161,7 @@ mechanical performance \cite{jadhav_llm-3d_2025}. In both of these works, the
 agentic system relied on off-the-shelf large language models (i.e. GPT-4o,
 Claude, Gemini) \cite{jadhav_llm-3d_2025, pak_agentic_2026}. However, it has yet
 to be explored that a domain adapted, fine-tuned model for additive
-manufacturing within these agentic systems would exhibit enhanced performance. 
-
-\section{Background}
-\subsection{Large Language Models}
-
-A Large Language Model (LLM) is a neural network which commonly utilizes
-transformer based architectures trained to the task of next token prediction
-\cite{vaswani_attention_2023, devlin_bert_2019}. This type of model is often
-pretrained on a corpus of natural language data ranging from Wikipedia articles
-to code available on GitHub and showcases its comprehension of these datasets
-through various benchmarking tasks.\cite{gururangan_dont_2020,
-hendrycks_measuring_2020, cobbe_training_2021}. Adhering to scaling laws, these
-models often exhibit improved performance with larger parameter counts, compute
-times, and dataset size \cite{brown_language_2020}. Furthermore, these models
-can operate beyond the bounds of natural language through different
-architectural modifications which allows for the interpretation of images
-\cite{dosovitskiy_image_2020}, videos \cite{arnab_vivit_2021}, and 3d models
-\cite{yu_point-bert_2022}.
-
-\subsubsection{Transformer Architecture}
-\label{sec:transformers}
-Before the inception of the transformer architecture
-\cite{vaswani_attention_2023}, long short-term memory
-\cite{hochreiter_long_1997} and gated recurrent neural networks
-\cite{chung_empirical_2014} were the predominant approaches to solve language
-and sequence modeling tasks. However, these previous approaches were limited in
-their lack of parallelization and constrained context window as they struggled
-to model long range dependencies \cite{hochreiter_long_1997,
-chung_empirical_2014, vaswani_attention_2023}. The transformer architecture, in
-contrast, primarily relying upon the attention mechanism to model long range
-dependencies bypassing the need for convolution or recurrent mechanisms
-\cite{vaswani_attention_2023}. Within the original transformer model, the
-architecture consists of two stacks: the encoder stack and the decoder stack
-\cite{vaswani_attention_2023}. The encoder stack consists of bidirectional self
-attention where a contextual representation can be generated by attending to
-entirely of input tokens \cite{vaswani_attention_2023}. The decoder is concerned
-with next token generation as it can only attend to the previous tokens within
-the output sequence \cite{vaswani_attention_2023}.
-
-Implementations of this encoder-decoder transformer architecture include models
-such as T5 \cite{raffel_exploring_2023} and BART \cite{lewis_bart_2019}, which
-excelled in fixed output tasks such as summarization and translation. Encoder
-only models such as BERT \cite{devlin_bert_2019} and RoBERTa
-\cite{liu_roberta_2019} utilize leverage bidirectional attention to generate a
-comprehensive embedding space for dense retrieval, particularly useful in domain
-specific representation environments such as those covered in CatBERTa
-\cite{ock_catalyst_2023}, SciBERT \cite{beltagy_scibert_2019}, and
-\cite{yu_point-bert_2022}. However, decoder only transformer stacks such as GPT
-\cite{radford_improving_2018} have evolved to become the dominant approach as it
-scales better for generative and reasoning tasks focused next token prediction.
-
-\subsubsection{Multi-modal Input Representation}
-\label{sec:multi-modal}
-The transformer architecture can be applied to multi-modal tasks through
-modifications within the tokenization process allowing
-for an effective representation of visual images \cite{dosovitskiy_image_2020,
-arnab_vivit_2021} and 3D models \cite{yu_point-bert_2022}. Text is provided to
-the transformer as 1 dimensional input vectors and naively flattening 2 or 3
-dimensional data often produces inadequate representations, often resulting in
-lost temporal and spatial data \cite{dosovitskiy_image_2020, arnab_vivit_2021}.
-An approach to preserving spatial data is outlined in work by Dosovitskiy et al.
-\cite{dosovitskiy_image_2020} where the authors split an input image into fixed
-patches while applying positional embedding in their Vision Transformer (ViT).
-This is further expanded upon by Arnab et al. \cite{arnab_vivit_2021} where
-these patches are expanded in an additional dimension for video frames to embed
-spatial and temporal information into the input \cite{arnab_vivit_2021}.
-
-For 3D models, point cloud representation is an efficient means of representing
-spatial information without the rigid constraints of voxelization. However, the
-unstructured format of point clouds presents a challenge when adapting this data
-to be suitable for transformer input as the tokenization process for such a
-representation is not immediately obvious\cite{yu_point-bert_2022}. Point-BERT
-\cite{yu_point-bert_2022} resolves this issue by partitioning the entire 3D
-model into point based patches similar to the previously methologies of ViT
-\cite{dosovitskiy_image_2020}. These patches of points referred to as
-``sub-clouds" preserves the spatial information necessary for adequately mapping
-3D model data in an format comprehensible by the transformer architecture
-\cite{yu_point-bert_2022}.
-
-\subsubsection{Model Scaling}
-\label{sec:transformer-scaling}
-With the increasing parameter size of models developed with the transformer
-architecture, emergent behaviors such as reasoning become evident
-\cite{wei_finetuned_2021, kaplan_scaling_2020, lu_learn_2022}. This evolution in
-scale can be attributed to a number of factors such as the parallelization of
-self-attention computations, regularization of model weights through residual
-connections, and the shift to decoder focused transformer stacks
-\cite{radford_improving_2018, vaswani_attention_2023}. This finding is validated
-by Kaplan et al. \cite{kaplan_scaling_2020} where model performance depends
-heavily upon number of parameters, size of dataset, and the amount of compute
-used during training. This work established the existence of a power law
-relationship between performance and factors such as parameter size (768 to
-1.5B), dataset size (22M - 23B), and compute ($10^{-5}$ to $10^{3}$ PetaFlop
-days) \cite{kaplan_scaling_2020}.
-
-\subsection{Prompting and Reasoning}
-\subsubsection{Chain-of-Thought}
-\label{sec:cot}
-Chain-of-Thought (CoT) is multi-step prompting technique to elicit further
-developed answers from the large language model than simple standard
-prompting\cite{kojima_large_2023, wei_chain--thought_2023}. In this method, the
-prompt is formatted in a manner such that a step-by-step answer is provided to
-an example question before a similar question is posed in the
-input\cite{kojima_large_2023, wei_chain--thought_2023}. This facilitates
-reasoning within the model as it decomposes the prompt into a multi-step problem
-which allows for additional computations be allocated to these individual
-steps\cite{wei_chain--thought_2023}. For example, while constructing the prompt
-rather than simply stating the direct answer to a given problem, the answer is
-formatted in a way to provide the granular steps taken to arrive at an
-answer\cite{wei_chain--thought_2023} (Fig. \ref{fig:cot}). This method is
-particularly useful in facilitating fidelity in multi-step arithmetic problems
-along with providing interpretable insight into reasoning within the
-LLM\cite{wei_chain--thought_2023}.
-
-In addition to formatted user prompts, CoT reasoning provides a useful avenue to
-monitor large language model outputs for potential exploits that may produce
-misaligned behavior output\cite{baker_monitoring_2025}. This has been shown with
-the monitoring of verbose CoT outputs from larger models (i.e. o3-mini) using
-weaker models (i.e. GPT-4o) to prevent reward hacking
-schemes\cite{baker_monitoring_2025}. For example, \textit{Baker et
-al.}\cite{baker_monitoring_2025} highlights an example where by monitoring the
-CoT of a model's trajectory using a separate agent, a reward hacking scheme of
-modifying unit tests to always pass is thwarted. This proves useful in directing
-the model to complete tasks using the correct approach rather than choosing the
-simpler, often incorrect, approach. However, the authors have found that given
-too much optimization the model can learn hide its intent within the CoT
-producing avenues where in which hallucination can
-occur\cite{baker_monitoring_2025, openai_gpt-oss-120b_2025}.
-
-\subsubsection{Zero-Shot}
-\label{sec:zero_shot}
-With the increasing size of Large Language Models, Zero-Shot reasoning has been
-shown to be sufficient in eliciting deeper thought responses without the need
-for step-by-step examples.\cite{kojima_large_2023} Rather, a simple addition to
-the prompt such as ``Let's think step by step" would be sufficient in
-encouraging the model to produce a more well formed
-answer.\cite{kojima_large_2023} This enables a minimalist approach to probe for
-complex reasoning with the large language model leveraging the large corpus of
-data that the model has been trained on \cite{kojima_large_2023,
-brown_language_2020}.
-
-This type of reasoning is often baked into the large language model with a
-fine-tuning method called Instruction Tuning (Section \ref{sec:it})
-\cite{wei_finetuned_2021}. Wei et al.\cite{wei_finetuned_2021} utilizes this
-technique to further train large language models with Natural Language
-Instruction templates to better elicit stronger inference capability from the
-model. In the developed 137B parameter Finetuned Language Net (FLAN) model, the
-authors find that FLAN's zero-shot performance outperformed the zero-shot
-performance of the 175B parameter GPT-3 in over 80\% of evaluations
-\cite{wei_finetuned_2021}.
-
-\subsubsection{ReAct}
-\label{subsec:reasoning_architecture_react}
-ReAct (Reason + Act) is a general paradigm that combines reasoning and actions
-within the large language model to utilize feedback to make informed choices for
-the next set of actions.\cite{yao_react_2022} By utilizing prompt based approach
-to navigating through an action space, ReAct is able to update its current
-policy by reasoning over it's current context and
-observations.\cite{yao_react_2022} This is achieved by decomposing a given task
-into a smaller set of steps similar to the Chain-of-Thought
-process\cite{yao_react_2022, wei_chain--thought_2023}. At a given timestep
-($t$), each step consists of a language space action ($\hat{a}_t$) which Yao et
-al.\cite{yao_react_2022} refer to as \textit{thought} or \textit{reasoning
-trace}, an environmental action ($a_t$) such as a tool call, and an observation
-($o_t$) which is the result of action ($a_t$). The LLM generates a policy
-($\pi(a_t|c_t)$) for the next action ($a_t$) given the current context ($c_t$)
-which consists of all actions and observations from previous timesteps. A
-language space action or aforementioned \textit{thought} is performed to update
-the context ($c_{t+1} = (c_t, \hat{a}_t)$) allowing for dynamic policies which
-can be adjusted with feedback\cite{yao_react_2022}.
-
-Each step is composed of a ``Thought", ``Action" and ``Observation" which the
-LLM is prompted to complete.\cite{yao_react_2022} The ``Thought" is the language
-space action that the LLM produces to create the updated context from the
-existing context space after both an Action and Observation are
-performed.\cite{yao_react_2022} ``Actions" are then performed by parsing the
-subsequent output from the LLM to search for tools that match a specific syntax
-(i.e. \texttt{\textbf{search}[entity]}, \texttt{\textbf{lookup}[string]}, or
-\texttt{\textbf{finish}[answer]}). The respective function is then executed with
-the provided argument producing an ``Observation" which is then appended to the
-context before moving onto the next step. This ``Thought", ``Action" and
-``Observation" process is repeated until either the LLM produces an ``Action"
-consisting of \texttt{\textbf{finish}[answer]} or an iteration limit is
-reached.\cite{yao_react_2022} During this process, the CoT reasoning is visible
-throughout each step providing transparency into the mechanisms used to
-construct the final answer.\cite{yao_react_2022}
-
-
-\subsection{Domain Adaptation}
-Large Language Models are pretrained on a corpus of available data with
-modalities in natural language text \cite{brown_language_2020,
-openai_gpt-oss-120b_2025}, general images \cite{alayrac_flamingo_2022,
-li_blip_2022, radford_learning_2021}, and video sequences
-\cite{alayrac_flamingo_2022, arnab_vivit_2021}. Pretraining these models on a
-diverse set of data builds general knowledge and reasoning capabilities useful
-for generating comprehensible responses for user queries
-\cite{brown_language_2020}. The general knowledge embedded into the model from
-pretraining can be leveraged and further adapted to specialize in specific
-applications or downstream tasks through methods such as domain adaptive
-pretraining, such as those in biology, chemistry, and other fields
-\cite{gururangan_dont_2020, ock_catalyst_2023, lee_biobert_2020,
-beltagy_scibert_2019}. Low-Rank Adaptation is a common approach to injecting
-this domain knowledge into the large language model without retraining all of
-the model parameters, effectively utilizing available resources and optimizing
-on memory and computation \cite{hu_lora_2021}. Through supervised fine-tuning,
-the behavior of the large language model can be adjusted to further align with
-its downstream application via methods such as instruction tuning
-\cite{wei_finetuned_2021, liu_visual_2023}.
-
-\subsubsection{Domain-Adaptive Pretraining}
-\label{sec:dapt}
-
-Domain-Adaptive Pretraining (DAPT) within large language models continues the
-next token prediction self-supervised training process by utilizing a smaller,
-yet focused set of data \cite{gururangan_dont_2020, ke_continual_2023,
-xu_bert_2019, ke_adapting_2022}. For instance, the subsequent dataset for DAPT
-could include text from research papers \cite{gururangan_dont_2020}, textual
-representations of atoms \cite{ock_catalyst_2023}, or multi-domain scientific
-papers \cite{beltagy_scibert_2019}. Gururangan et al.
-\cite{gururangan_dont_2020} explores the application of DAPT in the domains of
-BioMed (2.68M papers) \cite{lo_s2orc_2020}, CS (2.22M papers)
-\cite{lo_s2orc_2020}, News (11.90M articles) \cite{zellers_defending_2019}, and
-Reviews (2.475M reviews)\cite{he_ups_2016} on the RoBERTa
-\cite{liu_roberta_2019} model for a single pass on each dataset. The authors
-observe that DAPT generates improved responses over the base RoBERTa
-\cite{liu_roberta_2019} model in all domains, particularly in the BioMed, CS, and
-Reviews domain showcasing the benefits such as an approach has when the source
-domain of the model is distance from the target domain of the model.
-
-% TODO: Revisit and revise
-% With further pretraining, the potential for catastrophic forgetting (Section
-% \ref{sec:cf}) must also be taken into consideration\cite{ke_continual_2023}.
-% Continual learning (Section \ref{sec:cl}) methods aim to address this as seen in
-% an approach by Ke et al.\cite{ke_continual_2023} which utilizes soft-masking to
-% control the backward gradient flow and demonstrates the model's ability to
-% overcome catastrophic forgetting. Importance of units for soft-masking are
-% calculated by sampling a subset of the domain data and is covered in more detail
-% in Section \ref{sec:cl}. % TODO: Add reference to specific subsection.
-
-\subsubsection{Low-Rank Adaptation}
-\label{sec:lora}
-
-With the increasing scale of parameters in large language models, adjusting each
-parameter via fine-tuning becomes prohibitively expensive \cite{hu_lora_2021}.
-As of writing, many popular large language models such as GPT-3 (175 B)
-\cite{hu_lora_2021}, GPT-OSS (20B and 120B) \cite{openai_gpt-oss-120b_2025},
-Llama 4 (109B) surpass 100 billion parameters, with expectations to scale to
-over 1 trillion trainable parameters\cite{fedus_switch_2022}. Pretraining alone
-for these models can take upwards of several months and retraining each model to
-a specific application evolves from an inconvenient task to an infeasible
-endeavor \cite{hu_lora_2021}. This growing inaccessibility of retraining all
-parameters of large language models to a specific domain establishes need for a
-more efficient method approach to fine-tuning.
-
-To this end, consideration towards the number of effective parameters is
-investigated as adjusting just these parameters would be enough to sufficiently
-adapt the large language model to a specific domain
-\cite{aghajanyan_intrinsic_2020, li_measuring_2018, hu_lora_2021}. This is
-referred by the intrinsic dimension, providing a measurement for the minimum
-number of parameters that is necessary for a model to produce satisfactory
-responses to an objective function \cite{aghajanyan_intrinsic_2020,
-li_measuring_2018}. With this, Aghajanyan et al. was able to achieve 90\% of the
-expected performance on a sematic equivalency binary classification task on the
-RoBERTa model \cite{liu_roberta_2019} by training only a select 200 parameters.
-Low-Rank Adaption (LoRA) is an approach that can reduce the number of trainable
-parameters by up to a factor of 10,000 with only just a third of the training
-memory requirement \cite{hu_lora_2021}. Here (Figure \ref{fig:lora}), the
-gradients of the pretrained weight matrix $W_0$ are kept frozen the accumulated
-gradients $\Delta W$ are represented by their low-rank decomposition $BA$
-($\Delta W = BA$). $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r
-\times k}$ \cite{hu_lora_2021}. Both $A$ and $B$ are dense layers which contain
-trainable parameters, $d$ is the dimension of the transformer layer of the
-model, $k$ is the input dimension of the weight matrix, and $r$ is the rank that
-satisfies the condition $r < \text{min}(d, k)$ \cite{hu_lora_2021}. In the
-adapter, the weights for $A$ are initialized using a gaussian distribution $A =
-\mathcal{N}(0, \sigma^2)$ with weights for B set to 0 \cite{hu_lora_2021}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.60\textwidth]{chapters/5_dapt_am/LoRA.png}
-    \caption{
-        Original figure by Hu et al. \cite{hu_lora_2021} diagrams LoRA for a
-        square pretrained weight matrix ($d \times d$). Figure is adapted to
-        showcase an example of a pretrained weight matrix with different input
-        and output dimensions ($d \times k$).
-    }
-    \label{fig:lora}
-\end{figure}
-
-Hu et al.\cite{hu_lora_2021} applies this approach only to within the self
-attention portion of GPT-2 ($W_q$, $W_k$, $W_v$, and $W_o$). Within the
-backwards pass only the adapter weights are updated, original pretrained weights
-are left frozen \cite{hu_lora_2021}. The forward pass is modified from $h=W_0x$
-to $h = W_0x+\Delta W$, adding the results from the trained adapter to the
-output of the frozen weights \cite{hu_lora_2021}. For inference, the pretrained
-weights and the adapter weights can be added together $W = W_0 + BA$, removing
-any introduction of latency and furthermore can be easily switched out for a
-different adapter at minimal overhead cost \cite{hu_lora_2021}.
-
-\subsubsection{Instruction Tuning}
-\label{sec:it}
-
-Instruction Tuning (IT) is a type of fine tuning which further aligns the LLM to
-produce better question answering responses \cite{wei_finetuned_2021,
-liu_visual_2023}. This process utilizes labeled datasets in a supervised
-learning environment to optimize the prediction performance of the model to the
-corresponding label for a specific input \cite{wei_finetuned_2021,
-liu_visual_2023}. Wei et al. \cite{wei_finetuned_2021} investigates the
-effectiveness of IT on zero-shot prompts to understand whether the model will
-exhibit unseen task performance when fine-tuning on a collection tasks. The
-authors find that performance improvements scale with the number of IT tasks and
-also denote that a specific model parameter size is necessary to realize these
-gains \cite{wei_finetuned_2021}. For models under a specific parameter size
-(8B), IT has been observed to hinder task performance potentially due to the
-limited model capacity which instruction tuning then completely consumes
-\cite{wei_finetuned_2021}. The IT FLAN model was shown to outperform the GPT-3
-model in a number of unseen tasks and showcases the potential for even larger
-LLMs to perform well in zero-shot question answering prompts
-\cite{wei_finetuned_2021}.
-
-This practice can be extended to visual domain with Visual Instruction Tuning
-(VIT) \cite{liu_visual_2023}. In work by Liu et al. \cite{liu_visual_2023}, the
-authors take a multi-modal approach to IT in their Large Language and Vision
-Assistant (LLaVA) model achieving an accuracy of 92.53\% when evaluating on the
-Science QA dataset \cite{lu_learn_2022}. The images obtained
-\cite{lin_microsoft_2015} from COCO include both caption and object localization
-which are then utilized in generating the three IT formats:
-\textit{Conversation}, \textit{Detailed Description}, and \textit{Complex
-Reasoning} \cite{liu_visual_2023}. The \textit{Conversation} format (58K
-samples) utilizes only the caption text to generate 3 question and answer
-responses with the assistance of GPT-4 for each image. The \textit{Detailed
-description} (23K samples) utilizes the questions from the previous format to
-also prompt GPT-4 for a comprehensive description of the image
-\cite{liu_visual_2023}. Lastly, the \textit{Complex Reasoning} (77K samples)
-format elicit more step-by-step answers to a given question
-\cite{liu_visual_2023}.
-
-Liu et al.\cite{liu_visual_2023} chose the Vicuna\cite{chiang_vicuna_2023} model
-(13B) to perform their IT experiments upon. Within their ablation studies it was
-found that without any instruction tuning, the model performed poorly within all
-categories, demonstrating the effectiveness of IT\cite{liu_visual_2023}. By just
-adding in \textit{Conversation} to the IT dataset, significant improvement gains
-are observed with evaluations across all three IT formats by a minimum of 30
-points and the incorporation of the entire IT dataset increases the score by 50
-points across the board \cite{liu_visual_2023}. When compared to GPT-4 the
-multi-modal capabilities of LLaVA produces a relative score of around 85\% on
-instruction-following dataset examples \cite{liu_visual_2023}.
+manufacturing within these agentic systems would exhibit enhanced performance.
 
 \section{Methodology}
 
@@ -550,7 +204,7 @@ this experimental setup. The Gemma family of models \cite{team_gemma_2025}
 provides a suitable balance between functionality and memory consumption while
 also accepting inputs within the vision space. Other models such as the Qwen3
 series of models have also demonstrated significant capability in both the
-vision and reasoning space\cite{yang_qwen3_2025}. Three different models were
+vision and reasoning space \cite{yang_qwen3_2025}. Three different models were
 selected to use as the base model: Gemma 3 12B (pre-trained and instruction
 tuned), Gemma 4 31B (instruction tuned only), and Qwen 3 8B (instruction tuned
 only).
@@ -652,7 +306,7 @@ vocabulary from one another (Fig. \ref{fig:vocabulary_overlap} and Fig.
 \end{figure}
 
 All articles were downloaded from their respective journals in the \texttt{.pdf}
-format and using the \texttt{PyMuPDF}\cite{mckie_pymupdfpymupdf_2026} library,
+format and using the \texttt{PyMuPDF} \cite{mckie_pymupdfpymupdf_2026} library,
 the relevant text and images were extracted from each file. The data extraction
 process for each assumes a consistent content structure in order to parse
 attributes such as authors, keywords, and figure captions. In the few cases
@@ -670,7 +324,7 @@ a consistent formatting.
         manufacturing journals. This data is utilized for domain adaptive
         pretraining and the figure captions are processed into question answer
         conversations and detailed descriptions using
-        GPT-OSS\cite{openai_gpt-oss-120b_2025} for visual instruction tuning.
+        GPT-OSS \cite{openai_gpt-oss-120b_2025} for visual instruction tuning.
         The various data configurations are uploaded and publicly accessible via
         HuggingFace.
     }
@@ -699,6 +353,144 @@ image tokens \cite{peter_pak_additivellm2-oa_2026}. In total the dataset
 consists of around 57 million tokens: 45 million of which are text and the other
 11 million that are image.
 
+\subsubsection{Domain-Adaptive Pretraining}
+\label{sec:dapt}
+
+Domain-Adaptive Pretraining (DAPT) within large language models continues the
+next token prediction self-supervised training process by utilizing a smaller,
+yet focused set of data \cite{gururangan_dont_2020, ke_continual_2023,
+xu_bert_2019, ke_adapting_2022}. For instance, the subsequent dataset for DAPT
+could include text from research papers \cite{gururangan_dont_2020}, textual
+representations of atoms \cite{ock_catalyst_2023}, or multi-domain scientific
+papers \cite{beltagy_scibert_2019}. Gururangan et al.
+\cite{gururangan_dont_2020} explores the application of DAPT in the domains of
+BioMed (2.68M papers) \cite{lo_s2orc_2020}, CS (2.22M papers)
+\cite{lo_s2orc_2020}, News (11.90M articles) \cite{zellers_defending_2019}, and
+Reviews (2.475M reviews)\cite{he_ups_2016} on the RoBERTa
+\cite{liu_roberta_2019} model for a single pass on each dataset. The authors
+observe that DAPT generates improved responses over the base RoBERTa
+\cite{liu_roberta_2019} model in all domains, particularly in the BioMed, CS, and
+Reviews domain showcasing the benefits such as an approach has when the source
+domain of the model is distance from the target domain of the model.
+
+% TODO: Revisit and revise
+% With further pretraining, the potential for catastrophic forgetting (Section
+% \ref{sec:cf}) must also be taken into consideration\cite{ke_continual_2023}.
+% Continual learning (Section \ref{sec:cl}) methods aim to address this as seen in
+% an approach by Ke et al.\cite{ke_continual_2023} which utilizes soft-masking to
+% control the backward gradient flow and demonstrates the model's ability to
+% overcome catastrophic forgetting. Importance of units for soft-masking are
+% calculated by sampling a subset of the domain data and is covered in more detail
+% in Section \ref{sec:cl}. % TODO: Add reference to specific subsection.
+
+\subsubsection{Low-Rank Adaptation}
+\label{sec:lora}
+
+With the increasing scale of parameters in large language models, adjusting each
+parameter via fine-tuning becomes prohibitively expensive \cite{hu_lora_2021}.
+As of writing, many popular large language models such as GPT-3 (175 B)
+\cite{hu_lora_2021}, GPT-OSS (20B and 120B) \cite{openai_gpt-oss-120b_2025},
+Llama 4 (109B) surpass 100 billion parameters, with expectations to scale to
+over 1 trillion trainable parameters\cite{fedus_switch_2022}. Pretraining alone
+for these models can take upwards of several months and retraining each model to
+a specific application evolves from an inconvenient task to an infeasible
+endeavor \cite{hu_lora_2021}. This growing inaccessibility of retraining all
+parameters of large language models to a specific domain establishes need for a
+more efficient method approach to fine-tuning.
+
+To this end, consideration towards the number of effective parameters is
+investigated as adjusting just these parameters would be enough to sufficiently
+adapt the large language model to a specific domain
+\cite{aghajanyan_intrinsic_2020, li_measuring_2018, hu_lora_2021}. This is
+referred by the intrinsic dimension, providing a measurement for the minimum
+number of parameters that is necessary for a model to produce satisfactory
+responses to an objective function \cite{aghajanyan_intrinsic_2020,
+li_measuring_2018}. With this, Aghajanyan et al. was able to achieve 90\% of the
+expected performance on a sematic equivalency binary classification task on the
+RoBERTa model \cite{liu_roberta_2019} by training only a select 200 parameters.
+Low-Rank Adaption (LoRA) is an approach that can reduce the number of trainable
+parameters by up to a factor of 10,000 with only just a third of the training
+memory requirement \cite{hu_lora_2021}. Here (Figure \ref{fig:lora}), the
+gradients of the pretrained weight matrix $W_0$ are kept frozen the accumulated
+gradients $\Delta W$ are represented by their low-rank decomposition $BA$
+($\Delta W = BA$). $B \in \mathbb{R}^{d \times r}$ and $A \in \mathbb{R}^{r
+\times k}$ \cite{hu_lora_2021}. Both $A$ and $B$ are dense layers which contain
+trainable parameters, $d$ is the dimension of the transformer layer of the
+model, $k$ is the input dimension of the weight matrix, and $r$ is the rank that
+satisfies the condition $r < \text{min}(d, k)$ \cite{hu_lora_2021}. In the
+adapter, the weights for $A$ are initialized using a gaussian distribution $A =
+\mathcal{N}(0, \sigma^2)$ with weights for B set to 0 \cite{hu_lora_2021}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.60\textwidth]{chapters/5_dapt_am/LoRA.png}
+    \caption{
+        Original figure by Hu et al. \cite{hu_lora_2021} diagrams LoRA for a
+        square pretrained weight matrix ($d \times d$). Figure is adapted to
+        showcase an example of a pretrained weight matrix with different input
+        and output dimensions ($d \times k$).
+    }
+    \label{fig:lora}
+\end{figure}
+
+Hu et al. \cite{hu_lora_2021} applies this approach only to within the self
+attention portion of GPT-2 ($W_q$, $W_k$, $W_v$, and $W_o$). Within the
+backwards pass only the adapter weights are updated, original pretrained weights
+are left frozen \cite{hu_lora_2021}. The forward pass is modified from $h=W_0x$
+to $h = W_0x+\Delta W$, adding the results from the trained adapter to the
+output of the frozen weights \cite{hu_lora_2021}. For inference, the pretrained
+weights and the adapter weights can be added together $W = W_0 + BA$, removing
+any introduction of latency and furthermore can be easily switched out for a
+different adapter at minimal overhead cost \cite{hu_lora_2021}.
+
+\subsubsection{Instruction Tuning}
+\label{sec:it}
+
+Instruction Tuning (IT) is a type of fine tuning which further aligns the LLM to
+produce better question answering responses \cite{wei_finetuned_2021,
+liu_visual_2023}. This process utilizes labeled datasets in a supervised
+learning environment to optimize the prediction performance of the model to the
+corresponding label for a specific input \cite{wei_finetuned_2021,
+liu_visual_2023}. Wei et al. \cite{wei_finetuned_2021} investigates the
+effectiveness of IT on zero-shot prompts to understand whether the model will
+exhibit unseen task performance when fine-tuning on a collection tasks. The
+authors find that performance improvements scale with the number of IT tasks and
+also denote that a specific model parameter size is necessary to realize these
+gains \cite{wei_finetuned_2021}. For models under a specific parameter size
+(8B), IT has been observed to hinder task performance potentially due to the
+limited model capacity which instruction tuning then completely consumes
+\cite{wei_finetuned_2021}. The IT FLAN model was shown to outperform the GPT-3
+model in a number of unseen tasks and showcases the potential for even larger
+LLMs to perform well in zero-shot question answering prompts
+\cite{wei_finetuned_2021}.
+
+This practice can be extended to visual domain with Visual Instruction Tuning
+(VIT) \cite{liu_visual_2023}. In work by Liu et al. \cite{liu_visual_2023}, the
+authors take a multi-modal approach to IT in their Large Language and Vision
+Assistant (LLaVA) model achieving an accuracy of 92.53\% when evaluating on the
+Science QA dataset \cite{lu_learn_2022}. The images obtained
+\cite{lin_microsoft_2015} from COCO include both caption and object localization
+which are then utilized in generating the three IT formats:
+\textit{Conversation}, \textit{Detailed Description}, and \textit{Complex
+Reasoning} \cite{liu_visual_2023}. The \textit{Conversation} format (58K
+samples) utilizes only the caption text to generate 3 question and answer
+responses with the assistance of GPT-4 for each image. The \textit{Detailed
+description} (23K samples) utilizes the questions from the previous format to
+also prompt GPT-4 for a comprehensive description of the image
+\cite{liu_visual_2023}. Lastly, the \textit{Complex Reasoning} (77K samples)
+format elicit more step-by-step answers to a given question
+\cite{liu_visual_2023}.
+
+Liu et al. \cite{liu_visual_2023} chose the Vicuna \cite{chiang_vicuna_2023} model
+(13B) to perform their IT experiments upon. Within their ablation studies it was
+found that without any instruction tuning, the model performed poorly within all
+categories, demonstrating the effectiveness of IT\cite{liu_visual_2023}. By just
+adding in \textit{Conversation} to the IT dataset, significant improvement gains
+are observed with evaluations across all three IT formats by a minimum of 30
+points and the incorporation of the entire IT dataset increases the score by 50
+points across the board \cite{liu_visual_2023}. When compared to GPT-4 the
+multi-modal capabilities of LLaVA produces a relative score of around 85\% on
+instruction-following dataset examples \cite{liu_visual_2023}.
 \subsection{Training}
 Training for the various models was split into three sequential stages: Domain
 Adaptive Pretraining (Text), Domain Adaptive Pretraining (Images), and Visual
@@ -795,7 +587,7 @@ originate from domain expert generated course materials and published datasets
     }
     \caption{
         \texttt{Additive-Manufacturing-Benchmark} is a set of multi-modal tasks
-        compiled from various published resources\cite{hu_real-time_2024,
+        compiled from various published resources \cite{hu_real-time_2024,
         scime_layer-wise_2023, akbari_meltpoolnet_2022} used to evaluate AM
         comprehension. Language based tasks include answering general knowledge
         questions in \textbf{(a)} short answer or \textbf{(b)} multiple choice
@@ -851,19 +643,24 @@ the image with the latter two questions (name and manufacturer) accounting for
 the remaining response weight.
 
 The LPBF anomaly identification task (Fig. \ref{fig:am_bench}f) with the
-Peregrine dataset\cite{scime_layer-wise_2023} aims to evaluate capability of the
-LLM to recognize build anomalies within laser powder bed fusion. More
+Peregrine dataset \cite{scime_layer-wise_2023} aims to evaluate capability of
+the LLM to recognize build anomalies within laser powder bed fusion. More
 specifically, this visual identification task asks the model to classify which
 anomalies exist on a given build layer after melting. These anomalies are
 obtained using the Peregrine software and include classifications such as
 recoater hopping, under melting, over melting, spatter, debris, and etc. Task
 performance is measured using an F1 score which considers both the precision and
 recall of a set of predictions ranging from a worst case of 0 and a best case of
-1 (Equation \ref{eq:f1}).
+1 (Equation \ref{eq:recall_and_precision}, \ref{eq:f1}).
+
+\begin{equation}
+\label{eq:recall_and_precision}
+\text{Recall} = \frac{TP}{TP + FN} \qquad \text{Precision} = \frac{TP}{TP + FP}
+\end{equation}
 
 \begin{equation}
 \label{eq:f1}
-\text{Recall} = \frac{TP}{TP + FN} \qquad \text{Precision} = \frac{TP}{TP + FP} \qquad F_1 = \frac{2 \cdot TP}{2 \cdot TP + FP + FN}
+F_1 = \frac{2 \cdot TP}{2 \cdot TP + FP + FN}
 \end{equation}
 
 \section{Results and Discussion}
@@ -955,15 +752,15 @@ worse results than the other compared models.
 \label{sec:domain_specialization_performance}
 In work by Gururangan et al. \cite{gururangan_dont_2020}, the authors perform
 domain adaptive pretraining on the RoBERTA-base model (around 100 million
-parameters)\cite{liu_roberta_2019} for around 1 epoch using a dataset consisting
-of around 24B tokens those from BioMed (7.55B), CS (8.10B), News (6.66B), and
-Reviews (2.11B). In the domain adaptation of the various models, the total token
-count for text based training amount to just around 45M, considerably lower than
-2B even with 3 epochs of training (135M). Yet, with this lower amount of tokens,
-the final vision instruction tuned model (from \texttt{gemma-3-12b-it} base)
-shows improved performance on tasks such as general knowledge short answer, LPBF
-anomaly detection, FDM defect detection, and machine recognition over the base
-model (Fig. \ref{fig:gemma_3_results_it}).
+parameters) \cite{liu_roberta_2019} for around 1 epoch using a dataset
+consisting of around 24B tokens those from BioMed (7.55B), CS (8.10B), News
+(6.66B), and Reviews (2.11B). In the domain adaptation of the various models,
+the total token count for text based training amount to just around 45M,
+considerably lower than 2B even with 3 epochs of training (135M). Yet, with this
+lower amount of tokens, the final vision instruction tuned model (from
+\texttt{gemma-3-12b-it} base) shows improved performance on tasks such as
+general knowledge short answer, LPBF anomaly detection, FDM defect detection,
+and machine recognition over the base model (Fig. \ref{fig:gemma_3_results_it}).
 
 An explanation for this performance could be attributed to the more narrow scope
 that the domain of additive manufacturing that the models apply to in comparison
@@ -994,121 +791,251 @@ similarly on visual tasks. With this, domain adaptive pretraining in conjunction
 with instruction tuning offer an accessible method of specializing large
 language models to a given domain such as additive manufacturing.
 
-\section{Future Work}
-Future work would explore extending the usage of this model with agentic
-systems, enhanced datasets, and continual learning environments. The most
-immediate application would investigate applying the domain adapted models into
-an agentic system, evaluating the efficiency with which it is capable of making
-the appropriate tool calls using its adapted domain knowledge. The performance
-of this system would be evaluated in a manner similar to that of LLM-3D Print
-\cite{jadhav_llm-3d_2025} where images of the process in-situ are evaluated
-using the VLM component of the agentic system and the appropriate actions are
-taken to address potential issues. 
+% \section{Future Work}
+% Future work would explore extending the usage of this model with agentic
+% systems, enhanced datasets, and continual learning environments. The most
+% immediate application would investigate applying the domain adapted models into
+% an agentic system, evaluating the efficiency with which it is capable of making
+% the appropriate tool calls using its adapted domain knowledge. The performance
+% of this system would be evaluated in a manner similar to that of LLM-3D Print
+% \cite{jadhav_llm-3d_2025} where images of the process in-situ are evaluated
+% using the VLM component of the agentic system and the appropriate actions are
+% taken to address potential issues. 
 
-Building upon the discussions in Section
-\ref{sec:domain_specialization_performance} regarding domain specialization
-performance, domain adaptation pretraining and instruction tuning with a more
-comprehensive dataset would be worth investigating. Although the dataset used in
-this work was sufficient to exhibit performance gains across many benchmarking
-tasks, a larger and more encompassing dataset of additive manufacturing
-processes would result greater performance gains.
+% Building upon the discussions in Section
+% \ref{sec:domain_specialization_performance} regarding domain specialization
+% performance, domain adaptation pretraining and instruction tuning with a more
+% comprehensive dataset would be worth investigating. Although the dataset used in
+% this work was sufficient to exhibit performance gains across many benchmarking
+% tasks, a larger and more encompassing dataset of additive manufacturing
+% processes would result greater performance gains.
 
-Further specialization to a specific task (i.e. anomaly detection within laser
-powder bed fusion) is expected to be reflected in task performance, however,
-this may impact performance on other tasks. To this end, continual learning
-\cite{ke_continual_2023} approaches will be further investigated and applied to
-the domain adaptation process to better retain trained abilities in subsequent
-training and fine-tuning cycles. This will alleviate the effects of catastrophic
-forgetting \cite{french_catastrophic_1999}, building to a framework with which
-the agentic system can integrate the results of its actions into the LLM through
-fine-tuning.
-
-% \appendix
-
-% Redefine \thesection to include "Appendix"
-% \renewcommand{\thesection}{Appendix \Alph{section}}
-
-% \section{Attention Mechanism}
-% \label{sec:attention-mechanism}
-
-% \subsection{Self Attention}
-% \label{sec:self-attention}
-% % TODO: Explain self attention
-
-% \subsection{Cross Attention}
-% \label{sec:cross-attention}
-% % TODO: Explain cross attention
+% Further specialization to a specific task (i.e. anomaly detection within laser
+% powder bed fusion) is expected to be reflected in task performance, however,
+% this may impact performance on other tasks. To this end, continual learning
+% \cite{ke_continual_2023} approaches will be further investigated and applied to
+% the domain adaptation process to better retain trained abilities in subsequent
+% training and fine-tuning cycles. This will alleviate the effects of catastrophic
+% forgetting \cite{french_catastrophic_1999}, building to a framework with which
+% the agentic system can integrate the results of its actions into the LLM through
+% fine-tuning.
 
 \section{Appendix}
-\subsection{Tokenization}
-\label{sec:tokenization}
-Tokenization is an essential component of the Natural Language Processing (NLP)
-pipeline as it converts strings of human-readable characters into token
-representations which are then embedded into vectors for the large language
-model \cite{sennrich_neural_2016, alqahtani_stop_2026,
-gastaldi_foundations_2025}. Raw text does not provide a suitable representation
-medium for models to train upon as it commands a large vocabulary and treats
-words as distinct units\cite{sennrich_neural_2016}. Thus, tokenization presents
-a more efficient representation of the data to the model as an embedding
-vector\cite{vaswani_attention_2023}. Tokenization methods include dividing
-character strings into word and subword units (\ref{sec:snmt}) along with
-indexing frequently occuring sequences detected using Byte Pair Encoding
-(\ref{sec:bpe}) \cite{sennrich_neural_2016}. In order to retain positional data,
-methods such as sinusoidal positional encoding\cite{vaswani_attention_2023} or
-Rotary Position Embeddings (RoPE)\cite{su_roformer_2023} are added to the token
-embedding vectors. By converting the tokens to vector embeddings with positional
-data, the model is able to use the semantic and sequential patterns of the input
-to perform next token prediction from the representations learned during
-training\cite{vaswani_attention_2023, sennrich_neural_2016, su_roformer_2023}.
+% TODO: Find a better place for this
+% \subsection{Tokenization}
+% \label{sec:tokenization}
+% Tokenization is an essential component of the Natural Language Processing (NLP)
+% pipeline as it converts strings of human-readable characters into token
+% representations which are then embedded into vectors for the large language
+% model \cite{sennrich_neural_2016, alqahtani_stop_2026,
+% gastaldi_foundations_2025}. Raw text does not provide a suitable representation
+% medium for models to train upon as it commands a large vocabulary and treats
+% words as distinct units\cite{sennrich_neural_2016}. Thus, tokenization presents
+% a more efficient representation of the data to the model as an embedding
+% vector\cite{vaswani_attention_2023}. Tokenization methods include dividing
+% character strings into word and subword units (\ref{sec:snmt}) along with
+% indexing frequently occuring sequences detected using Byte Pair Encoding
+% (\ref{sec:bpe}) \cite{sennrich_neural_2016}. In order to retain positional data,
+% methods such as sinusoidal positional encoding\cite{vaswani_attention_2023} or
+% Rotary Position Embeddings (RoPE)\cite{su_roformer_2023} are added to the token
+% embedding vectors. By converting the tokens to vector embeddings with positional
+% data, the model is able to use the semantic and sequential patterns of the input
+% to perform next token prediction from the representations learned during
+% training\cite{vaswani_attention_2023, sennrich_neural_2016, su_roformer_2023}.
 
-\subsubsection{Subword Neural Machine Translation}
-\label{sec:snmt}
-Subword Neural Machine Translation is a preprocessing method which text is
-segmented into subword units, specifically useful in encoding out-of-vocabulary
-(OOV) words. The approach proposed by Sennrich et al.
-\cite{sennrich_neural_2016} implements an adapted version of Byte Pair Encoding
-\cite{gage_new_1994} (BPE) further discussed in \ref{sec:bpe} to first generate
-the pair table for frequently occurring character sequences within the train
-text. This is similar to the pair table seen in the compressed output that
-original BPE produces, however with slight adjustment of merging characters
-rather than bytes in order to suit the application of word segmentation
-\cite{sennrich_neural_2016}. Along with this, the compression routine is set to
-conclude after a given number of operations rather than the original BPE process
-of repeating until there are no more remaining bytes in the
-text\cite{gage_new_1994}. This provides a tunable \texttt{num\_operations}
-parameter which balances the frequency for complete words and subwords within
-the dictionary, improving the coverage of tokens during training. This allows
-for out-of-vocabulary words to be segmented into combinations of word and
-subword tokens.
+% \subsubsection{Subword Neural Machine Translation}
+% \label{sec:snmt}
+% Subword Neural Machine Translation is a preprocessing method which text is
+% segmented into subword units, specifically useful in encoding out-of-vocabulary
+% (OOV) words. The approach proposed by Sennrich et al.
+% \cite{sennrich_neural_2016} implements an adapted version of Byte Pair Encoding
+% \cite{gage_new_1994} (BPE) further discussed in \ref{sec:bpe} to first generate
+% the pair table for frequently occurring character sequences within the train
+% text. This is similar to the pair table seen in the compressed output that
+% original BPE produces, however with slight adjustment of merging characters
+% rather than bytes in order to suit the application of word segmentation
+% \cite{sennrich_neural_2016}. Along with this, the compression routine is set to
+% conclude after a given number of operations rather than the original BPE process
+% of repeating until there are no more remaining bytes in the
+% text\cite{gage_new_1994}. This provides a tunable \texttt{num\_operations}
+% parameter which balances the frequency for complete words and subwords within
+% the dictionary, improving the coverage of tokens during training. This allows
+% for out-of-vocabulary words to be segmented into combinations of word and
+% subword tokens.
 
-\subsubsection{Byte Pair Encoding}
-\label{sec:bpe}
-Byte Pair Encoding was first introduced by Philip Gage \cite{gage_new_1994} as a
-method of data compression useful in memory constrained environments due to its
-fast expansion routine. The compression routine of the algorithm looks for most
-adjacent byte pairs that occur most frequently within a given pass and replaces
-the pair with a byte that doesn't already exist within the data. This repeats
-until there is either no more frequent byte pairs or there are no more remaining
-unused bytes\cite{gage_new_1994}. The expansion routine is performed over a
-single pass over the input file, where byte literals are passed directly to the
-output buffer and byte pairs are pushed onto a stack. Within each iteration, if
-the stack contains data the byte there is used as the next input byte, otherwise
-the next input byte is obtained from the input file.
-This is the content for the first appendix.
-\clearpage
+% \subsubsection{Byte Pair Encoding}
+% \label{sec:bpe}
+% Byte Pair Encoding was first introduced by Philip Gage \cite{gage_new_1994} as a
+% method of data compression useful in memory constrained environments due to its
+% fast expansion routine. The compression routine of the algorithm looks for most
+% adjacent byte pairs that occur most frequently within a given pass and replaces
+% the pair with a byte that doesn't already exist within the data. This repeats
+% until there is either no more frequent byte pairs or there are no more remaining
+% unused bytes\cite{gage_new_1994}. The expansion routine is performed over a
+% single pass over the input file, where byte literals are passed directly to the
+% output buffer and byte pairs are pushed onto a stack. Within each iteration, if
+% the stack contains data the byte there is used as the next input byte, otherwise
+% the next input byte is obtained from the input file.
+% This is the content for the first appendix.
+% \clearpage
 
-\subsection{Chain of Thought Prompting}
-% TODO: Update figure to be more domain appropriate
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\textwidth]{chapters/5_dapt_am/chain_of_thought.png}
-    \caption{
-    Hypothetical comparison of outputs between standard prompting process to
-    that of the chain-of-thought reasoning process.
-    }
-    \label{fig:cot}
-\end{figure}
-\clearpage
+% \subsection{Chain of Thought Prompting}
+% % TODO: Update figure to be more domain appropriate
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.75\textwidth]{chapters/5_dapt_am/chain_of_thought.png}
+%     \caption{
+%     Hypothetical comparison of outputs between standard prompting process to
+%     that of the chain-of-thought reasoning process.
+%     }
+%     \label{fig:cot}
+% \end{figure}
+% \clearpage
+
+% \subsection{Retrieval-Augmented Generation}
+% % This should probably in the follow up paper regarding the agentic system.
+% Retrieval-Augmented Generation (RAG) is a hybrid approach for language
+% generation as it utilizes non-parametric memory (samples not in training
+% dataset) along with parametric memory (pretrained data) to generate responses
+% utilizing the retrieved data without additional pretraining
+% \cite{lewis_retrieval-augmented_2020}. The approach is composed in two parts;
+% the retriever and the generator. The retriever is composed of Dense Passage
+% Retriever (DPR) \cite{karpukhin_dense_2020} which, in broad terms, indexes a set
+% of passages into a low dimensional and continual space to retrieve the most
+% relevant passages from a provided input query
+% \cite{lewis_retrieval-augmented_2020}. The generator is a pretrained transformer
+% which concatenates the input query $x$ with the retrieved content $y$ in order
+% to generate a response using the augmented context
+% \cite{lewis_retrieval-augmented_2020}.
+
+% \subsubsection{Dense Passage Retriever}
+% The Dense Passage Retriever (DPR) is the retrieval portion of RAG which utilizes
+% two separate transformers to create the embeddings for the queries ($q$) and the
+% embeddings for the passages ($p$) \cite{karpukhin_dense_2020}. The embeddings
+% for both the query and passage texts are obtained from the class token of the
+% tokenized inputs. Query text is not chunked and preprocessed by appending the
+% character sequence with a separation token (\texttt{[SEP]}), for example a
+% preprocessed query would look something like \texttt{What is machine learning?
+% [SEP]}. Passage text is obtained by chunking source text, such as Wikipedia
+% articles, into blocks consisting of 100 words where the article title is
+% prepended to the block and separated using a \texttt{SEP} token (i.e.
+% \texttt{Machine Learning [SEP] Machine learning (ML) is a field of study in
+% artificial intelligence...}) \cite{karpukhin_dense_2020}. The tokenized output
+% is obtained by first passing the input text through an encoder (i.e. BERT
+% \cite{devlin_bert_2019}) network which generates the hidden states and appends a
+% class token (\texttt{[CLS]}). The class token, which attends to all of the
+% tokens via self-attention \cite{vaswani_attention_2023}, provides the dense
+% embedding used to determine similarity between the query and passage
+% \cite{karpukhin_dense_2020}. The similarity is defined in Equation
+% \ref{eq:dpr_similarity} as dot products of the encoders for the query and the
+% passage vectors \cite{karpukhin_dense_2020}.
+
+% \begin{equation}
+% \label{eq:dpr_similarity}
+% \text{sim}(q, p) = E_Q(q)^\top \cdot E_P(p)
+% \end{equation}
+
+% \subsubsection{Similarity Search}
+% Similarity search relies on the computation of a \textit{k}-NN graph where it
+% provides a directed graph that utilizes each vector in the database as a node
+% and each edge is connected to it's \textit{k} nearest neighbors
+% \cite{johnson_billion-scale_2017}. However, the computation of the \textit{k}-NN
+% graph is a computationally expensive process which becomes exponentially worse
+% with data represented using increasing dimensionality
+% \cite{weber_quantitative_1998}. Executing an exhaustive search for large scale
+% data becomes an impractical task using this inefficient approach and instead
+% leveraging the parallel compute efficiency of GPU's offers an approach that can
+% more efficiently perform similarity search albeit with a small tradeoff in
+% accuracy \cite{johnson_billion-scale_2017}.
+
+% With the usage of GPUs, search can be performed in can be performed in batches
+% allowing for greater efficiency when compared to CPU based methods
+% \cite{johnson_billion-scale_2017}. In addition a compressed approach is taken
+% for the domain search utilizing the Inverted File with Asymmetric Distance
+% Computation (IVFADC) indexing system outlined by Jégou et al.
+% \cite{jegou_product_2011} for a non-exhaustive search scheme. By pruning the
+% search space to only the \textit{k} nearest neighbor and performing quantization
+% based compression, this highly parallelizable approach drastically reduces the
+% number of scans and expedites the similarity search task
+% \cite{johnson_billion-scale_2017}. This methodology (FAISS
+% \cite{douze_faiss_2024}) has been implemented in commercial vector database
+% products such Pinecone, ChromaDB, and etc.
+
+% \subsubsection{Sequence and Token based Generation}
+% The generation component $p_{\theta}(y_i \mid x, z, y_{1:i-1})$ of RAG utilizes
+% an encoder-decoder model (originally BART-large \cite{lewis_bart_2019}) in order
+% to generate responses from the query passage inputs. Within their work, Lewis et
+% al. \cite{lewis_retrieval-augmented_2020} offers a sequence model approach along
+% with a token model approach for generating the output. The RAG-Sequence model
+% forms $k$ different generator model inputs for a given query. These inputs are
+% sourced from individually top-K retrieved passages $z$ using the retriever
+% $p_\eta(z|x)$ and couple together with the given query to produce $k$ different
+% model output sequences where in which the highest scoring sequence is selected
+% (Equation \ref{eq:rag_sequence}) \cite{lewis_retrieval-augmented_2020}.
+
+% \begin{equation}
+% \label{eq:rag_sequence}
+% p_{\text{RAG‑Sequence}}(y \mid x) \approx \sum_{z \in \text{top‑k}(p(\cdot \mid x))}\!
+% p_{\eta}(z \mid x)\,
+% \prod_{i}^{N} p_{\theta}(y_i \mid x, z, y_{1:i-1})
+% \end{equation}
+
+% \noindent The RAG-Token model applies the same concept but ranks individually
+% generated tokens $y_{1:i-1}$ rather than the entire sequence, allowing for a
+% mixture of different passages to influence the generation of the output sequence
+% (Equation \ref{eq:rag_token}) \cite{lewis_retrieval-augmented_2020}.
+
+% \begin{equation}
+% \label{eq:rag_token}
+% p_{\text{RAG‑Token}}(y \mid x) \approx \prod_{i}^{N}
+% \sum_{z \in \text{top‑k}(p(\cdot \mid x))}\!
+% p_{\eta}(z \mid x)\,
+% p_{\theta}(y_i \mid x, z, y_{1:i-1})
+% \end{equation}
+
+% \noindent Of the two approaches, the authors found that the RAG-Token model
+% outperformed the RAG-Sequence model in question answer tasks specifically those
+% in open-domain \cite{lewis_retrieval-augmented_2020}. This is attributed to the
+% nature of open-domain questions are required to combine facts from multiple
+% passages and the token level approach allows for generation to switch passages
+% mid-generation \cite{lewis_retrieval-augmented_2020}. In the broader scope, RAG
+% was found to generate more specific and accurate results than the existing
+% parameteric only seq2seq models available at the time
+% \cite{lewis_retrieval-augmented_2020}.
+
+% \subsubsection{Maximum Marginal Relevance}
+% Conventional information retrieval approaches often rank documents based on
+% their relevance to the given query and utilize this ranking to inform selection
+% of the most suitable result \cite{buckley_implementation_1985,
+% kupiec_trainable_1995, luhn_automatic_1958, salton_automatic_1988}. This
+% approach excels in obtaining matching results within cases where the archives of
+% relevant documents are limited and few. However, in scenarios where there is an
+% excess of potentially relevant documents (including redundant and duplicate
+% results) the narrow approach of selection based solely on query relevant becomes
+% insufficient for selecting the most suitable result
+% \cite{goldstein_summarization_1998}. Rather, an approach that considers both the
+% relevancy of the document to the query along with its novelty would address the
+% previous presented issues of redundancy \cite{goldstein_summarization_1998}. The
+% authors name this approach as Maximum Marginal Relevance (MMR) as it strives to
+% maximize both the novelty and marginal relevance to the initial query through a
+% user tunable parameter $\lambda$.
+
+% \begin{equation}
+% \label{eq:mmr}
+% \text{MMR}(D_i) = \lambda \cdot \text{sim}_1(D_i, Q) - (1-\lambda) \cdot \text{sim}_2(D_i, D_j)
+% \end{equation}
+
+% The implementation (Eq. \ref{eq:mmr}) utilizes the parameter $\lambda$ to assign
+% weight to two different similarity metrics ($\text{sim}_1$ and $\text{sim}_2$):
+% that of the document's ($D_i$) relevance to the query ($Q$) and that of the
+% document's relevance to other documents ($D_j$)
+% \cite{goldstein_summarization_1998}. Goldstein et al.
+% \cite{goldstein_summarization_1998} found that setting $\lambda$ to 0.3 in this
+% user defined sampling strategy emphasized focus towards the provided query then
+% to the most important parts of the information space. When utilized within RAG,
+% this approach has been utilized to increase recall for the most relevant chunks
+% that are associated with the input query \cite{wang_diversity_2025}.
+
 
 \subsection{Additional Dataset Information}
 \label{sec:additional_dataset_Information}

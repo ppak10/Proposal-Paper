@@ -1,0 +1,30 @@
+\chapter{Conclusion}
+
+This work showcases the application of agentic systems to engineering tasks,
+specifically those within additive manufacturing, and highlights the components
+necessary to develop a continual learning enabled agentic system. In Chapter
+\ref{chapter:thermopore}, a video vision transformer is developed for the task
+of porosity quantification within a part via in-situ LPBF process monitoring.
+With an $R^2$ score of 0.57, this shows that in-situ monitoring is capable of
+detecting signal from anomalies which can be translated to the final part.
+Chapter \ref{chapter:additivellm} explores the task of fine-tuning large
+language models to obtain better domain accuracy, resulting in a 82\% accuracy
+in predicting melt pool defect regimes from input process parameters within LPBF.
+This work highlights the usage of natural language enabled prompting in
+performing deeper inference on a seletive dataset. Chapter
+\ref{chapter:alloy_mcp} showcases the use of tool enabled LLMs to generate lack
+of fusion process parameter maps utilizing computational based data from
+ThermoCalc and Rosenthal's equation. This showcases the LLM's ability to reason
+through complex tasks and interact with the surrounding environment through MCP
+enabled tool calls. Chapter \ref{chapter:dapt_am} further explores the
+development of specialized LLMs through the process of domain adaptive
+pretraining and instruction fine tuning on a series of capable open weight LLMs.
+This work shows that domain knowledge can be contained locally and further
+utilized into a domain adapted LLM more capable in general tasks regarding
+additive manufacturing. Lastly, these findings culminate in the work present in
+Chapter \ref{chapter:agentic_sls} where a agentic system is developed for the
+optimization of process parameters over a set of materials within SLS. The
+agentic system exhibited efficient performance in utilizing previous mechanical
+test data in the prescription of the next of process parameters to further
+improve mechanical properties, enabling a continual learning environment for the
+agentic system.

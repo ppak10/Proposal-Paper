@@ -1,8 +1,28 @@
-\chapter{Overview}
+\chapter{Introduction}
 
 %---------------------------------------------------------------------
 
-\section{Introduction}
+\section{Overview}
+The intersection of additive manufacturing and agentic systems presents a new
+paradigm shift in the way novel research is developed
+\cite{pak_rocketsmith_2026}, existing procedures are optimized
+\cite{jadhav_llm-3d_2025, pak_agentic_2026} , and how intelligence capability is
+built and maintained \cite{pak_additivellm_2025, chandrasekhar_amgpt_2024}.
+Nowhere is this apparent than in powder based additive manufacturing processes
+such as Laser Powder Bed Fusion (LPBF) and Selective Laser Sintering (SLS). This
+is in part due to required control of variables within the domain of materials,
+optics, thermal physics, and process dynamics which culminate in a complex
+interplay \cite{beaman_selective_1990, oneill_investigation_1999}. Large
+language models have shown capability not only in complex reasoning based tasks
+but also in conducting actions within a given environment; understanding
+physical context and learning from previous actions
+\cite{vaswani_attention_2023, nakano_webgpt_2022, yao_react_2022}. These factors
+enable a landscape where additive manufacturing processes such as LPBF and SLS
+are positioned to reliably create functional, high precision components aided
+through an agentic system capable of tuning process parameters and continually
+learning from its environment.
+
+\section{Background}
 
 \subsection{Foundation of Powder Bed Additive Manufacturing}
 
@@ -38,10 +58,11 @@ before it can be used in its final assembly. Since the inception of this
 technique, the process of SLA has been further refined to improve efficiency by
 means of Directed Light Processing (DLP) \cite{chaudhary_additive_2023} for
 selective light exposure and reversing build direction for reduced initial
-material requirements \cite{zakeri_comprehensive_2020}. 
+material requirements \cite{zakeri_comprehensive_2020}.
 
 % TODO: Include a SLA process figure in final thesis
 
+\subsubsection{Selective Laser Sintering}
 Selective Laser Sintering (or Solid Freeform Fabrication
 \cite{kumar_selective_2003}) is an additive manufacturing process which utilizes
 many of the techniques introduced in SLA with modifications to operate in a
@@ -61,7 +82,7 @@ melting of the material \cite{kumar_selective_2003, hesselvig_efficient_2025,
 kolossov_3d_2004}. For polymer based powders, a metastable temperature window
 between the onset of crystalline and melting phases known as the ``sintering
 window" producing a stable viscosity regime\cite{schmid_polymer_2015}. For
-metals, binding can be achieved through three mechanisms: solid state sintering,
+metals, binding can be achieved through threk mechanisms: solid state sintering,
 liquid phase sintering, and true melting \cite{kruth_progress_1998}. Solid state
 sintering relies on the solid state diffusion of atoms and is often too slow for
 much of the prescribed laser velocities \cite{kruth_progress_1998}. Liquid phase
@@ -77,6 +98,7 @@ aligns more to process of Laser Powder Bed Fusion. \cite{kruth_progress_1998}.
 
 % TODO: Include a SLS process figure in final thesis
 
+\subsubsection{Laser Powder Bed Fusion}
 Laser Powder Bed Fusion, also referred to by other names such as Selective Laser
 Melting (SLM) \cite{lober_selective_2014, sefene_state---art_2022,
 tang_rapid_2016, shrestha_study_2019, vrancken_heat_2012} or Direct Metal Laser
@@ -92,143 +114,452 @@ ogoke_inexpensive_2023, tempelman_detection_2022} and balling
 \cite{gu_balling_2007, bellini_additive_2021, lindstrom_simple_2023} which can
 result in downstream effects in the final part such as porosity.
 
-\subsection{Tokenization in Large Language Models}
-Tokenization is an essential component of the Natural Language Processing (NLP)
-pipeline as it converts strings of human-readable characters into token
-representations which are then embedded into vectors for the large language
-model \cite{sennrich_neural_2016, alqahtani_stop_2026,
-gastaldi_foundations_2025}. Raw text does not provide a suitable representation
-medium for models to train upon as it commands a large vocabulary and treats
-words as distinct units \cite{sennrich_neural_2016}. Thus, tokenization presents
-a more efficient representation of the data to the model as an embedding
-vector \cite{vaswani_attention_2023}. Tokenization methods include dividing
-character strings into word and subword units along with indexing frequently
-occuring sequences detected using Byte Pair Encoding (BPE)
-\cite{sennrich_neural_2016}. In order to retain positional data, methods such as
-sinusoidal positional encoding \cite{vaswani_attention_2023} or Rotary Position
-Embeddings (RoPE) \cite{su_roformer_2023} are added to the token embedding
-vectors. By converting the tokens to vector embeddings with positional data, the
-model is able to use the semantic and sequential patterns of the input to
-perform next token prediction from the representations learned during training
-\cite{vaswani_attention_2023, sennrich_neural_2016, su_roformer_2023}.
+Within the process of Laser Powder Bed Fusion (LPBF), the selection of optimal
+process parameters remains a key factor in the fabrication of defect free parts
+\cite{beuth_process_2013, gordon_defect_2020}. This is achieved by avoiding the
+combination of process parameters that can potentially lead to melt pool
+characteristics resulting in either unfused powder or void initiation causing
+defect formation within the final part. The following defect regimes of keyhole,
+lack of fusion, and balling describe the expected melt pool characteristics seen
+at a given combination of process parameters \cite{gordon_defect_2020}. These
+defect regimes can be estimated with methods such as experimental observation
+\cite{ahmed_process_2022}, computational simulation
+\cite{roh_ontology-based_2021}, or surrogate modeling
+\cite{menon_multi-fidelity_2022}.
 
-\subsubsection{Subword Neural Machine Translation}
-\label{sec:snmt}
-Subword Neural Machine Translation is a preprocessing method which text is
-segmented into subword units, specifically useful in encoding out-of-vocabulary
-(OOV) words. The approach proposed by Senrich et al. \cite{sennrich_neural_2016}
-implements an adapted version of Byte Pair Encoding \cite{gage_new_1994} (BPE)
-(Section \ref{sec:bpe}) to first generate the pair table for frequently
-occurring character sequences within the train text. This is similar to the pair
-table seen in the compressed output that original BPE produces, however with
-slight adjustment of merging characters rather than bytes in order to suit the
-application of word segmentation \cite{sennrich_neural_2016}. Along with this,
-the compression routine is set to conclude after a given number of operations
-rather than the original BPE process of repeating until there are no more
-remaining bytes in the text \cite{gage_new_1994}. This provides a tunable
-\texttt{num\_operations} parameter which balances the frequency for complete
-words and subwords within the dictionary, improving the coverage of tokens
-during training. This allows for out-of-vocabulary words to be segmented into
-combinations of word and subword tokens
+Criteria dependent on melt pool dimensions and process parameters where when
+satisfied are expected to \textbf{avoid} their respective defect regimes are
+defined accordingly. Melt pool conditions such as keyholing do not inherently
+cause defects, rather it is fluctuations and collapse of the rear wall that
+generates voids leading to the formation of pores \cite{huang_keyhole_2022}.
+However due to the inaccessibility of \textit{in-situ} cross-sectional melt pool
+analysis, the formation of \textit{Keyhole} defects is often approximated with
+Equation \ref{eq:keyhole}, where width to depth ratios below threshold are
+likely to result in keyhole porosity \cite{zhang_efficient_2021}.
 
-\subsubsection{Byte Pair Encoding}
-\label{sec:bpe}
-Byte Pair Encoding was first introduced by Philip Gage \cite{gage_new_1994} as a
-method of data compression useful in memory constrained environments due to its
-fast expansion routine. The compression routine of the algorithm looks for most
-adjacent byte pairs that occur most frequently within a given pass and replaces
-the pair with a byte that doesn't already exist within the data. This repeats
-until there is either no more frequent byte pairs or there are no more remaining
-unused bytes \cite{gage_new_1994}. The expansion routine is performed over a
-single pass over the input file, where byte literals are passed directly to the
-output buffer and byte pairs are pushed onto a stack. Within each iteration, if
-the stack contains data the byte there is used as the next input byte, otherwise
-the next input byte is obtained from the input file.
+\begin{subequations}
+\label{eq:keyhole}
+\begin{alignat}{2}
+  &\text{Avoid Keyholing:}      \quad && \frac{Width}{Depth} &&> 1.5 \label{eq:avoid_keyholing}\\
+  &\text{Potential Keyholing:}  \quad && \frac{Width}{Depth} &&\leq 1.5 \label{eq:potential_keyholing}
+\end{alignat}
+\end{subequations}
+
+For defects resulting from Lack of Fusion (LoF), the ratio of hatch spacing and
+melt pool width along with layer height and depth are evaluated to ascertain the
+potential formation of porosity \cite{tang_prediction_2017}. The criterion for
+full melting across subsequent melt pools is defined as Equation \ref{eq:lof}
+where computed values above the threshold can result in unfused powder
+\cite{tang_prediction_2017, miner_impact_2024}.
+
+% Hatch Spacing and Layer Height ratios must be less that 1 to NOT have lack of fusion defects
+\begin{subequations}
+\label{eq:lof}
+\begin{alignat}{2}
+  &\text{Avoid LoF:} \quad && \left(\frac{Hatch\;Spacing}{Width}\right)^2 + \left(\frac{Layer\;Height}{Depth}\right)^2 \le 1 \label{eq:avoid_lack_of_fusion}\\
+  &\text{Potential LoF:}    \quad && \left(\frac{Hatch\;Spacing}{Width}\right)^2 + \left(\frac{Layer\;Height}{Depth}\right)^2 > 1 \label{eq:potential_lack_of_fusion} 
+\end{alignat}
+\end{subequations}
+
+Balling defects occur due to the hydrodynamic capillary instabilities that occur
+during high scan speeds and the resulting grooves along the sides of the melt
+pool result in formation of voids if not remelted \cite{gu_balling_2007}. An
+approximation for the occurrence of this phenomenon is calculated by comparing
+the length and width of the melt pool (Eq. \ref{eq:balling}). A ratio above
+$\pi$ can indicate the presence of balling, though this value can range
+depending on the material \cite{zhang_efficient_2021}.
+
+% Length to width ratio must be less than \pi to NOT be balling
+\begin{subequations}
+\label{eq:balling}
+\begin{alignat}{2}
+  &\text{Avoid Balling:}      \quad && \frac{Length}{Width} < \pi   \label{eq:avoid_balling}\\
+  &\text{Potential Balling:}  \quad && \frac{Length}{Width} \ge \pi \label{eq:potential_balling}
+\end{alignat}
+\end{subequations}
+
+For the case of balling, a threshold based on the ratio length and width of the
+melt pool is rather simplistic and presents an assumption that this behavior
+occurs based on the dimensions of the melt pool. Whereas, factors such as the
+temperature balance between the melt pool and the solid surface provides a more
+grounded approach to capturing the underlying behaviors that would contribute to
+balling phenomenon \cite{lindstrom_simple_2023}. 
+
+\subsection{Large Language Models}
+
+A Large Language Model (LLM) is a neural network which commonly utilizes
+transformer based architectures trained to the task of next token prediction
+\cite{vaswani_attention_2023, devlin_bert_2019}. This type of model is often
+pretrained on a corpus of natural language data ranging from Wikipedia articles
+to code available on GitHub and showcases its comprehension of these datasets
+through various benchmarking tasks.\cite{gururangan_dont_2020,
+hendrycks_measuring_2020, cobbe_training_2021}. Adhering to scaling laws, these
+models often exhibit improved performance with larger parameter counts, compute
+times, and dataset size \cite{brown_language_2020}. Furthermore, these models
+can operate beyond the bounds of natural language through different
+architectural modifications which allows for the interpretation of images
+\cite{dosovitskiy_image_2020}, videos \cite{arnab_vivit_2021}, and 3d models
+\cite{yu_point-bert_2022}.
+
+\subsubsection{Transformer Architecture}
+\label{sec:transformers}
+Before the inception of the transformer architecture
+\cite{vaswani_attention_2023}, long short-term memory
+\cite{hochreiter_long_1997} and gated recurrent neural networks
+\cite{chung_empirical_2014} were the predominant approaches to solve language
+and sequence modeling tasks. However, these previous approaches were limited in
+their lack of parallelization and constrained context window as they struggled
+to model long range dependencies \cite{hochreiter_long_1997,
+chung_empirical_2014, vaswani_attention_2023}. The transformer architecture, in
+contrast, primarily relying upon the attention mechanism to model long range
+dependencies bypassing the need for convolution or recurrent mechanisms
+\cite{vaswani_attention_2023}. Within the original transformer model, the
+architecture consists of two stacks: the encoder stack and the decoder stack
+\cite{vaswani_attention_2023}. The encoder stack consists of bidirectional self
+attention where a contextual representation can be generated by attending to
+entirely of input tokens \cite{vaswani_attention_2023}. The decoder is concerned
+with next token generation as it can only attend to the previous tokens within
+the output sequence \cite{vaswani_attention_2023}.
+
+Implementations of this encoder-decoder transformer architecture include models
+such as T5 \cite{raffel_exploring_2023} and BART \cite{lewis_bart_2019}, which
+excelled in fixed output tasks such as summarization and translation. Encoder
+only models such as BERT \cite{devlin_bert_2019} and RoBERTa
+\cite{liu_roberta_2019} utilize leverage bidirectional attention to generate a
+comprehensive embedding space for dense retrieval, particularly useful in domain
+specific representation environments such as those covered in CatBERTa
+\cite{ock_catalyst_2023}, SciBERT \cite{beltagy_scibert_2019}, and
+\cite{yu_point-bert_2022}. However, decoder only transformer stacks such as GPT
+\cite{radford_improving_2018} have evolved to become the dominant approach as it
+scales better for generative and reasoning tasks focused next token prediction.
+
+\subsubsection{Transformer Attention}
+
+Attention within a transformer is comprised of three learnable components: The
+query vector $\{\textbf{q}_i\}^{N_q}_{i=1}$, key vector
+$\{\textbf{k}_i\}^{N_k}_{i=1}$, and the value vector
+$\{\textbf{v}_i\}^{N_v}_{i=1}$ given that $N_k = N_v$
+\cite{bahdanau_neural_2016, vaswani_attention_2023, li_scalable_2024}. In the
+attention mechanism, the query vector retrieves contextual information from the
+key vector and generates an output based on the weighted sum of corresponding
+value vectors. Contextual information is retrieved in the form of an attention
+score which is the scaled dot product between the query vector and the key
+vector: $\frac{\textbf{q}_i\cdot\textbf{k}_j^T}{\sqrt{d_k}}$
+\cite{vaswani_attention_2023}. The attention score is then used in the
+calculation of weights ($\alpha_{ij}$) which apply a Softmax over the individual
+contribution of each attention score (Eq. \ref{eq:attention})
+\cite{vaswani_attention_2023, bahdanau_neural_2016, li_scalable_2024}. Each
+token's numerical encoding along with its relevance to other tokens is
+calculated from the cross product between the value vector and weights resulting
+in the attention mechanism: $Softmax\left(\frac {\textbf{Q} \cdot
+\textbf{K}^\textbf{T}} {\sqrt{d_k}} \right)\times V$
+\cite{vaswani_attention_2023, bahdanau_neural_2016, li_scalable_2024}.
+
+\begin{equation}
+\alpha_{ij} = Softmax\left(\frac {\textbf{Q} \cdot \textbf{K}^\textbf{T}}
+{\sqrt{d_k}} \right) = \frac
+{e^{\frac{\textbf{q}_i\cdot\textbf{k}_j^T}{\sqrt{d_k}}}}
+{\sum^N_{k=1}e^{\frac{\textbf{q}_i\cdot\textbf{k}_k^T}{\sqrt{d_k}}}}
+\label{eq:attention}
+\end{equation}
+
+In the case of a Vision Transformer (ViT), an image is divided up into self
+attention patches via patch embedding, passed through the transformer encoder,
+and utilized through a classification head \cite{dosovitskiy_image_2020,
+arnab_vivit_2021}. Within patch embedding, each patch has a fixed pixel size in
+height and width and its embedding is derived through flattening and linear
+projection \cite{dosovitskiy_image_2020, arnab_vivit_2021}.  Class and position
+are applied to the embedding before passed through the transformer encoder
+composed blocks of layer norm, multi-head attention, and MLP layers after which
+a classification head is attached \cite{dosovitskiy_image_2020}.
+
+\subsubsection{Multi-modal Input Representation}
+\label{sec:multi-modal}
+The transformer architecture can be applied to multi-modal tasks through
+modifications within the tokenization process allowing
+for an effective representation of visual images \cite{dosovitskiy_image_2020,
+arnab_vivit_2021} and 3D models \cite{yu_point-bert_2022}. Text is provided to
+the transformer as 1 dimensional input vectors and naively flattening 2 or 3
+dimensional data often produces inadequate representations, often resulting in
+lost temporal and spatial data \cite{dosovitskiy_image_2020, arnab_vivit_2021}.
+An approach to preserving spatial data is outlined in work by Dosovitskiy et al.
+\cite{dosovitskiy_image_2020} where the authors split an input image into fixed
+patches while applying positional embedding in their Vision Transformer (ViT).
+This is further expanded upon by Arnab et al. \cite{arnab_vivit_2021} where
+these patches are expanded in an additional dimension for video frames to embed
+spatial and temporal information into the input \cite{arnab_vivit_2021}.
+
+For 3D models, point cloud representation is an efficient means of representing
+spatial information without the rigid constraints of voxelization. However, the
+unstructured format of point clouds presents a challenge when adapting this data
+to be suitable for transformer input as the tokenization process for such a
+representation is not immediately obvious \cite{yu_point-bert_2022}. Point-BERT
+\cite{yu_point-bert_2022} resolves this issue by partitioning the entire 3D
+model into point based patches similar to the previously methologies of ViT
+\cite{dosovitskiy_image_2020}. These patches of points referred to as
+``sub-clouds" preserves the spatial information necessary for adequately mapping
+3D model data in an format comprehensible by the transformer architecture
+\cite{yu_point-bert_2022}.
+
+\subsubsection{Model Scaling}
+\label{sec:transformer-scaling}
+With the increasing parameter size of models developed with the transformer
+architecture, emergent behaviors such as reasoning become evident
+\cite{wei_finetuned_2021, kaplan_scaling_2020, lu_learn_2022}. This evolution in
+scale can be attributed to a number of factors such as the parallelization of
+self-attention computations, regularization of model weights through residual
+connections, and the shift to decoder focused transformer stacks
+\cite{radford_improving_2018, vaswani_attention_2023}. This finding is validated
+by Kaplan et al. \cite{kaplan_scaling_2020} where model performance depends
+heavily upon number of parameters, size of dataset, and the amount of compute
+used during training. This work established the existence of a power law
+relationship between performance and factors such as parameter size (768 to
+1.5B), dataset size (22M - 23B), and compute ($10^{-5}$ to $10^{3}$ PetaFlop
+days) \cite{kaplan_scaling_2020}.
+
+
+\subsubsection{Domain Adaptation}
+Large Language Models are pretrained on a corpus of available data with
+modalities in natural language text \cite{brown_language_2020,
+openai_gpt-oss-120b_2025}, general images \cite{alayrac_flamingo_2022,
+li_blip_2022, radford_learning_2021}, and video sequences
+\cite{alayrac_flamingo_2022, arnab_vivit_2021}. Pretraining these models on a
+diverse set of data builds general knowledge and reasoning capabilities useful
+for generating comprehensible responses for user queries
+\cite{brown_language_2020}. The general knowledge embedded into the model from
+pretraining can be leveraged and further adapted to specialize in specific
+applications or downstream tasks through methods such as domain adaptive
+pretraining, such as those in biology, chemistry, and other fields
+\cite{gururangan_dont_2020, ock_catalyst_2023, lee_biobert_2020,
+beltagy_scibert_2019}. Low-Rank Adaptation is a common approach to injecting
+this domain knowledge into the large language model without retraining all of
+the model parameters, effectively utilizing available resources and optimizing
+on memory and computation \cite{hu_lora_2021}. Through supervised fine-tuning,
+the behavior of the large language model can be adjusted to further align with
+its downstream application via methods such as instruction tuning
+\cite{wei_finetuned_2021, liu_visual_2023}.
 
 % Add further tokenization and training subsections
 % TODO: Refactor and rewrite to not overlap with chapter 5.
-\subsection{Reasoning and Prompting}
-\subsubsection{Chain-of-Thought}
+\subsubsection{Prompting and Reasoning}
+% \subsubsection{Chain-of-Thought}
+% \label{sec:cot}
 Chain-of-Thought (CoT) is multi-step prompting technique to elicit further
-developed answers from the large language model than simple standard
-prompting \cite{kojima_large_2023, wei_chain--thought_2023}. In this method, the
-prompt is formatted in a manner such that a step-by-step answer is provided to
-an example question before a similar question is posed in the
-input \cite{kojima_large_2023, wei_chain--thought_2023}. This facilitates
-reasoning within the model as it decomposes the prompt into a multi-step problem
-which allows for additional computations be allocated to these individual
-steps \cite{wei_chain--thought_2023}. For example, while constructing the prompt
+developed answers from the large language model than simple standard prompting
+\cite{kojima_large_2023, wei_chain--thought_2023}. In this method, the prompt is
+formatted in a manner such that a step-by-step answer is provided to an example
+question before a similar question is posed in the input
+\cite{kojima_large_2023, wei_chain--thought_2023}. This facilitates reasoning
+within the model as it decomposes the prompt into a multi-step problem which
+allows for additional computations be allocated to these individual steps
+\cite{wei_chain--thought_2023}. For example, while constructing the prompt
 rather than simply stating the direct answer to a given problem, the answer is
-formatted in a way to provide the granular steps taken to arrive at an
-answer \cite{wei_chain--thought_2023} (Fig. \ref{fig:cot}). This method is
-particularly useful in facilitating fidelity in multi-step arithmetic problems
-along with providing interpretable insight into reasoning within the
-LLM \cite{wei_chain--thought_2023}.
+formatted in a way to provide the granular steps taken to arrive at an answer
+\cite{wei_chain--thought_2023} (Fig. \ref{fig:cot}). This method is particularly
+useful in facilitating fidelity in multi-step arithmetic problems along with
+providing interpretable insight into reasoning within the LLM
+\cite{wei_chain--thought_2023}.
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\textwidth]{chapters/1_introduction/chain_of_thought.png}
-%     \caption{
-%     Hypothetical comparison of outputs between standard prompting process to
-%     that of the chain-of-thought reasoning process.
-%     }
-%     \label{fig:cot}
-% \end{figure}
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{chapters/1_introduction/chain_of_thought.png}
+    \caption{
+        Hypothetical comparison of outputs between standard prompting process to
+        that of the chain-of-thought reasoning process.
+    }
+    \label{fig:cot}
+\end{figure}
 
 In addition to formatted user prompts, CoT reasoning provides a useful avenue to
 monitor large language model outputs for potential exploits that may produce
-misaligned behavior output \cite{baker_monitoring_2025}. This has been shown with
-the monitoring of verbose CoT outputs from larger models (i.e. o3-mini) using
-weaker models (i.e. GPT-4o) to prevent reward hacking
-schemes \cite{baker_monitoring_2025}. For example, \textit{Baker et
-al.} \cite{baker_monitoring_2025} highlights an example where by monitoring the
-CoT of a model's trajectory using a separate agent, a reward hacking scheme of
+misaligned behavior output \cite{baker_monitoring_2025}. This has been shown
+with the monitoring of verbose CoT outputs from larger models (i.e. o3-mini)
+using weaker models (i.e. GPT-4o) to prevent reward hacking schemes
+\cite{baker_monitoring_2025}. For example, Baker et al.
+\cite{baker_monitoring_2025} highlights an example where by monitoring the CoT
+of a model's trajectory using a separate agent, a reward hacking scheme of
 modifying unit tests to always pass is thwarted. This proves useful in directing
 the model to complete tasks using the correct approach rather than choosing the
 simpler, often incorrect, approach. However, the authors have found that given
 too much optimization the model can learn hide its intent within the CoT
-producing avenues where in which hallucination can
-occur \cite{baker_monitoring_2025, openai_gpt-oss-120b_2025}.
+producing avenues where in which hallucination can occur
+\cite{baker_monitoring_2025, openai_gpt-oss-120b_2025}.
 
-\subsubsection{Zero-Shot Chain of Thought}
-With the increasing size of Large Language Models, Zero-Shot Chain-of-Thought
-has been shown to be sufficient in eliciting deeper thought responses without
-the need for step-by-step examples \cite{kojima_large_2023}. Rather, a simple
-addition to the prompt such as ``Let's think step by step" would be sufficient
-in encouraging the model to produce a more well formed answer
+% \subsubsection{Zero-Shot}
+% \label{sec:zero_shot}
+With the increasing size of Large Language Models, Zero-Shot reasoning has been
+shown to be sufficient in eliciting deeper thought responses without the need
+for step-by-step examples \cite{kojima_large_2023}. Rather, a simple addition to
+the prompt such as ``Let's think step by step" would be sufficient in
+encouraging the model to produce a more well formed answer
 \cite{kojima_large_2023}. This enables a minimalist approach to probe for
 complex reasoning with the large language model leveraging the large corpus of
 data that the model has been trained on \cite{kojima_large_2023,
 brown_language_2020}.
 
+This type of reasoning is often baked into the large language model with a
+fine-tuning method called Instruction Tuning (Section \ref{sec:it})
+\cite{wei_finetuned_2021}. Wei et al. \cite{wei_finetuned_2021} utilizes this
+technique to further train large language models with Natural Language
+Instruction templates to better elicit stronger inference capability from the
+model. In the developed 137B parameter Finetuned Language Net (FLAN) model, the
+authors find that FLAN's zero-shot performance outperformed the zero-shot
+performance of the 175B parameter GPT-3 in over 80\% of evaluations
+\cite{wei_finetuned_2021}.
+
+\subsection{Agentic Systems}
+
+% \subsection{Agentic Systems and Continual Learning}
+% \label{sec:agentic_sls_background_agentic_systems_and_continual_learning}
+An agentic system leverages the unique reasoning and tool calling abilities of
+large language models to enable the intelligent automation towards a specific
+goal \cite{pak_agentic_2026, jadhav_large_2026, chandrasekhar_automating_2025,
+pak_rocketsmith_2026}. This extends beyond a simple pipeline based approach as
+the LLM which orchestrates tool calls does so dynamically building upon the
+feedback obtained from the environment in the form of tool responses, human
+feedback, or other LLMs \cite{yao_react_2022}. Through given tools, agents are
+capable of interacting with their surrounding environment further exposed to
+novel data resources outside the scope of their pretraining dataset.
+
 \subsubsection{ReAct}
-\label{subsec:reasoning_architecture_react}
 ReAct (Reason + Act) is a general paradigm that combines reasoning and actions
 within the large language model to utilize feedback to make informed choices for
-the next set of actions \cite{yao_react_2022}. By utilizing prompt based approach
-to navigating through an action space, ReAct is able to update its current
-policy by reasoning over it's current context and
-observations \cite{yao_react_2022}. This is achieved by decomposing a given task
-into a smaller set of steps similar to the Chain-of-Thought
-process \cite{yao_react_2022, wei_chain--thought_2023}. At a given timestep
-($t$), each step consists of a language space action ($\hat{a}_t$) which Yao et
-al. \cite{yao_react_2022} refer to as \textit{thought} or \textit{reasoning
-trace}, an environmental action ($a_t$) such as a tool call, and an observation
-($o_t$) which is the result of action ($a_t$). The LLM generates a policy
+the next set of actions \cite{yao_react_2022}. By utilizing prompt based
+approach to navigating through an action space, ReAct is able to update its
+current policy by reasoning over it's current context and observations
+\cite{yao_react_2022}. This is achieved by decomposing a given task into a
+smaller set of steps similar to the Chain-of-Thought process
+\cite{yao_react_2022, wei_chain--thought_2023}. At a given timestep ($t$), each
+step consists of a language space action ($\hat{a}_t$) which Yao et al.
+\cite{yao_react_2022} refer to as \textit{thought} or \textit{reasoning trace},
+an environmental action ($a_t$) such as a tool call, and an observation ($o_t$)
+which is the result of action ($a_t$). The LLM generates a policy
 ($\pi(a_t|c_t)$) for the next action ($a_t$) given the current context ($c_t$)
 which consist of all actions and observations from previous timesteps. A
 language space action or aformentioned \textit{thought} is performed to update
 the context ($c_{t+1} = (c_t, \hat{a}_t)$) allowing for dynamic policies which
-can be adjusted with feedback \cite{yao_react_2022}. Further implementation
-details for the ReAct paradigm is discussed in Section
-\ref{subsec:tool_calling_react}.
+can be adjusted with feedback \cite{yao_react_2022}.
 
-% TODO
-% \subsubsection{Retrieval-Augmented Generation}
+Each step is composed of a ``Thought", ``Action" and ``Observation" which the
+LLM is prompted to complete \cite{yao_react_2022}. The ``Thought" is the
+language space action that the LLM produces to create the updated context from
+the existing context space after both an Action and Observation are performed
+\cite{yao_react_2022}. ``Actions" are then performed by parsing the subsequent
+output from the LLM to search for tools that match a specific syntax (i.e.
+\texttt{\textbf{search}[entity]}, \texttt{\textbf{lookup}[string]}, or
+\texttt{\textbf{finish}[answer]}). The respective function is then executed with
+the provided argument producing an ``Observation" which is then appended to the
+context before moving onto the next step. This ``Thought", ``Action" and
+``Observation" process is repeated until either the LLM produces an ``Action"
+consisting of \texttt{\textbf{finish}[answer]} or an iteration limit is reached
+\cite{yao_react_2022}. During this process, the CoT reasoning is visible
+throughout each step providing transparency into the mechanisms used to
+construct the final answer \cite{yao_react_2022}.
 
-\subsection{Agentic Tool Calling}
+\subsubsection{Model Context Protocol}
+The Model Context Protocol (MCP) is a standard introduced by Anthropic which
+provides guidelines for used functionality such as tool calling and resource
+querying; Particularly suitable for agentic tasks
+\cite{anthropic_introducing_2024, ehtesham_survey_2025, hou_model_2025}. Along
+with these features, MCP is compatible with the wider ecosystem of LLM providers
+with integrations in Software Development Kits (SDKs) developed by Anthropic,
+OpenAI, Google \cite{hamsa_buvaraghan_mcp_2025}, and others
+\cite{hou_model_2025}.
 
-\subsubsection{WebGPT}
+Tools are the primary means in which an LLM is able to perform actions via MCP,
+invoking external Application Programming Interfaces (APIs) or function calls
+with the user's approval \cite{hou_model_2025, ehtesham_survey_2025}. Complexity
+of these tool calls can range from simple stateless actions (network requests to
+external APIs) or long-lived function operations (simulation runs). Using the
+MCP Python SDK, these tools can be exposed to the LLM with the appropriate
+decorator function configuration as seen in \ref{apx:example_tool}. A minimal
+configuration consisting of the decorator wrapping a tool function is sufficient
+to register a tool for an LLM. However, additional annotations such as type
+declarations, docstring descriptions, and structured outputs significantly
+improve the model's comprehension and proper utilization of the defined tool.
+
+Resources provide the LLM capability to search for relevant information
+regarding a given task. Similar to GET requests established within the Hypertext
+Transfer Protocol (HTTP), this allows for the query of information stored within
+databases, filesystems, or other means to be accessible to the LLM
+\cite{hou_model_2025, ehtesham_survey_2025}. This is particularly useful during
+the tool calling process as it provides environmental state information
+regarding around the model. However, during experiments the LLM's utilization of
+the resource functionality proved unreliable and tools implementing the same
+functionality of each resource displayed consistently reliable responses.
+
+\subsubsection{Continual Learning}
+Continual Learning (CL), sometimes referred to by other names such as
+incremental learning \cite{wang_comprehensive_2024} and lifelong learning
+\cite{kumarappan_leanagent_2025, parisi_lifelong_2018, dautume_episodic_2019},
+aims to further update the model's base knowledge utilizing new streams of data
+obtained after pretraining to improve performance on previously encountered and
+new tasks, all while overcoming the challenge of Catastrophic Forgetting
+(Section \ref{sec:catastrophic_forgetting}) \cite{scialom_fine-tuned_2022,
+wu_continual_2024, wang_comprehensive_2024, jang_towards_2021,
+ven_generative_2018, lopez-paz_gradient_2017}. This method utilizes approaches
+such as regularization, rehearsal / replay, or parameter expansion to balance
+the plasticity and stability of the model when exposed to new data
+\cite{wang_comprehensive_2024, kirkpatrick_overcoming_2017, jang_towards_2021,
+rusu_progressive_2022}. For a large language model, continual learning enhances
+the reasoning and linguistic capabilities beyond that developed during
+pre-training and acquire new abilities while also adapting to new concepts
+\cite{scialom_fine-tuned_2022, jang_towards_2021}.
+
+\subsubsection{Catastrophic Forgetting}
+\label{sec:catastrophic_forgetting}
+While updating the model's base knowledge with new information, existing weight
+vectors originally intended for a specific solution can be overwritten
+potentially hindering performance in these pretrained tasks
+\cite{mccloskey_catastrophic_1989, ratcliff_connectionist_1990,
+french_catastrophic_1999}. This phenomenon is referred to as Catastrophic
+Forgetting (CL) where the knowledge gained for a new task results in the
+performance degradation in a previous task \cite{french_catastrophic_1999,
+kirkpatrick_overcoming_2017, zeng_dirichlet_2024, mccloskey_catastrophic_1989,
+ratcliff_connectionist_1990}.
+
+Analogous to human biology, initial investigations into the management of new
+and pre-existing knowledge draws parities to the relationship between the
+hippocampus and neocortex \cite{mcclelland_why_1995, french_catastrophic_1999}.
+McClelland et al. \cite{mcclelland_why_1995} suggest that the hippocampus
+functions as a rapid store of novel information whereas the neocortex
+orchestrates the slow and gradual learning of an ensemble of experiences
+\cite{mcclelland_why_1995}. This bimodal architecture implies that the
+sequential accumulation of new information of the hippocampus is incompatible
+with the gradual discovery mechanism of the neocortex and thus a relationship
+between the two which prevents catastrophic forgetting
+\cite{mcclelland_why_1995, french_catastrophic_1999}. Models such as Jumpnet
+\cite{rueckl_jumpnet_1993} propose dual-net architecture approach which
+establishes a relationship between the ``process" and ``control" aspects of the
+network to reduce catastrophic interference \cite{french_catastrophic_1999}.
+This approach showed success in reducing catastrophic interference, however did
+not clearly address the issue of catastrophic forgetting where learned patterns
+from similar inputs are expected to have different outputs
+\cite{french_catastrophic_1999}. Other approaches such as the use of two
+different weight classes ``fast" and ``slow" has been shown to reduce the
+interference encountered during the learning process \cite{hinton_using_1987,
+french_catastrophic_1999}. These different approaches show that there is not
+just one way, but multiple different ways to potentially address the issues
+encountered with catastrophic forgetting \cite{french_catastrophic_1999}.
+
+\subsubsection{Existing Implementations}
+Recent advances in multi-agent systems have demonstrated the potential of Large
+Language Models (LLMs) to perform complex, goal-oriented tasks that extend
+beyond the constraints of a single prompt \cite{jadhav_llm-3d_2025,
+ock_catalyst_2023, ock_large_2025, chaudhari_modular_2026, george_llm_2025,
+bartsch_llm-craft_2025, chandrasekhar_automating_2025, merrill_llm-drone_2025}.
+This has been applied to the monitoring and adjustment of real-time Fuse
+Deposition Modeling (FDM) builds \cite{jadhav_llm-3d_2025}, search and discovery
+of potential catalyst and drug candidates \cite{ock_catalyst_2023,
+ock_large_2025}, and optimization of material and molecular design simulations
+\cite{chaudhari_modular_2026, chandrasekhar_automating_2025}. In these tasks,
+LLMs autonomously determine the next course of action by reasoning over the
+information available within the dynamic environment \cite{jadhav_llm-3d_2025,
+chaudhari_modular_2026, ock_large_2025}. The next course of action often
+involves utilizing functionality external to the LLM which is made accessible
+through a tool call. This can be done through various methods and solution
+providers include LangChain and LlamaIndex.
+
 WebGPT is regarded as one of the earliest examples of LLM enabled tool
 calling \cite{nakano_webgpt_2022}. In this work a fine-tuned GPT3
 model \cite{brown_language_2020} utilizes a written summary of the browser based
@@ -244,42 +575,39 @@ answers that are preferred by human participants and provides benefits in
 reasoning transparency as the entire thought process for constructing answers is
 visible \cite{nakano_webgpt_2022}.
 
-\subsubsection{ReAct}
-As mentioned in Section \ref{subsec:reasoning_architecture_react}, the ReAct
-paradigm is a multi-step process that operates by dynamically adjusting its
-policy given the updated context within each step \cite{yao_react_2022}. Each
-step is composed of a ``Thought", ``Action" and ``Observation" which the LLM is
-prompted to complete \cite{yao_react_2022}. The ``Thought" is the language space
-action that the LLM produces to create the updated context from the existing
-context space after both an Action and Observation are
-performed \cite{yao_react_2022}. ``Actions" are then performed by parsing the
-subsequent output from the LLM to search for tools that match a specific syntax
-(i.e. \texttt{\textbf{search}[entity]}, \texttt{\textbf{lookup}[string]}, or
-\texttt{\textbf{finish}[answer]}). The respective function is then executed with
-the provided argument producing an ``Observation" which is then appended to the
-context before moving onto the next step. This ``Thought", ``Action" and
-``Observation" process is repeated until either the LLM produces an ``Action"
-consisting of \texttt{\textbf{finish}[answer]} or an iteration limit is
-reached \cite{yao_react_2022}. During this process, the CoT reasoning is visible
-throughout each step providing transparency into the mechanisms used to
-construct the final answer \cite{yao_react_2022}.
 
-\label{subsec:tool_calling_react}
+% TODO: Add section on MCP based tool calling
 
 
 %---------------------------------------------------------------------
 
-\section{Structure of the Thesis Proposal}
-This proposal is structured to summarize prior research conducted to support the
-proposed work regarding agentic process monitoring. Specific to prior research,
-this proposal covers the use of a video transformer based model for
-\textit{in-situ} process monitoring, fine-tuning large language models for
-enhanced domain knowledge, and the development of an agentic system for
-intelligent automation.
+\section{Structure of Dissertation}
+This dissertation is structured to summarize prior research conducted to support
+the conducted work regarding continuous learning enable agentic process
+optimization. Specific to prior research, this covers the use of a video
+transformer based model for in-situ process monitoring, fine-tuning
+large language models for enhanced domain knowledge, and the development of an
+agentic system for intelligent automation.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=\textwidth]{chapters/1_introduction/presentation_works_chapters.png}
+  \caption{
+    Works covered in this dissertation include (a) ThermoPore: Predicting Part
+    Porosity Based on Thermal Images Using Deep Learning, (b) AdditiveLLM: Large
+    language models predict defects in metals additive manufacturing, (c)
+    Agentic Additive Manufacturing Alloy Evaluation, (d) Domain Adapted Large
+    Language Models for Additive Manufacturing, and (e) Agentic Selective Laser
+    Sintering Process Optimization.
+  }
+  \label{fig:introduction_thesis_works}
+\end{figure}
+
+\clearpage
 
 \textbf{Chapter} \ref{chapter:thermopore} describes the work done in process
 monitoring utilizing a video transformer based model for correlating
-\textit{in-situ} thermal images to \textit{ex-situ} porosity. The data is
+in-situ thermal images to ex-situ porosity. The data is
 obtained experimentally with the thermal images taken using a two color
 pyrometer and the porosity data collected through computed tomography. The
 transformer based approach was able to achieve an $R^2$ score of 0.57 for
@@ -311,12 +639,22 @@ the approximation of melt pool dimensions. This work showcases the intelligent
 automation of alloy evaluation through the use of tool call enabled large
 language models.
 
-% \textbf{Chapter} \ref{chapter:proposal} outlines the proposed works of
-% developing an agentic system for process monitoring and parameter tuning for
-% selective laser sintering (SLS) and further work to enable the large language
-% model to continuously learn from previous iterations. For this the experimental
-% process will utilize an open source SLS machine and utilize its available
-% sensors for process monitoring and control. These interactions will stored in a
-% vector database in order to deploy the large language model into a continuous
-% learning environment where it is able to make informed decisions on past
-% actions.
+\textbf{Chapter} \ref{chapter:dapt_am} further applies the concepts of
+finetuning and domain adaptive pretraining to a larger array of resources
+utilizing open access literature within the additive manufacturing space to
+improve large language model performance on additive manufacturing tasks. These
+techniques are applied to variants of the open weight models of Gemma 3
+\cite{team_gemma_2025}, Gemma 4, and Qwen 3 \cite{yang_qwen3_2025} each
+exhibiting their relative performance improvements against the base model when
+evaluated on tasks from additive manufacturing benchmark dataset.
+
+\textbf{Chapter} \ref{chapter:agentic_sls} presents an implementation of an
+agentic system for the purpose of process parameter optimization for Selective
+Laser Sintering (SLS). The experimental process utilizes the open source Inova
+Mk1 and applies its available image and temperature sensors for process
+monitoring and control. Samples are printed to the D638
+\cite{d20_committee_test_2014} and D790 \cite{d20_committee_test_2015} ASTM
+standard with the collected data curated inside a relational database for
+continous learning. The system is tested on a range of powders and showcases the
+efficiency of utilizing an agentic system for the task of process optimization
+by significantly reducing process parameter iterations.

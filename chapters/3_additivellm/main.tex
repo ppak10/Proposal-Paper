@@ -1,60 +1,8 @@
-\chapter{AdditiveLLM: Large Language Models Predict Defects in Metals Additive Manufacturing}
+\chapter{
+    AdditiveLLM: Large Language Models Predict Defects in Metals Additive
+    Manufacturing
+}
 \label{chapter:additivellm}
-
-Within the process of Laser Powder Bed Fusion (L-PBF), the selection of optimal
-process parameters remains a key factor in the fabrication of defect free parts
-\cite{beuth_process_2013, gordon_defect_2020}. This is achieved by avoiding the
-combination of process parameters that can potentially lead to melt pool
-characteristics resulting in either unfused powder or void initiation causing
-defect formation within the final part. The following defect regimes of
-\textit{Keyholing}, \textit{Balling}, and \textit{Lack of Fusion (LoF)} describe the
-expected melt pool characteristics seen at a given combination of process
-parameters \cite{gordon_defect_2020}. These defect regimes can be estimated by
-methods such as experimental observation \cite{ahmed_process_2022},
-computational simulation \cite{roh_ontology-based_2021}, or surrogate modeling
-\cite{menon_multi-fidelity_2022}.
-
-Equations \ref{eq:keyhole} - \ref{eq:balling} provide criterions dependent on
-melt pool dimensions and process parameters where when satisfied are expected to
-avoid their respective defect regimes. Melt pool conditions such as
-\textit{Keyholing} do not inherently cause defects, rather it is fluctuations
-and collapse of the rear wall that generates voids leading to the formation of
-pores \cite{huang_keyhole_2022}. However due to the inaccessibility of
-\textit{in-situ} cross-sectional melt pool analysis, the formation of
-\textit{Keyhole} defects is often approximated with Equation \ref{eq:keyhole},
-where width to depth ratios below threshold are likely to result in keyhole
-porosity\cite{zhang_efficient_2021}. For defects resulting from \textit{Lack of
-Fusion}, the ratio of hatch spacing and melt pool width along with layer height
-and depth are evaluated to ascertain the potential formation of porosity
-\cite{tang_prediction_2017}. The criterion for full melting across subsequent
-melt pools is defined as Equation \ref{eq:lof} where computed values above the
-threshold can result in unfused powder \cite{tang_prediction_2017,
-miner_impact_2024}. \textit{Balling} defects occur due to the hydrodynamic
-capillary instabilities that occur during high scan speeds and the resulting
-grooves along the sides of the melt pool result in formation of voids if not
-remelted \cite{gu_balling_2007}. An approximation for the occurrence of this
-phenomenon is calculated by comparing the length and width of the melt pool
-(Eq. \ref{eq:balling}). A ratio above $\pi$ can indicate the presence of
-balling, though this value can range depending on the material
-\cite{zhang_efficient_2021}.
-
-% Width to depth ratio must be greater than 1.5 to NOT be in keyhole
-\begin{equation}
-\frac{Width}{Depth} > 1.5
-\label{eq:keyhole}
-\end{equation}
-
-% Hatch Spacing and Layer Height ratios must be less that 1 to NOT have lack of fusion defects
-\begin{equation}
-\left(\frac{Hatch\;Spacing}{Width}\right)^2 + \left(\frac{Layer\;Height}{Depth}\right)^2 \le 1
-\label{eq:lof}
-\end{equation}
-
-% Length to width ratio must be less than \pi to NOT be balling
-\begin{equation}
-\frac{Length}{Width} < \pi
-\label{eq:balling}
-\end{equation}
 
 The selection of optimal process parameters often requires extensive domain
 knowledge of the various domains within the L-PBF process, ranging from material
@@ -68,9 +16,9 @@ application as a more human accessible research tool in a wide domain of fields
 ranging from chemical engineering to robotics \cite{jadhav_llm-3d_2025,
 ock_catalyst_2023, car_plato_2024, lorsung_explain_2024, shah_peptide-gpt_2024,
 farimani_large_2024, chandrasekhar_amgpt_2024, ock_multimodal_2024,
-balaji_gpt-molberta_2023, jadhav_large_2024, ock_adsorb-agent_2026}.
+balaji_gpt-molberta_2023, ock_adsorb-agent_2026, jadhav_large_2026}.
 Implementations such as LLAMA \cite{touvron_llama_2023, grattafiori_llama_2024},
-GPT \cite{brown_language_2020}, T5\cite{raffel_exploring_2023} and BERT
+GPT \cite{brown_language_2020}, T5 \cite{raffel_exploring_2023} and BERT
 \cite{devlin_bert_2019} provide a foundation for general purpose use where it
 can then be fine-tuned for a specific downstream application.
 
@@ -109,42 +57,42 @@ more align closer to the sequential nature of text generation
   \label{fig:additivellm_main}
 \end{figure}
 
-In this work we propose AdditiveLLM, a comparison of large language models
-fine-tuned on experimental and simulation based L-PBF melt pool data that able
-to predict potential defects given a combination of process parameters (Figure
-\ref{fig:additivellm_main}). We focus upon fine-tuning several models including:
-DistilBERT\cite{sanh_distilbert_2020}, SciBERT\cite{beltagy_scibert_2019}, LLama
-3.2\cite{grattafiori_llama_2024}, and T5\cite{raffel_exploring_2023}. Our
-selection of models utilize the smaller parameter set variants as this best
-suits our need for an efficient and lightweight model for specific inferences
-regarding defect regimes in L-PBF Additive Manufacturing. This approach infers
-upon the corpus of L-PBF melt pool data formatted as a set of process parameters
-inputs and defect classification labels. The model predictions provide a
-classification to a combination of potential defect regimes of
-\textit{Keyholing}, \textit{Lack of Fusion}, \textit{Balling}, and \textit{None}
-(for the case where no defects exist). Through inference the models are able to
-quickly provide insight on potential defects given a specific parameter
-combination without the need to perform additional simulations or experimental
-builds.
+In this chapter a comparison of large language models fine-tuned on experimental
+and simulation based LPBF melt pool data that able to predict potential defects
+given a combination of process parameters is explored, reffered to as
+AdditiveLLM (Figure \ref{fig:additivellm_main}). This work focuses upon
+fine-tuning several models including: DistilBERT \cite{sanh_distilbert_2020},
+SciBERT \cite{beltagy_scibert_2019}, LLama 3.2 \cite{grattafiori_llama_2024},
+and T5 \cite{raffel_exploring_2023}. The selection of models utilize the smaller
+parameter set variants as this best suits our need for an efficient and
+lightweight model for specific inferences regarding defect regimes in LPBF
+Additive Manufacturing. This approach infers upon the corpus of LPBF melt pool
+data formatted as a set of process parameters inputs and defect classification
+labels. The model predictions provide a classification to a combination of
+potential defect regimes of \textit{Keyholing}, \textit{Lack of Fusion},
+\textit{Balling}, and \textit{None} (for the case where no defects exist).
+Through inference, the models are able to quickly provide insight on potential
+defects given a specific parameter combination without the need to perform
+additional simulations or experimental builds.
 
 \section{Methodology}
 \subsection{Task}
 
-Given an input text sequence outlining a L-PBF build process with descriptions
-of process parameters such as material, power, and velocity; AdditiveLLM aims to
+Given an input text sequence outlining a LPBF build process with descriptions of
+process parameters such as material, power, and velocity; AdditiveLLM aims to
 predict the most appropriate combination of defect classifications that is
 likely to occur. The defect classifications of \textit{Keyholing}, \textit{Lack
 of Fusion}, \textit{Balling}, and \textit{None} are one-hot encoded and provide
 a set of labels for the multi-label classification task. The \textit{Baseline}
 (Figure \ref{fig:baseline_template}) and \textit{Prompt} (Figure
 \ref{fig:prompt_template}) datasets provide structure to the input in the form
-of order dependent process parameters delineated with \texttt{[SEP]} separation
-tokens or queries regarding process parameters in the format of natural language
-respectively. The \textit{Prompt} dataset aims to capture the behavior of the
-unstructured input expected from a user while the \textit{Baseline} dataset aims
-to definitively capture each process parameter. These distinct approaches allow
-for a more flexible use case for the models as the user is able to specifically
-tune inputs specific to their use case.
+of order dependent process parameters delineated with \texttt{\secsplit{[SEP]}}
+separation tokens or queries regarding process parameters in the format of
+natural language respectively. The \textit{Prompt} dataset aims to capture the
+behavior of the unstructured input expected from a user while the
+\textit{Baseline} dataset aims to definitively capture each process parameter.
+These distinct approaches allow for a more flexible use case for the models as
+the user is able to specifically tune inputs specific to their use case.
 
 \begin{figure}[ht]
   \centering
@@ -171,12 +119,13 @@ tune inputs specific to their use case.
 The dataset is compiled from literature and simulation values that provide
 either melt pool dimensional measurements or corresponding defect
 classifications from a set of process parameters. These process parameters
-include \texttt{material}, \texttt{power}, \texttt{velocity},
-\texttt{beam\_diameter}, \texttt{hatch\_spacing}, and \texttt{layer\_height} and
+include \texttt{\secsplit{material}}, \texttt{\secsplit{power}},
+\texttt{\secsplit{velocity}}, \texttt{\secsplit{beam\_diameter}},
+\texttt{\secsplit{hatch\_spacing}}, and \texttt{\secsplit{layer\_height}} and
 their corresponding units. The majority of the data only consists melt pool
 dimensional measurements and these data points are processed into defect
 classifications using estimations for \textit{Keyholing} (Eq. \ref{eq:keyhole}),
-\textit{Lack of Fusion}(Eq. \ref{eq:lof}), and \textit{Balling} (Eq.
+\textit{Lack of Fusion} (Eq. \ref{eq:lof}), and \textit{Balling} (Eq.
 \ref{eq:balling}).
 
 \begin{figure}[ht]
@@ -194,15 +143,14 @@ classifications using estimations for \textit{Keyholing} (Eq. \ref{eq:keyhole}),
 \end{figure}
 
 A number of sources were used for our dataset which include literature and
-simulation data points curated by \textit{Akbari et al.} in
-\textit{MeltpoolNet}\cite{akbari_meltpoolnet_2022} and our own simulations
-obtained using FLOW-3D\cite{flow_science_inc_flow-3d_2026}. (Figure
-\ref{fig:additivellm_dataset}) This amounts to a total of 2,779 collected data
-points spanning over 20 different materials, primarily consisting of Ti-6Al-4V
-and Stainless Steel 316L (Figure \ref{fig:source_distributions}). With these
-sources, the dataset is comprised of over 20 different materials varying with
-powers and velocity values ranging from 25 W to 5000 W and 1 mm/s to 2000 mm/s
-respectively.
+simulation data points curated by \textit{Akbari et al.} in \textit{MeltpoolNet}
+\cite{akbari_meltpoolnet_2022} and performed simulations obtained with FLOW-3D
+\cite{flow_science_inc_flow-3d_2026}. (Figure \ref{fig:additivellm_dataset})
+This amounts to a total of 2,779 collected data points spanning over 20
+different materials, primarily consisting of Ti-6Al-4V and Stainless Steel 316L
+(Figure \ref{fig:source_distributions}). With these sources, the dataset is
+comprised of over 20 different materials varying with powers and velocity values
+ranging from 25 W to 5000 W and 1 mm/s to 2000 mm/s respectively.
 
 Upon analyzing the source dataset, the distribution of materials weighs heavily
 towards Stainless Steel 316L and Ti-6Al-4V with the remaining materials
@@ -278,21 +226,22 @@ language.
 
 \subsubsection{Data Generation and Split}
 The dataset consists of simulation and experimental data derived from sources
-such as \textit{MeltpoolNet}\cite{akbari_meltpoolnet_2022}
-(\texttt{meltpoolclassification.csv}, \texttt{meltpoolgeometry.csv}) and a
-number of our own FLOW-3D\cite{flow_science_inc_flow-3d_2026} simulations
-(\texttt{dimensions\_ti64.pkl} and \texttt{dimensions\_ss316l\_10\_micron.csv}).
-The \texttt{meltpoolclassification.csv} provides the direct defect
-classification of a combination of process parameters, however in cases where
-only the melt pool dimensions are provided, the defect classifications are
-obtained using their respective criterions. This data was further augmented by
-analyzing the \textit{Lack of Fusion} defect criterion on 20 different layer
-heights and hatch spacings ranging from 0 $\mu m$ to 950 $\mu m$ with the
-assumption that the melt pool's width and depth remain the same. Each of these
-individual files, all of the entries are shuffled and split to 75\%, 15\%, and
-10\% for the train, test, and validation datasets respectively. This allows for
-an equal distribution of samples within each source in the overall dataset
-splits used to fine-tune the LLM.
+such as \textit{MeltpoolNet} \cite{akbari_meltpoolnet_2022} and a number of
+FLOW-3D \cite{flow_science_inc_flow-3d_2026} simulations
+(\texttt{\seqsplit{dimensions\_ti64.pkl}} and
+\texttt{\seqsplit{dimensions\_ss316l\_10\_micron.csv}}) performed for this work.
+The \texttt{\seqsplit{meltpoolclassification.csv}} from \textit{MeltpoolNet}
+\cite{akbari_meltpoolnet_2022} provides the direct defect classification of a
+combination of process parameters, however in cases where only the melt pool
+dimensions are provided, the defect classifications are obtained using their
+respective criterions. This data was further augmented by analyzing the
+\textit{Lack of Fusion} defect criterion on 20 different layer heights and hatch
+spacings ranging from 0 \textmu m to 950 \textmu m with the assumption that the
+melt pool's width and depth remain the same. Each of these individual files, all
+of the entries are shuffled and split to 75\%, 15\%, and 10\% for the train,
+test, and validation datasets respectively. This allows for an equal
+distribution of samples within each source in the overall dataset splits used to
+fine-tune the LLM.
 
 \begin{figure}[htbp]
     \centering
@@ -327,13 +276,14 @@ splits used to fine-tune the LLM.
 The \textit{Baseline} configuration of our dataset seeks to provide the minimum
 input data necessary to fine-tune each model. This is done by utilizing the
 \texttt{[SEP]} token to indicate the distinction between ordered process
-parameters of \texttt{material}, \texttt{power}, \texttt{velocity},
-\texttt{beam\_diameter}, \texttt{hatch\_spacing}, and \texttt{layer\_height}
+parameters of \texttt{\secsplit{material}}, \texttt{\secsplit{power}},
+\texttt{\secsplit{velocity}}, \texttt{\secsplit{beam\_diameter}},
+\texttt{\secsplit{hatch\_spacing}}, and \texttt{\secsplit{layer\_height}}
 (Figure \ref{fig:baseline_template}). The streamlined \texttt{text} input of
 just the process parameters aims to provide the model only the essential
-parameters to generate a prediction. This amounted to a total of 724,764 distinct
-input-label pair combinations with the 75\%, 15\%, 10\% train, test, validation
-split including 543,573, 108,715, and 72,476 respectively.
+parameters to generate a prediction. This amounted to a total of 724,764
+distinct input-label pair combinations with the 75\%, 15\%, 10\% train, test,
+validation split including 543,573, 108,715, and 72,476 respectively.
 
 \subsubsection{\textit{Prompt} Dataset}
 
@@ -356,19 +306,19 @@ test, and validation splits.
 
 \subsubsection{DistilBERT}
 DistilBERT is a distilled implementation of the BERT model for the purposes of
-fine tuning developed by researchers at HuggingFace\cite{sanh_distilbert_2020}.
+fine tuning developed by researchers at HuggingFace \cite{sanh_distilbert_2020}.
 DistilBERT achieves a 40\% reduction in model size (66 million parameters)
 compared to the original BERT (110 million parameters) model while retaining
 97\% of the language understanding capability and gaining a 60\% increase in
-training speed\cite{sanh_distilbert_2020}. This model is a suitable candidate
+training speed \cite{sanh_distilbert_2020}. This model is a suitable candidate
 for obtaining preliminary insights and evaluating the feasibility of
 implementing a BERT-based inference approach for process parameter dependent
 defects. The training process for the classification head a batch-size of 512
 and a learning rate of 2E-5.
 
 \subsubsection{SciBERT}
-SciBERT is a specialized implementation of the 110 million parameter BERT
-model\cite{devlin_bert_2019} pretrained on large-scale scientific data including
+SciBERT is a specialized implementation of the 110 million parameter BERT model
+\cite{devlin_bert_2019} pretrained on large-scale scientific data including
 numerous publications from computer science to biomedical research
 \cite{beltagy_scibert_2019}. With a dataset of over 1.14 million papers, the
 authors are able to pretrain the BERT implementation on a corpus of text with
@@ -386,11 +336,11 @@ of 2E-5.
 
 
 \subsubsection{Llama 3}
-Llama 3 is the latest iteration of LLMs developed by the AI team at
-Meta\cite{grattafiori_llama_2024}. In comparison to the previous
-implementations, Llama 3 is trained on a much larger dataset of 15 trillion
-tokens, boasts a larger context window of up to 128K tokens, and consists of 405
-billion parameters for its largest model \cite{grattafiori_llama_2024}. For our
+Llama 3 is the latest iteration of LLMs developed by the AI team at Meta
+\cite{grattafiori_llama_2024}. In comparison to the previous implementations,
+Llama 3 is trained on a much larger dataset of 15 trillion tokens, boasts a
+larger context window of up to 128K tokens, and consists of 405 billion
+parameters for its largest model \cite{grattafiori_llama_2024}. For our
 implementations we utilize Llama-3.2-1B, a 1 billion parameter implementation of
 the the Llama 3 model that incorporates the logits of the 8 billion and 70
 billion parameter Llama 3.1 models during pretraining in order to retain a
@@ -412,16 +362,16 @@ following the guidelines outlined in the documentation
 
 \subsection{Fine-Tuning}
 Each of the LLM models were attached with a classification head consisting of a
-simple Multi-Layer Perceptron (MLP) layer producing four distinct binary classifications and fine-tuned
-using the \textit{Baseline} and the \textit{Prompt} dataset. In each case the
-weights of the LLM model remain unfrozen and were trained along with the
-classification head for up to 25 epochs for \textit{Baseline} fine-tuning and 2
-epochs for \textit{Prompt} fine-tuning. Models fine-tuned on the \textit{Prompt}
-dataset were done so for a shorter number of epochs due to the lengthy training
-duration resulting from the dataset being 100x larger than that of the
-\textit{Baseline}. Binary cross entropy was used as the loss function for this
-multi-label classification task and the inputs were tokenized with each LLM's
-respective tokenizer used in pretraining.
+simple Multi-Layer Perceptron (MLP) layer producing four distinct binary
+classifications and fine-tuned using the \textit{Baseline} and the
+\textit{Prompt} dataset. In each case the weights of the LLM model remain
+unfrozen and were trained along with the classification head for up to 25 epochs
+for \textit{Baseline} fine-tuning and 2 epochs for \textit{Prompt} fine-tuning.
+Models fine-tuned on the \textit{Prompt} dataset were done so for a shorter
+number of epochs due to the lengthy training duration resulting from the dataset
+being 100x larger than that of the \textit{Baseline}. Binary cross entropy was
+used as the loss function for this multi-label classification task and the
+inputs were tokenized with each LLM's respective tokenizer used in pretraining.
 
 The models were fine-tuned on various
 machines with GPU resources of Nvidia RTX A6000 with 48 GiB of memory and Nvidia
@@ -504,28 +454,31 @@ Initially each of the LLM models were fine-tuned for 5 epochs on the
 increments (Table \ref{tab:model_accuracy_values_per_epoch}) which resulted in
 all models apart from T5 showing significant improvement in evaluation accuracy.
 To put our baseline results into context with other shallow machine learning
-implementations we reference the findings by \textit{Akbari et
-al.}\cite{akbari_meltpoolnet_2022} where the authors achieve a 85.78\%
+implementations we reference the findings by \textit{Akbari et al.}
+\cite{akbari_meltpoolnet_2022} where the authors achieve a 85.78\%
 classification accuracy using the Random Forest model with \textit{MeltpoolNet}
 data which we derive a significant portion of our dataset from. The distribution
 of predictions of the fine-tuned LLMs can be found in the Figure
 \ref{fig:baseline_prediction_distribution} within the Appendix.
 
-Improvement in evaluation accuracy with epochs is most prominently displayed in the Llama model where the extended
-training cycles drastically improved the model's prediction accuracy, achieving
-an accuracy of 94.23\%, the highest accuracy of all the trained models (Table
-\ref{tab:model_accuracy_values}). The model achieves an F1 score of 0.9059 indicating a small amount of its achieved accuracy is in part due to the composition of the dataset (Figure \ref{fig:f1_per_class} bottom left). Llama's higher accuracy is expected as its
+Improvement in evaluation accuracy with epochs is most prominently displayed in
+the Llama model where the extended training cycles drastically improved the
+model's prediction accuracy, achieving an accuracy of 94.23\%, the highest
+accuracy of all the trained models (Table \ref{tab:model_accuracy_values}). The
+model achieves an F1 score of 0.9059 indicating a small amount of its achieved
+accuracy is in part due to the composition of the dataset (Figure
+\ref{fig:f1_per_class} bottom left). Llama's higher accuracy is expected as its
 parameter size is over 9x greater (1 billion) to the BERT models which it is
 compared against (110 million) while taking also significantly more time to
-train as well. Notably, other models displayed plateauing or decreasing validation
-accuracy after 20 epochs indicating that further fine-tuning may not present
-additional benefit.
+train as well. Notably, other models displayed plateauing or decreasing
+validation accuracy after 20 epochs indicating that further fine-tuning may not
+present additional benefit.
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\textbf{LLM}    & \textbf{5 Epochs} & \textbf{10 Epochs}    & \textbf{15 Epochs}    & \textbf{20 Epochs}    & \textbf{25 Epochs}   \\ \hline
+\textbf{LLM}    & \textbf{5 Ep.} & \textbf{10 Ep.}    & \textbf{15 Ep.}    & \textbf{20 Ep.}    & \textbf{25 Ep.}   \\ \hline
 DistilBERT      & 84.22\%           & 87.75\%               & 87.75\%               & 88.29\%               & 88.41\%              \\ \hline
 SciBERT         & 88.29\%           & 88.93\%               & 88.99\%               & 91.32\%               & 90.88\%              \\ \hline
 T5              & 79.61\%           & 71.45\%               & 76.42\%               & 77.92\%               & 71.41\%              \\ \hline
@@ -533,7 +486,7 @@ Llama           & \textbf{89.18\%}  & \textbf{91.66\%}      & \textbf{92.94\%}  
 \end{tabular}
 \caption{
     Accuracy for models trained on \textit{Baseline} dataset over a series of
-    25 epochs with 5 epoch increments.
+    25 epochs at 5 epoch increments.
 }
 \label{tab:model_accuracy_values_per_epoch}
 \end{table}
@@ -651,13 +604,13 @@ dataset. One avenue for this could be through better numerical representation of
 the input process parameters as most tokenizers do not have an innate
 understanding of the relationships between numbers
 \cite{thawani_representing_2021}. Tokenizers such as xVal
-\cite{golkar_xval_2024} and works by \textit{Thawani et
-al.}\cite{thawani_representing_2021}and \textit{Siyu Yu et
-al.}\cite{yu_unlocking_2024} have demonstrated success when processing
-numerically dense datasets and generating predictions on out-of-distribution
-inputs. Thus, using a tokenizer specialized in parsing numerical inputs would
-potentially help the model understand the relationship between process
-parameters and generate predictions with higher accuracy.
+\cite{golkar_xval_2024} and works by Thawani et al.
+\cite{thawani_representing_2021} and Siyu Yu et al. \cite{yu_unlocking_2024}
+have demonstrated success when processing numerically dense datasets and
+generating predictions on out-of-distribution inputs. Thus, using a tokenizer
+specialized in parsing numerical inputs would potentially help the model
+understand the relationship between process parameters and generate predictions
+with higher accuracy.
 
 \subsection{Principle Component Analysis}
 With the application of Principle Component Analysis (PCA) the model's ability
@@ -708,9 +661,8 @@ of overlap as the models fail to extract the significant features of each input.
   \label{fig:baseline_pca_prompt_input}
 \end{figure}
 
-\section{Conclusion and Future Work}
+\section{Conclusion}
 
-\subsection{Conclusion}
 Analysis of fine-tuned LLM models show that the 1 billion parameter Llama 3
 implementation achieves the highest accuracy of 94\% on the \textit{Baseline}
 dataset and DistilBERT achieves the highest comparable accuracy of 82\% within the
@@ -724,24 +676,14 @@ defects existing in experimental and simulation data. The incorporation of
 natural language allows for a more accessible inputs enabling users to determine
 optimal build conditions with limited domain knowledge.
 
-% In addition, inferences of the \textit{Prompt}
-% dataset on models fine-tuned with the \textit{Baseline} dataset performed
-% poorly, furthering the need to fine-tune these models with natural language
-% formatted process parameters inputs in order to achieve accurate predictions.
-
-\subsection{Future Work}
 Future work in this domain would focus upon obtaining a more diverse dataset
-with a wider range of materials, parameter sets, and additive processes. Longer
-fine-tuning of LLMs with the \textit{Prompt} dataset could help expose the
-models to diverse input set of natural language and produce predictions with
-greater accuracy. In addition, parts of the existing models such as the
-tokenizer could be replaced with one better equipped in understanding
-numerical inputs.
+with a wider range of materials, parameter sets, and additive processes (Chapter
+\ref{chapter:dapt_am}). Longer fine-tuning of LLMs with the \textit{Prompt}
+dataset could help expose the models to diverse input set of natural language
+and produce predictions with greater accuracy. In addition, parts of the
+existing models such as the tokenizer could be replaced with one better equipped
+in understanding numerical inputs.
 
-\subsection{Data Availability}
-The models and dataset are available within a HuggingFace collection at
-% \url{https://huggingface.co/collections/ppak10/additivellm-6793c341ba5f8c22587a9d40}.
-\href{https://additivellm.ppak.net}{additivellm.ppak.net}.
 \clearpage
 
 \section{Appendix}

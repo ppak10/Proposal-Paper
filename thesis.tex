@@ -4,6 +4,7 @@
 \usepackage{multirow}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{bm}
 \usepackage{bbm}
 % \usepackage{titlesec}
 \usepackage[numbers,sort]{natbib}
@@ -22,6 +23,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{seqsplit}
 \usepackage{textgreek}
 \usepackage{textcomp}
 
@@ -41,6 +43,7 @@
     captionpos=b
 }
 
+\newcommand{\secsplit}[1]{#1}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 
 \DeclareUnicodeCharacter{2212}{-}
@@ -69,7 +72,8 @@
 \usepackage{hyperref}
 \hypersetup{
   colorlinks,
-  linkcolor=[rgb]{0.62,0.22,0.24},k  urlcolor=[rgb]{0.16,0.20,0.36},
+  linkcolor=[rgb]{0.62,0.22,0.24},
+  urlcolor=[rgb]{0.16,0.20,0.36},
   citecolor=[rgb]{0.95,0.65,0.07},
   pdftitle={\thetitle},
   pdfauthor={\theauthor}
@@ -90,22 +94,15 @@
 \maxsecnumdepth{subsection}
 \renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
 
-% \titleformat{\subsection}{\normalfont\fontsize{10}{15}\bfseries}{\thesubsection}{1em}{}
-
 \titlepage
 
 \copyrightPage
 
 \frontmatter
 
-% \iowaEpigraph{\lipsum[1]}{Some wise dude}
-% \iowaEpigraph{}
-
 \input{acknowledgments.tex}
 
 \input{abstract.tex}
-
-% \input{publicAbstract.tex}
 
 \tableofcontents
 
@@ -113,20 +110,17 @@
 
 \listoftables
 
-% \input{chapters/preface.tex}
-
 \mainmatter
 
-% \input{chapters/1_introduction/main.tex}
-% \input{chapters/2_thermopore/main.tex}
-% \input{chapters/3_additivellm/main.tex}
-% \input{chapters/4_alloy_mcp/main.tex}
-% \input{chapters/5_dapt_am/main.tex}
+\input{chapters/1_introduction/main.tex}
+\input{chapters/2_thermopore/main.tex}
+\input{chapters/3_additivellm/main.tex}
+\input{chapters/4_alloy_mcp/main.tex}
+\input{chapters/5_dapt_am/main.tex}
 \input{chapters/6_agentic_sls/main.tex}
+\input{chapters/7_conclusion/main.tex}
 
 \backmatter
-
-% \printbibliography
 
 \bibliographystyle{plainnat}
 \bibliography{references}

@@ -3,6 +3,19 @@
 
 \section{Introduction}
 
+Additive Manufacturing (AM) enables rapid iteration and development cycles,
+alleviating the need for rigid tooling, specialized fixtures, and traditional
+manufacturing requirements \cite{beaman_additive_2020, zhao_laser_2023,
+kumar_selective_2003}. Within additive manufacturing each process presents its
+own unique set of advantages such as relatively minimal postprocessing for Fused
+Deposition Modeling (FDM) \cite{ngo_additive_2018}, high precision and
+functional materials of Laser Powder Bed Fusion (LPBF) \cite{zhao_laser_2023}
+and E-Beam \cite{galati_literature_2018}, and large form factor of Wire Arc
+Additive Manufacturing (WAAM) \cite{li_comprehensive_2022}. These advantages are
+effectively realized under ideal process parameters, however, nuances between
+environments and machines prohibit simple utilization of recommended settings
+\cite{brown_interlaboratory_2016}.
+
 Agentic systems enable the intelligent automation of complex tasks such as the
 development of functional assemblies \cite{pak_rocketsmith_2026,
 barkley_cadsmith_2026}, drug discovery \cite{ock_large_2025}, computational
@@ -49,284 +62,122 @@ SLS4All Inova Mk1, an open source SLS machine built from kit, allowing for the
 collection of telmetry data in the form of optical image, surface temperature,
 and positional data. The collected data is compiled into a dataset utilized for
 further training of ancillary models and granting additional reasoning context
-enabling a continual learning agentic system.
+enabling a continual learning agentic system (Figure
+\ref{fig:agentic_sls_main_figure}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{chapters/6_agentic_sls/main_figure.png}
+    \caption{
+    Agentic system for selective laser sintering capable of process parameter
+    optimization and continual learning through evaluation of printed ASTM
+    samples.
+    }
+    \label{fig:agentic_sls_main_figure}
+\end{figure}
 
 \section{Related Work}
 
-LLM-3D Print by Jadhav et al. \cite{jadhav_llm-3d_2025} 
+LLM-3D Print by Jadhav et al. \cite{jadhav_llm-3d_2025} is an early work that
+explores the application of a large language model to the task of process
+monitoring within the additive manufacturing process of Fused Deposition
+Modeling (FDM). This work developed a LangChain based agentic system which
+through a top down optical camera image data regarding the immediately printed
+layer using a 1.0 mm nozzle \cite{jadhav_llm-3d_2025}. The system utilized these
+top down images to detect layer defects and address with corrective parameter
+changes in subsequent layers with various agents orchestrated by GPT-4o. These
+agents are responsible for actions such as gathering information, planning, and
+executing solutions \cite{jadhav_llm-3d_2025}. With this system authors were
+able to show that an LLM is effective in detecting and compensating major defect
+factors such as stringing, oozing, and layer separation on par of that of a
+human. Furthermore, compression tests on samples constructed with and without
+the multi-agent system achieved a max peak load 5x greater than the same sample
+constructed without the system \cite{jadhav_llm-3d_2025}. This work provides the
+groundwork for an agentic system in additive manufacturing capable of addressing
+build layer defects through in-situ monitoring realized through superior
+mechanical properties in the final part.
 
-TDFlow by Han et al.\cite{han_tdflow_2026} is an agentic workflow that enables a
-Test Driven Development (TDD) \cite{george_structured_2004} approach to software
-engineering. In this work, the authors surmise this workflow can help streamline
-the TDD workflow by allowing the developers to design and construct the
-necessary tests and relying on the large language model to generate the
-necessary code \cite{han_tdflow_2026}. This system utilizes subagents to
-generate tests, explore files, revise / patch software, and debug executed tests
-\cite{han_tdflow_2026}. A notable distinction in this approach is that the next
-course of action follows a structured path rather than allowing the large
-language model to dictate the workflow \cite{han_tdflow_2026}. The subagents
-then execute the necessary tool calls in order to successfully complete each
-task \cite{han_tdflow_2026}. TDFlow \cite{han_tdflow_2026} achieves a score of
-88.8\% on SWE-Bench Lite in contrast to alternative methods such as OpenHands
-(47.8\%) \cite{wang_openhands_2025}, ExpeRepair (48.6\%)
-\cite{mu_experepair_2025}, SWE-Agent (49.0\%) \cite{yang_swe-agent_2024}, and
-Agentless (61.0\%) \cite{xia_agentless_2024}.
+Agentic additive manufacturing alloy evaluation focuses on the use of LLM
+enabled tool calling for the task of developing a lack of fusion process map
+within laser powder bed fusion for a proposed alloy composition
+\cite{pak_agentic_2026}. This work enables an agentic system to utilize software
+platforms such as Thermo-Calc to generate material properties for various alloy
+compositions which are then utilized in a Rosenthal based thermal model to
+determine melt pool dimensions utilized in lack of fusion process map
+calculations \cite{pak_agentic_2026}. For known materials such as Inconel 718
+and Stainless Steel 316L, the system exhibited good alignment of the lack of
+fusion process regimes of various layer heights with the values found in the
+literature \cite{pak_agentic_2026}. For unknown alloy composition, the predicted
+lack of fusion process regimes displayed a general trend to match the general
+lack of fusion defect regime expected with compositions such as 99\% Iron \&
+1\%, Copper, and Al-Si-10Mg \cite{pak_agentic_2026}. This agentic system
+showcases the large language model's ability to reason through complex user
+queries for and ultimately generate concrete, data based process maps.
 
-Chaudhari et al. \cite{chaudhari_modular_2026} developed a multi-agent framework
-named MatSciAgent composed of 4 different agents capable of materials retrieval,
-continuum simulation, crystal structure generation, and molecular dynamics
-simulation. The authors utilize GPT-3.5-Turbo as the core orchestrator of each
-agent and demonstrates the capability of each with a number of case studies.
-AtomAgents\cite{ghafarollahi_automating_2025} investigates the use of a
-multi-agent system equipped with physics based simulation tools to overcome the
-limitations the LLM's training data. The authors explore this within 4 different
-case studies regarding materials property calculation, dislocation analysis,
-multi-scale mechanical problem solving, and hypothesis generation and
-validation. Ghafarollahi et al. \cite{ghafarollahi_rapid_2025} extends upon this
-and explores the use of a Graph Neural Network (GNN) enabled agentic system for
-the discovery of new potential alloy candidates within the NbMoTa family of
-alloys. In this search, candidates are optimized under the properties of Peierls
-barrier and screw dislocation energy which their GNN model predicts allowing the
-system to autonomously navigate through the design space of alloys considering
-both atomic-scale material properties and macro-scale mechanical properties
+Specific to materials science, Chaudhari et al. \cite{chaudhari_modular_2026}
+developed a multi-agent framework named MatSciAgent composed of 4 different
+agents capable of materials retrieval, continuum simulation, crystal structure
+generation, and molecular dynamics simulation. The authors utilize GPT-3.5-Turbo
+as the core orchestrator of each agent and demonstrates the capability of each
+with a number of case studies. AtomAgents \cite{ghafarollahi_automating_2025}
+investigates the use of a multi-agent system equipped with physics based
+simulation tools to overcome the limitations the LLM's training data. The
+authors explore this within 4 different case studies regarding materials
+property calculation, dislocation analysis, multi-scale mechanical problem
+solving, and hypothesis generation and validation. Ghafarollahi et al.
+\cite{ghafarollahi_rapid_2025} extends upon this and explores the use of a Graph
+Neural Network (GNN) enabled agentic system for the discovery of new potential
+alloy candidates within the NbMoTa family of alloys. In this search, candidates
+are optimized under the properties of Peierls barrier and screw dislocation
+energy which their GNN model predicts allowing the system to autonomously
+navigate through the design space of alloys considering both atomic-scale
+material properties and macro-scale mechanical properties
 \cite{ghafarollahi_rapid_2025}.
 
-\section{Background}
-\subsection{Retrieval-Augmented Generation}
-% This should probably in the follow up paper regarding the agentic system.
-Retrieval-Augmented Generation (RAG) is a hybrid approach for language
-generation as it utilizes non-parametric memory (samples not in training
-dataset) along with parametric memory (pretrained data) to generate responses
-utilizing the retrieved data without additional pretraining
-\cite{lewis_retrieval-augmented_2020}. The approach is composed in two parts;
-the retriever and the generator. The retriever is composed of Dense Passage
-Retriever (DPR) \cite{karpukhin_dense_2020} which, in broad terms, indexes a set
-of passages into a low dimensional and continual space to retrieve the most
-relevant passages from a provided input query
-\cite{lewis_retrieval-augmented_2020}. The generator is a pretrained transformer
-which concatenates the input query $x$ with the retrieved content $y$ in order
-to generate a response using the augmented context
-\cite{lewis_retrieval-augmented_2020}.
+% TDFlow by Han et al.\cite{han_tdflow_2026} is an agentic workflow that enables a
+% Test Driven Development (TDD) \cite{george_structured_2004} approach to software
+% engineering. In this work, the authors surmise this workflow can help streamline
+% the TDD workflow by allowing the developers to design and construct the
+% necessary tests and relying on the large language model to generate the
+% necessary code \cite{han_tdflow_2026}. This system utilizes subagents to
+% generate tests, explore files, revise / patch software, and debug executed tests
+% \cite{han_tdflow_2026}. A notable distinction in this approach is that the next
+% course of action follows a structured path rather than allowing the large
+% language model to dictate the workflow \cite{han_tdflow_2026}. The subagents
+% then execute the necessary tool calls in order to successfully complete each
+% task \cite{han_tdflow_2026}. TDFlow \cite{han_tdflow_2026} achieves a score of
+% 88.8\% on SWE-Bench Lite in contrast to alternative methods such as OpenHands
+% (47.8\%) \cite{wang_openhands_2025}, ExpeRepair (48.6\%)
+% \cite{mu_experepair_2025}, SWE-Agent (49.0\%) \cite{yang_swe-agent_2024}, and
+% Agentless (61.0\%) \cite{xia_agentless_2024}.
 
-\subsubsection{Dense Passage Retriever}
-The Dense Passage Retriever (DPR) is the retrieval portion of RAG which utilizes
-two separate transformers to create the embeddings for the queries ($q$) and the
-embeddings for the passages ($p$) \cite{karpukhin_dense_2020}. The embeddings
-for both the query and passage texts are obtained from the class token of the
-tokenized inputs. Query text is not chunked and preprocessed by appending the
-character sequence with a separation token (\texttt{[SEP]}), for example a
-preprocessed query would look something like \texttt{What is machine learning?
-[SEP]}. Passage text is obtained by chunking source text, such as Wikipedia
-articles, into blocks consisting of 100 words where the article title is
-prepended to the block and separated using a \texttt{SEP} token (i.e.
-\texttt{Machine Learning [SEP] Machine learning (ML) is a field of study in
-artificial intelligence...}) \cite{karpukhin_dense_2020}. The tokenized output
-is obtained by first passing the input text through an encoder (i.e. BERT
-\cite{devlin_bert_2019}) network which generates the hidden states and appends a
-class token (\texttt{[CLS]}). The class token, which attends to all of the
-tokens via self-attention \cite{vaswani_attention_2023}, provides the dense
-embedding used to determine similarity between the query and passage
-\cite{karpukhin_dense_2020}. The similarity is defined in Equation
-\ref{eq:dpr_similarity} as dot products of the encoders for the query and the
-passage vectors \cite{karpukhin_dense_2020}.
+% \section{Background}
 
-\begin{equation}
-\label{eq:dpr_similarity}
-\text{sim}(q, p) = E_Q(q)^\top \cdot E_P(p)
-\end{equation}
+% \subsection{Selective Laser Sintering Additive Manufacturing}
+% \label{sec:agentic_sls_background_selective_laser_sintering_additive_manufacturing}
+% The Selective Laser Sintering (SLS) is an additive manufacturing process which
+% utilizes a localized heat source to fabricate a part iteratively through
+% successive powder layers \cite{beaman_additive_2020}. Initially outlined in the
+% 1990 patent, the process utilizes a laser based heat source to sinter thin
+% layers of polymer powder to achieve high resolution and accuracy in the order of
+% microns \cite{beaman_selective_1990}. Similar to other powder based processes,
+% many factors can affect the final quality of the part those being variables
+% within the print chamber, powder stock, optical parameters, and part geometry
+% \cite{zhao_laser_2023, beaman_additive_2020}.
 
-\subsubsection{Similarity Search}
-Similarity search relies on the computation of a \textit{k}-NN graph where it
-provides a directed graph that utilizes each vector in the database as a node
-and each edge is connected to it's \textit{k} nearest neighbors
-\cite{johnson_billion-scale_2017}. However, the computation of the \textit{k}-NN
-graph is a computationally expensive process which becomes exponentially worse
-with data represented using increasing dimensionality
-\cite{weber_quantitative_1998}. Executing an exhaustive search for large scale
-data becomes an impractical task using this inefficient approach and instead
-leveraging the parallel compute efficiency of GPU's offers an approach that can
-more efficiently perform similarity search albeit with a small tradeoff in
-accuracy \cite{johnson_billion-scale_2017}.
-
-With the usage of GPUs, search can be performed in can be performed in batches
-allowing for greater efficiency when compared to CPU based methods
-\cite{johnson_billion-scale_2017}. In addition a compressed approach is taken
-for the domain search utilizing the Inverted File with Asymmetric Distance
-Computation (IVFADC) indexing system outlined by Jégou et al.
-\cite{jegou_product_2011} for a non-exhaustive search scheme. By pruning the
-search space to only the \textit{k} nearest neighbor and performing quantization
-based compression, this highly parallelizable approach drastically reduces the
-number of scans and expedites the similarity search task
-\cite{johnson_billion-scale_2017}. This methodology (FAISS
-\cite{douze_faiss_2024}) has been implemented in commercial vector database
-products such Pinecone, ChromaDB, and etc.
-
-\subsubsection{Sequence and Token based Generation}
-The generation component $p_{\theta}(y_i \mid x, z, y_{1:i-1})$ of RAG utilizes
-an encoder-decoder model (originally BART-large \cite{lewis_bart_2019}) in order
-to generate responses from the query passage inputs. Within their work, Lewis et
-al. \cite{lewis_retrieval-augmented_2020} offers a sequence model approach along
-with a token model approach for generating the output. The RAG-Sequence model
-forms $k$ different generator model inputs for a given query. These inputs are
-sourced from individually top-K retrieved passages $z$ using the retriever
-$p_\eta(z|x)$ and couple together with the given query to produce $k$ different
-model output sequences where in which the highest scoring sequence is selected
-(Equation \ref{eq:rag_sequence}) \cite{lewis_retrieval-augmented_2020}.
-
-\begin{equation}
-\label{eq:rag_sequence}
-p_{\text{RAG‑Sequence}}(y \mid x) \approx \sum_{z \in \text{top‑k}(p(\cdot \mid x))}\!
-p_{\eta}(z \mid x)\,
-\prod_{i}^{N} p_{\theta}(y_i \mid x, z, y_{1:i-1})
-\end{equation}
-
-\noindent The RAG-Token model applies the same concept but ranks individually
-generated tokens $y_{1:i-1}$ rather than the entire sequence, allowing for a
-mixture of different passages to influence the generation of the output sequence
-(Equation \ref{eq:rag_token}) \cite{lewis_retrieval-augmented_2020}.
-
-\begin{equation}
-\label{eq:rag_token}
-p_{\text{RAG‑Token}}(y \mid x) \approx \prod_{i}^{N}
-\sum_{z \in \text{top‑k}(p(\cdot \mid x))}\!
-p_{\eta}(z \mid x)\,
-p_{\theta}(y_i \mid x, z, y_{1:i-1})
-\end{equation}
-
-\noindent Of the two approaches, the authors found that the RAG-Token model
-outperformed the RAG-Sequence model in question answer tasks specifically those
-in open-domain \cite{lewis_retrieval-augmented_2020}. This is attributed to the
-nature of open-domain questions are required to combine facts from multiple
-passages and the token level approach allows for generation to switch passages
-mid-generation \cite{lewis_retrieval-augmented_2020}. In the broader scope, RAG
-was found to generate more specific and accurate results than the existing
-parameteric only seq2seq models available at the time
-\cite{lewis_retrieval-augmented_2020}.
-
-\subsubsection{Maximum Marginal Relevance}
-Conventional information retrieval approaches often rank documents based on
-their relevance to the given query and utilize this ranking to inform selection
-of the most suitable result \cite{buckley_implementation_1985,
-kupiec_trainable_1995, luhn_automatic_1958, salton_automatic_1988}. This
-approach excels in obtaining matching results within cases where the archives of
-relevant documents are limited and few. However, in scenarios where there is an
-excess of potentially relevant documents (including redundant and duplicate
-results) the narrow approach of selection based solely on query relevant becomes
-insufficient for selecting the most suitable result
-\cite{goldstein_summarization_1998}. Rather, an approach that considers both the
-relevancy of the document to the query along with its novelty would address the
-previous presented issues of redundancy \cite{goldstein_summarization_1998}. The
-authors name this approach as Maximum Marginal Relevance (MMR) as it strives to
-maximize both the novelty and marginal relevance to the initial query through a
-user tunable parameter $\lambda$.
-
-\begin{equation}
-\label{eq:mmr}
-\text{MMR}(D_i) = \lambda \cdot \text{sim}_1(D_i, Q) - (1-\lambda) \cdot \text{sim}_2(D_i, D_j)
-\end{equation}
-
-The implementation (Eq. \ref{eq:mmr}) utilizes the parameter $\lambda$ to assign
-weight to two different similarity metrics ($\text{sim}_1$ and $\text{sim}_2$):
-that of the document's ($D_i$) relevance to the query ($Q$) and that of the
-document's relevance to other documents ($D_j$)
-\cite{goldstein_summarization_1998}. Goldstein et al.
-\cite{goldstein_summarization_1998} found that setting $\lambda$ to 0.3 in this
-user defined sampling strategy emphasized focus towards the provided query then
-to the most important parts of the information space. When utilized within RAG,
-this approach has been utilized to increase recall for the most relevant chunks
-that are associated with the input query \cite{wang_diversity_2025}.
-
-\subsection{Continual Learning}
-\label{sec:cl}
-Sometimes referred to by other names such as incremental learning
-\cite{wang_comprehensive_2024} and lifelong learning
-\cite{kumarappan_leanagent_2025, parisi_lifelong_2018, dautume_episodic_2019},
-Continual Learning (CL) aims to further update the model's base knowledge
-utilizing new streams of data obtained after pretraining to improve performance
-on previously encountered and new tasks, all while overcoming the challenge of
-Catastrophic Forgetting \cite{scialom_fine-tuned_2022, wu_continual_2024,
-wang_comprehensive_2024, jang_towards_2021, ven_generative_2018,
-lopez-paz_gradient_2017}. This method utilizes approaches such as
-regularization, rehearsal / replay, or parameter expansion to balance the
-plasticity and stability of the model when exposed to new data
-\cite{wang_comprehensive_2024, kirkpatrick_overcoming_2017, jang_towards_2021,
-rusu_progressive_2022}. For a large language model, continual learning enhances
-the reasoning and linguistic capabilities beyond that developed during
-pre-training and acquire new abilities while also adapting to new concepts
-\cite{scialom_fine-tuned_2022, jang_towards_2021}.
-
-\subsubsection{Catastrophic Forgetting}
-\label{sec:cf}
-While updating the model's base knowledge with new information, existing weight
-vectors originally intended for a specific solution can be overwritten
-potentially hindering performance in these pretrained tasks
-\cite{mccloskey_catastrophic_1989, ratcliff_connectionist_1990,
-french_catastrophic_1999}. This phenomenon is referred to as Catastrophic
-Forgetting (CL) where the knowledge gained for a new task results in the
-performance degradation in a previous task \cite{french_catastrophic_1999,
-kirkpatrick_overcoming_2017, zeng_dirichlet_2024, mccloskey_catastrophic_1989,
-ratcliff_connectionist_1990}.
-
-Analogous to human biology, initial investigations into the management of new
-and pre-existing knowledge draws parities to the relationship between the
-hippocampus and neocortex \cite{mcclelland_why_1995, french_catastrophic_1999}.
-McClelland et al. \cite{mcclelland_why_1995} suggest that the hippocampus
-functions as a rapid store of novel information whereas the neocortex
-orchestrates the slow and gradual learning of an ensemble of experiences
-\cite{mcclelland_why_1995}. This bimodal architecture implies that the
-sequential accumulation of new information of the hippocampus is incompatible
-with the gradual discovery mechanism of the neocortex and thus a relationship
-between the two which prevents catastrophic forgetting
-\cite{mcclelland_why_1995, french_catastrophic_1999}. Models such as Jumpnet
-\cite{rueckl_jumpnet_1993} propose dual-net architecture approach which
-establishes a relationship between the ``process" and ``control" aspects of the
-network to reduce catastrophic interference \cite{french_catastrophic_1999}.
-This approach showed success in reducing catastrophic interference, however did
-not clearly address the issue of catastrophic forgetting where learned patterns
-from similar inputs are expected to have different outputs
-\cite{french_catastrophic_1999}. Other approaches such as the use of two
-different weight classes ``fast" and ``slow" has been shown to reduce the
-interference encountered during the learning process \cite{hinton_using_1987,
-french_catastrophic_1999}. These different approaches show that there is not
-just one way, but multiple different ways to potentially address the issues
-encountered with catastrophic forgetting \cite{french_catastrophic_1999}.
-
-\subsubsection{Regularization}
-\label{sec:regularization}
-
-Regularization, specifically elastic weight consolidation (EWC) aims to mitigate
-the negative backwards transfer of important parameters during updates
-\cite{french_catastrophic_1999, kirkpatrick_overcoming_2017}. Again, the authors
-of this work are inspired by biology where the task-specific synaptic
-consolidation occurs within the neocortex of mammals allowing for higher
-retention of specific skills extending beyond several years
-\cite{yang_stably_2009, benna_computational_2016, kirkpatrick_overcoming_2017}.
-Specifically, a study by Yang et al. \cite{yang_stably_2009} finds that frequent
-sensory experiences leave minute yet permanent traces on cortical connections
-suggesting that longer term memory is stored within the stable synapses of a
-network.
-
-\begin{equation}
-\mathcal{L}(\theta)
-=
-\mathcal{L}_B(\theta)
-+
-\sum_i
-\frac{\lambda}{2}
-F_i
-\left(
-\theta_i
--
-\theta^{*}_{A,i}
-\right)^2
-.
-\end{equation}
-
-\subsubsection{Rehearsal / Replay}
-\label{sec:rehearsal}
-
-\subsubsection{Parameter-expansion}
-\label{sec:parameter-expansion}
+% Specific to polymers, the SLS process does not require the application of
+% supports as the rastered geometry sits upon the previous layer of powder within
+% a temperature controlled environment that prevents heat related distortion of
+% the part \cite{beaman_selective_1990, kumar_selective_2003}. This is in contrast
+% to metals based LPBF which utilizes supports to hold the part to the print bed
+% and prevent warping from temperature gradients within the part
+% \cite{mercelis_residual_2006}. In addition, factors such as spatter and gas flow
+% are less of a concern as the layer to layer adhesion of the part geometries are
+% conducted through sintering which do not contain the complexities of a full melt
+% pool \cite{ly_metal_2017}. However, polymer based selective laser sintering
+% still remains a complex process as precise control of process parameters such as
+% energy density, surface temperature, and build layout have great affect on the
+% mechanical properties of the final part \cite{kumar_selective_2003}.
 
 \section{Methodology}
 \label{sec:methodology}
@@ -378,7 +229,7 @@ elements runs off a combination of open-source software programs including
     Inova Mk1 (a) assembled from kit prints complex geometries, such as the
     \textbeta2 protein molecule (b), only capable through the SLS process.
     }
-    \label{fig:inova_mk1}
+    \label{fig:inova_mk1_and_print}
 \end{figure}
 
 \subsubsection{Platform Limitations}
@@ -387,9 +238,11 @@ Although the software is primarily open-source, modules disclosing specific
 feature implementations such as part slicing and tool path generation are
 considered proprietary and only provided in a compiled state. In addition, there
 is little documentation regarding the machine's exposed Application Programming
-Interface (API) as the dashboard web interface is streamed from the host. With
-regard to the installed sensors, relative to thermal and optical imaging
-equipment used inkother \textit{in-situ} process monitoring works
+Interface (API) as the dashboard web interface is streamed from the host. The
+maintainers do offer an option for utilizing custom firmware plugins and this is
+the primary method in which the agentic system communicates with the Inova Mk1.
+With regard to the installed sensors, relative to thermal and optical imaging
+equipment used in other in-situ process monitoring works
 \cite{myers_high-resolution_2023, myers_two-color_2023, pak_thermopore_2024,
 bostan_accurate_2025, ogoke_deep_2024}, the resolution and frame rate that these
 sensors provide is comparatively coarse. This adds a potential constraint to the
@@ -399,50 +252,81 @@ material restrictions to primarily polymer based powders with a melting
 temperature of 200 \textdegree C \cite{starek_sls4all_2020}.
 
 \subsection{Agentic System}
-The agentic system (Figure \ref{fig:agentic_sls_flow}) will allow for the
-intelligent automation of parameter selection and process monitoring through the
-guidance of a locally deployed large language model (potentially GPT-OSS 20b
-\cite{openai_gpt-oss-120b_2025}). Integration with a vector database (i.e.
-Pinecone) enables the use of dynamic memory such that previous system outputs
-and tool call results can be recalled for future prompts, providing additional
-context for the large language model to use during reasoning. Lastly, the system
-is able to interact with its environment through agentic tool calls following
-the Model Context Protocol. As indicated in Figure \ref{fig:agentic_sls_flow},
-these include tools for material selection, simulation, print profile
-configuration, parameter testing, and build monitoring.
+The agentic system (Figure \ref{fig:agentic_sls_flow}) enables the intelligent
+automation of parameter selection and process monitoring through the guidance of
+large language model. Integration with a relational database (i.e. PostgreSQL)
+enables the use of dynamic memory such that previous system outputs and tool
+call results can be recalled for future prompts, providing additional context
+for the large language model to use during reasoning. Lastly, the system is able
+to interact with its environment through agentic tool calls following the Model
+Context Protocol (MCP). This includes general knowledge tools such as those
+specific to material properties, previous builds, print profile configuration,
+and ASTM testing data. In addition, the system is also capable of executing
+machine firmware level tool calls which allow for the creation and adjustment of
+process parameters for the next ASTM build and runtime overrides for surface
+temperature, recoating, and energy.
 
-\subsection{Model Harnesses}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/agentic_sls_flow_portrait_compact.png
+    }
+    \caption{
+        Agentic Selective Laser Sintering (SLS) process begins with user input
+        for determining process parameters for a proposed material sent to the
+        Large Language Model (Claude Fable). Query utilizes data from previous
+        conversations stored in relational database (PostgreSQL) and selection
+        of tools via Model Context Protocol (MCP) to investigate query. Model
+        generates a response, saved for reference in future tasks enabling a
+        continual learning environment.
+    }
+    \label{fig:agentic_sls_flow}
+\end{figure}
 
-\subsubsection{Claude Code}
-\subsubsection{Antigravity CLI}
-\subsubsection{OpenAI Codex}
-\subsubsection{OpenCode}
+\subsubsection{Agent Harness}
+The agent harness is the framework which implements the functionality overhead
+for enabling the LLM to communicate and execute tool calls, create and maintain
+user conversations, and other various system level tasks. For this agentic
+system a collection of model harnesses including Claude Code, Antigravity CLI,
+OpenAI Codex, and OpenCode are implemented with the Claude Fable model used to
+execute process parameter optimization. Through the standard of the Model
+Context Protocol, all of the tools and implemented functionality can be utilized
+interchangeably with each of the agent harnesses enabling a modular system which
+can easily replace the system's current LLM with one that better suits the need
+of the user.
 
-\subsubsection{Material Selection Tool}
-% TODO: Add more specific implementations
-The material selection tool allows for inference on specified materials and
-their approximate properties. For example, if provided a mixture of various
-powders and additives, an approximation of critical temperature values such as
-melting, glass transition, or solidus would be calculated. This would be
-achieved through a various ensemble of modeling tools ranging from a simple rule
-of mixtures to coarse resolution simulations depending on the argument
-complexity.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{
+        chapters/6_agentic_sls/agentic_system.png
+    }
+    \caption{
+        The agent harness provides the large language model with the
+        functionality to utilize tools, data, and memory to better interact with
+        its environment. A common architecture is outlined above where tools and
+        resources allow for access into server hosted fucntions and database
+        access respectively.
+    }
+    \label{fig:model_harness}
+\end{figure}
 
-\subsubsection{Simulation Tool}
-% TODO: Add more specific implementations
-The primary purpose of the simulation tool is to approximate the local
-dimensions of the sintered material after the application of heat. Various
-methods such as Finite Element Analysis \cite{kolossov_3d_2004} and other
-numerical modeling techniques \cite{kandis_simulation-based_1999,
-williams_advances_1998} specific to the selective laser sintering process and
-materials will be used to gather general feasibility insight on process
-parameters before testing.
+\subsubsection{MCP Enabled Tool Calling}
 
-\subsubsection{Parameter Testing Tool}
-The parameter testing tool is a feature specific to the Inova Mk1 such that when
-experimenting with new powders, a 5 x 5 grid of labeled patches (Figure
-\ref{fig:inova_parameter_testing}) can be printed on the surface of the print
-bed. This allows for the rapid testing of print parameters through patch
+Tool calling is orchestrated by the LLM and enabled through the model harness
+via the Model Context Protocol. For this agentic system the tools can be
+organized into several group based on their functionality, those being: material
+information, initial testing, print profile and build history, recorded data,
+and runtime overrides.
+
+Within the realm of material information, tools here allow for inference on
+specified materials and their approximate properties. For example in the case of
+PA12 GF, tools repsective to materials would query upon manufacturer published
+technical data sheets, machine level process parameters, and other available
+data to provide the necessary information required to experiment with this
+material. The parameter testing tool is a feature specific to the Inova Mk1 such
+that when experimenting with new powders, a 5 x 5 grid of labeled patches
+(Figure \ref{fig:inova_parameter_testing}) can be printed on the surface of the
+print bed. This allows for the rapid testing of print parameters through patch
 specific configurations such as outline and fill energy densities (Figure
 \ref{fig:inova_parameter_testing_config}). In addition to executing patch
 prints, the tool will utilize the available sensors to extract quality
@@ -473,147 +357,587 @@ to test next.
     \label{fig:inova_mk1}
 \end{figure}
 
-\subsubsection{Print Profile Tool}
-The print profile tool sets the various build parameters for a specific material
-within the Inova Mk1 for future use. Notable parameters include surface and
-chamber temperatures, energy densities for the fill and contours, desired layer
-height, and recoater speed. This tool is expected to be executed once successful
-use of the parameter testing tool is completed.
+\noindent For jobs and print profiles, the tools here set the various build
+parameters for a specific material within the Inova Mk1 for future use. Notable
+parameters include surface and chamber temperatures, energy densities for the
+fill and contours, hotspot overlape, desired layer height, and recoater speed.
+The runtime overrides tools allow for the LLM to control various aspects of the
+build including surface temperature, recoating passes, and applied energy to
+address potential issues that may occur duing the build. Lastly tools related to
+recorded data allows for the LLM to investigate the effectiveness of previous
+process parameter settings such that adjustments can be applied to improve
+mechanical performance measured through ASTM testing.
 
-\subsubsection{Build Monitoring Tool}
-The build monitoring tool will initialize the process for printing a specified
-part along with monitoring the process for potential anomalies. This tool will
-utilize the available sensors to observe each layer and terminate the build if
-failure is detected.
+\subsection{Manufacturing Process}
 
-\subsection{Evaluation}
-The agentic system will be evaluated on a range of polymers and polymer based
-composites with the mechanical properties tested to the ASTM 638-22 standard
-\cite{d20_committee_test_nodate}. The setup will first determine the necessary
-build parameters needed to print a specific material and validate the print
-profile using the build monitoring tool. The evaluated prints will consist of
-standard additive manufacturing benchmarking samples along with tensile
-specimens.
+With prescribed print parameters and job templates, each build will be printed
+with a consistent powder chamber preheat of 145 \textdegree C, 100 \textmu m
+layer height, 100\% recoater speed, and cooling procedure. Print parameters are
+maintained and executed by the Inova Mk1 firmware to the best of its ability.
+For example array of halogen lamps placed over the print surface to maintain a
+consistent even surface temperature (halogens are pulsed to increase and reduce
+surface temperature), however, the realized surface temperature may differ.
+After each build the print is left to cool down overnight (often 8+ hours)
+before the powder cake is removed for post processing. Powder is sifted and
+reclaimed during postprocessing and material is kept separated to the best
+ability of the author.
 
-\subsection{Evaluation}
-\subsubsection{Testing Procedures}
-% Victor please add in details here (2 to 3 paragraphs)
-%TODO: read over wording and fix how the writing sounds
-Procedures for test methods of Nylon 12 GF Powder will be those outlined by the American Society for Testing and Materials (ASTM) since those methods were conducted by the seller of the material, Formlabs. \cite{formlabs_nylon_nodate}.
+\subsection{Sample Evaluation}
 
-For tensile testing, ASTM D638-22 will be used\cite{d20_committee_test_2022}, as Formlabs followed this test  (although they followed an older, outdated revision \cite{d20_committee_test_2014}).. The measurements for test specimens will be those of Type 1, as outlined by ASTM \cite{d20_committee_test_2022}.  These are also the same measurements that Formlabs follow for their testing\cite{formlabs_nylon_nodate}.
+Testing samples (Figure \ref{fig:agentic_sls_all_samples_drawing}) were
+constructed to the standards outlined by the American Society for Testing and
+Materials (ASTM) and compared to measurements published by the manufacturer.
+With regard to tensile properties, specifications from the ASTM D638
+\cite{d20_committee_test_2022} standard (Type 1 and Type 4) will be used to
+construct and test the samples. For bending stress analysis, specifications from
+the the ASTM D790 \cite{d20_committee_test_2025} standards will be followed.
+Apart from their respective batch-wise process parameters, all samples are
+fabricated with a layer height of 100 \textmu m, powder chamber temperature of
+145 C, and the major axis of each sample parallel to the print bed to minimize
+build height. For each batch, a minimum of 5 samples were printed to adequately
+obtain a range of values for benchmarking. Tensile and flexural testing was
+conducted with the Instron 4469 Universal Testing System using a 50kN load cell
+following the prescribed methodology within the respective standard.
 
-Testing was done on a Instron 4469 with a 50kN load cell. The rate at which the specimen was being pulled at was 0.083 millimeters per second.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{chapters/6_agentic_sls/all_samples_drawing.pdf}
+    \caption{
+        ASTM D638 and D790 samples dimesions used in the evaluation of
+        mechanical properties.
+    }
+    \label{fig:agentic_sls_all_samples_drawing}
+\end{figure}
 
-%cite D790-25 here
-For bending stress analysis, ASTM D790-25  %cite D790-25 here
-was followed as Formlabs followed the same procedure (although they followed an older procedure). %cite the old version
-%For impact testing, the same procedure that Formlabs followed was used, which was ASTM D256-26 \cite{formlabs_nylon_nodate} (it is worth noting that Formlabs followed an older revision of the test procedure  (cite the old paper)). The measurements for the test specimens will be those outlined by ASTM \cite{d20_committee_test_2026}. (NOT USING IMPACT TESTING NO MORE)
+\section{Results}
+\subsection{Material 1 (Nylon 12 Glass Filled)}
+The control series of tests were conducted using Formlabs Glass Filled Nylon 12
+(PA12 GF) powder, manually tuned over the course of 15 different batches. After
+the initial assembly of the Inova Mk1, PA12 GF was utilized as the primary
+material used to calibrate the various sensors, optical configuration, and
+temperature control of the machine. During this period, the basic selective
+laser sintering capability was displayed through the fabrication of initial
+prints (Figure \ref{fig:inova_print_proteins}), although these parts lacked the
+mechanical properties expected from PA12 GF.
 
-% \chapter{Proposed Work and Timeline}
-% \label{chapter:proposal}
+At this baseline, a laser fill energy density of 14 mJ/mm with outline of 24
+mJ/mm and 16 mJ/mm was used to fabricate the part with a hotspot overlap of 25\%
+and a surface bed temperature of 168 C. With these process parameter settings
+(Batch A) an initial tensile modulus of around 365 MPa was recorded,
+significantly lower than the published 2800 MPa from the manufacturer's TDS. In
+addition to the properties listed in the TDS, reference samples were obtained
+from manufacturer (Form Now printing service from Formlabs) to physical verify
+the listed mechanical properties. These samples were printed on the Formlabs
+Fuse series of SLS machines which utilize a 30 W fiber laser in contrast to the
+Inova's 10 W diode laser. These reference samples exhibited as tensile modulus
+of around 2599 MPa with a spread of 98 MPa and a flexural modulus of 1950 MPa
+with a spread of 271 MPa.
 
-% %---------------------------------------------------------------------
+Process parameters and build testing layouts were then manually tuned over these
+series of batches as to match the mechanical properties of the reference samples
+with the Inova Mk1 (Table \ref{tab:agentic-sls-material-1}). Batch J achieves
+the highest tensile properties closest to that specified by the manufactured at
+a fill energy density of 32 mJ/mm, a hotspot overlap of 50\%, and a surface
+temperature of 178 \textdegree C.  Batch H does achieve a higher tensile modulus
+of 2815 \textpm 4 MPa and a flexural modulus of 2272 \textpm 396 MPa, however
+these properties were not reproducible and attributed to potential measurement
+error. This build used a print surface temperature target of 173 C, fill energy
+density of 24 mJ/mm (outline energy densities of 28 mJ/mm and 18 mJ/mm), and a
+hotspot overlap of 50\%. Through a set of manual tuning explorations, a
+collection of baseline data was obtained to further inform the agentic system in
+future parameter exploration tasks as seen with material 2 and material 3.
 
-% \section{
-% Proposed Work: Agentic Process Optimization for Selective Laser Sintering
-% }
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lccccccc}
+    \toprule
+    & \multicolumn{3}{c}{Select print parameters} & \multicolumn{4}{c}{Mechanical properties} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-8}
+    Batch & Fill & Overlap & $T_\mathrm{surface}$ & $E_t^{*}$ & UTS$^{*}$ & $E_f^{*}$ & $\sigma_f^{*}$ \\
+    & (mJ/mm) & (\%) & (\si{\celsius}) & (MPa) & (MPa) & (MPa) & (MPa) \\
+    \midrule
+    A   & 14 & 25 & 172 & $397$  & $3.5$  & ---    & ---    \\
+    B   & 20 & 25 & 172 & $609$  & $4.4$  & ---    & ---    \\
+    C   & 20 & 25 & 172 & $651$  & $4.6$  & $404$  & $11.0$ \\
+    D   & 20 & 50 & 173 & $1193$ & $8.0$  & $938$  & $22.4$ \\
+    E   & 20 & 50 & 173 & $1402$ & $11.2$ & $1232$ & $26.9$ \\
+    F   & 24 & 50 & 173 & $1609$ & $12.1$ & $1560$ & $32.3$ \\
+    G   & 24 & 50 & 173 & $1981$ & $14.3$ & $1634$ & $34.0$ \\
+    H$^{\ddagger}$ & 24 & 50 & 173 & $2817$ & $29.6$ & $2773$ & $68.5$ \\
+    I   & 28 & 50 & 173 & $2349$ & $21.6$ & $1684$ & $43.7$ \\
+    J   & 32 & 50 & 178 & $\bm{2482}$ & $\bm{23.0}$ & $1177$ & $24.2$ \\
+    K   & 32 & 50 & 173 & $2036$ & $16.7$ & $1233$ & $28.1$ \\
+    L   & 40 & 25 & 173 & $1187$ & $7.8$  & $\bm{2130}$ & $\bm{55.4}$ \\
+    M   & 40 & 25 & 176 & $1002$ & $6.9$  & $915$  & $20.6$ \\
+    N   & 24 & 50 & 173 & $1040$ & $6.7$  & $770$  & $13.6$ \\
+    \bottomrule
+    \multicolumn{8}{l}{\footnotesize $^{*}$Best-specimen value of tested
+      ASTM D638 (\(E_t\), UTS) and D790 (\(E_f\), \(\sigma_f\)) samples.} \\
+    \multicolumn{8}{l}{\footnotesize $^{\ddagger}$Not reproducible, removed from consideration.} \\
+  \end{tabular}
+  \caption{
+    Manually tuned print profile settings and respective tensile and flexural
+    properties obtained through ASTM tests Formlabs PA12 GF.
+  }
+  \label{tab:agentic-sls-material-1}
+\end{table}
 
-% Within the additive manufacturing process there are many operational and
-% environmental factors that can affect the build quality or build feasibility of
-% the final part \cite{huang_keyhole_2022, cacace_lack_2022,
-% tang_prediction_2017}. Mitigation of these effects is often achieved using
-% feedforward process control where model based approaches are applied to
-% anticipate problematic conditions that can lead to issues during the build
-% process \cite{bostan_accurate_2025, yeung_residual_2020, ogoke_thermal_2021}.
-% Feedback control addresses these issues during the build process utilizing
-% visual \cite{jadhav_llm-3d_2025}, thermal \cite{zhong_using_2021,
-% devesse_hardware---loop_2016}, or depth \cite{singh_toward_2023} information
-% obtained through various sensors to dynamically adjust parameters and toolpath
-% trajectories in an effort to resolve potential build defects. The use of
-% specialized LLMs, referred to as \textit{agents}, has enabled the intelligent
-% automation of tool orchestration and feedback control for complex tasks within
-% the space of additive manufacturing \cite{jadhav_llm-3d_2025, pak_agentic_2026}
-% as well as other fields such as catalyst discovery \cite{ock_adsorb-agent_2024}
-% and mechanical design \cite{jadhav_large_2024}. These advances enable automated
-% thought, action, and observation workflows within the research process,
-% utilizing perception and reasoning to make informed decisions to ensure
-% successful task execution \cite{ghafarollahi_atomagents_2024, pak_agentic_2026,
-% ock_adsorb-agent_2024, jadhav_llm-3d_2025}. In this proposed work an agentic
-% system enables the intelligent automation of parameter optimization and
-% \textit{in-situ} process monitoring during the selective laser sintering
-% process.
+\subsection{Material 2 (Nylon 11 Onyx)}
 
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=\textwidth]{chapters/5_proposal/agentic_sls_flow_portrait.png}
-%     \caption{
-%         Flow diagram depicts simplified user interaction with agentic system for
-%         parameter selection and process monitoring for the Inova Mk1.
-%         \textbf{(1)} The user prompt is provided as model input \textbf{(2)} and
-%   \textbf{(4)}       query for the vector database. Results from the vector database is
-%         appended to the model input and provided to a LLM. The LLM executes
-%         relevant \textbf{(3)} tool calls via MCP with their results added to the
-%         vector database. \textbf{(4)} Generated responses from the LLM are added
-%         to the vector database for use with future prompts.
-%     }
-%     \label{fig:agentic_sls_flow}
-% \end{figure}
+Nylon 11 Onyx (PA11 Onyx) from Sinterit presents a unique challenge to for the
+task of process parameter optimization as the material exhibits ideal mechanical
+properties when printed in a nitrogen rich environment, intended for the Lisa
+series of printers. From the manufacturer specification, the powder is expected
+to exhibit a tensile and strength of 1680 MPa and 55 MPa respectively along with
+a flexural modulus and strength of 1290 MPa and 54.2 MPa. With these
+specifications, the agentic system presented with the task of searching for
+optimal process parameters to set for a build utilizing the material PA11 Onyx.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lccccccc}
+    \toprule
+    & \multicolumn{3}{c}{Select print parameters} & \multicolumn{4}{c}{Mechanical properties} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-8}
+    Batch & Fill & Overlap & $T_\mathrm{surface}$ & $E_t^{*}$ & UTS$^{*}$ & $E_f^{*}$ & $\sigma_f^{*}$ \\
+    & (mJ/mm) & (\%) & (\si{\celsius}) & (MPa) & (MPa) & (MPa) & (MPa) \\
+    \midrule
+    O   & 36  & 50  & 186 & $934$  & $15.7$ & ---    & --- \\
+    P   & 32  & 33  & 186 & $827$  & $16.6$ & $425$  & $16.6$ \\
+    Q   & 32  & 50  & 186 & $1323$ & $22.1$ & $867$  & $31.3$ \\
+    R   & 34  & 50  & 188 & $\bm{1571}$ & $\bm{36.3}$ & $\bm{1093}$ & $\bm{42.5}$ \\
+    \bottomrule
+    \multicolumn{8}{l}{\footnotesize $^{*}$Best-specimen value of tested
+      ASTM D638 (\(E_t\), UTS) and D790 (\(E_f\), \(\sigma_f\)) samples.} \\
+  \end{tabular}
+  \caption{
+    Agentically optimized print profile settings and respective tensile
+    properties for PA11 Onyx achieves similar mechanical properities outlined in
+    TDS from Sinterit.
+  }
+  \label{tab:agentic-sls-material-2}
+\end{table}
+
+For each subsequent batch the system is prompted to recall previous builds and
+through a series of tool calls the LLM investigates the relationship between
+process parameters and the respective mechanical properties of the tested
+samples. A Graphical User Interface (GUI) is provided to the user to view the
+prescribed process parameters along with the model's reasoning before starting
+the build (Figure \ref{fig:agentic_sls_batch_r_gui}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{chapters/6_agentic_sls/batch_r_gui.png}
+    \caption{
+        GUI showcasing the user flow of build planning to investigate a novel
+        set of process parameters along with the reasoning from the agentic
+        system.
+    }
+    \label{fig:agentic_sls_batch_r_gui}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.33\textwidth}
+        \centering
+        \includegraphics[angle=-90,width=\textwidth]{chapters/6_agentic_sls/batch_q_tensile_samples.jpeg}
+        \caption{Batch Q}
+        \label{fig:agentic_sls_batch_q_tensile_samples}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.33\textwidth}
+        \centering
+        \includegraphics[angle=-90,width=\textwidth]{chapters/6_agentic_sls/batch_r_tensile_samples.jpeg}
+        \caption{Batch R}
+        \label{fig:agentic_sls_batch_r_tensile_samples}
+    \end{subfigure}
+    
+    \caption{
+        Tensile samples for Batch Q and R printed with PA11 Onyx. Top row
+        includes samples 1 - 7 and bottom row showcases samples 8 - 14.
+    }
+    \label{fig:agentic_sls_pa11_onyx_tensile_samples}
+\end{figure}
+
+After initial testing conducted using the parameter testing tool, batches
+investigating the process parameters and mechanical characteristics for PA11
+Onyx were printed. These include batches O, P, Q, and R which are compiled in
+Table \ref{tab:agentic-sls-material-2}. Batch O investigated a fill energy
+density of 36 mJ/mm along with outlines energy densities of 36 mJ/mm and 26
+mJ/mm with a hotspot overlap of 50\%. This print encountered significant warping
+during the build process and only 3 samples were successfully obtained and
+tested for this build with the highest tensile modulus of 934 MPa. The next
+batch of samples (P) were printed with a hotspot overlap of 33 \% and a fill
+energy density of 32 mJ/mm and outline energy densities of 32 mJ/mm and 22
+mJ/mm, a significant downstep from the previous sample. For the highest achieved
+values, this resulted in a lower tensile modulus of 827 MPa and flexural modulus
+of 425 MPa. Batch Q (Figure \ref{fig:agentic_sls_batch_q_tensile_samples}) kept
+the same energy density configuration but revisited the hotspot overlap of 50\%
+and achieved successful results with the highest achieved tensile modulus of
+1323 MPa. Batch R (Figure \ref{fig:agentic_sls_batch_r_tensile_samples}) further
+increases the fill energy density to 34 mJ/mm and increase the surface
+temperature from 186 C to 188 C and achieved a tensile modulus of 1571 MPa. With
+the results from each batch, the agentic system shows its capability to learn
+from the previous batch of results and improve the mechanical properties with
+subsequent prints (Figure \ref{fig:agentic_sls_material_2_batch_comparisons}).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/D638_pa11_onyx_best.png}
+        \caption{PA11 Onyx Tensile Samples}
+        \label{fig:agentic_sls_material_2_tensile}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/D790_pa11_onyx_best.png}
+        \caption{PA11 Onyx Flexural Samples}
+        \label{fig:agentic_sls_material_2_flexural}
+    \end{subfigure}
+    \caption{
+        PA11 Onyx tensile and flexural properties show gradual improvement with
+        each subsequent batch, best sample from Batch R.
+    }
+    \label{fig:agentic_sls_material_2_batch_comparisons}
+\end{figure}
+
+\subsection{Material 3 (Nylon 12 Blend)}
+Material 3 is a mixture of Formlabs Glass Filled Nylon 12 (PA12 GF) and Formlabs
+White Nylon 12 (PA12 White), approximately 25\% and 75\% respectively by volume.
+PA12 White exhibits lower absorptivity than its PA12 GF counterpart further
+observed in failed parameter testing runs where sufficient sintering was not
+observed while utilizing the energy density settings of the Inova's 450 nm blue
+laser. Previous trials with PA12 GF proved successful sintering with elevated
+temperatures and energy densities indicating this powder exhibits an
+absorptivity suitable for the Inova's optical configuration. The Nylon 12 Blend
+(PA12 Blend) explores the utilization of PA12 GF as a dopant to increase the
+base absorptivity of PA12 White in order to achieve sintering and optimize to
+ideal mechanical properties.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lccccccc}
+    \toprule
+    & \multicolumn{3}{c}{Select print parameters} & \multicolumn{4}{c}{Mechanical properties} \\
+    \cmidrule(lr){2-4} \cmidrule(lr){5-8}
+    Batch & Fill & Overlap & $T_\mathrm{surface}$ & $E_t^{*}$ & UTS$^{*}$ & $E_f^{*}$ & $\sigma_f^{*}$ \\
+    & (mJ/mm) & (\%) & (\si{\celsius}) & (MPa) & (MPa) & (MPa) & (MPa) \\
+    \midrule
+    S   & 48 & 50 & 168 & $1092$ & $14.4$ & --- & --- \\
+    T   & 56 & 50 & 168 & $1675$ & $35.2$ & $1439$ & $47.3$ \\
+    U   & 56 & 50 & 172 & $\bm{1678}$ & $\bm{44.4}$ & $\bm{1830}$ & $\bm{60.6}$ \\
+    \bottomrule
+    \multicolumn{8}{l}{\footnotesize $^{*}$Best-specimen value of tested
+      ASTM D638 (\(E_t\), UTS) and D790 (\(E_f\), \(\sigma_f\)) samples.} \\
+  \end{tabular}
+  \caption{
+    Agent optimized print profile settings along with respective tensile and
+    flexural properties for the PA12 Blend (25\% PA12 White and 75\% PA12 GF by
+    volume) exceeds TDS specified UTS and $\sigma_f$ for PA12 GF displays
+    comparable mechanical properties for PA12 White.
+  }
+  \label{tab:agentic-sls-material-3}
+\end{table}
+
+Initial parameter testing of PA12 Blend exhibited visible sintering with an
+energy density of 46 mJ/mm. Batch S utilized a fill energy density of 48 mJ/mm,
+hotspot overlap of 50\% and surface temperature of 168 \textdegree C printing a
+total of 7 ASTM D638 type 4 samples at varying locations within the print bed.
+This batch was printed with the excess powder from the parameter testing print
+and ended early into the upper stack of ASTM D638 samples 8 - 14 resulting in
+only 7 testable samples (Figure \ref{fig:agentic_sls_batch_s_tensile_samples}).
+Obtained tensile properties were far below than that of the manufacturer
+advertised for either PA12 GF or PA12 White (flexural properties were not
+obtained due to print ending early). This however provided a sufficient starting
+point for the agentic system to utilize the obtained mechanical properties and
+recommend parameter adjustments for the next batch.
+
+For the next print (Batch T) the agentic system was provided the results from
+the previous tensile tests and prompted to make adjustments to the print
+parameters to improve the resulting mechanical properties. The resulting print
+profile utilized a fill energy density of 56 mJ/mm, a hotspot overlap of 50\%,
+and a consistent surface temperature of 168 \textdegree C. Samples obtained from
+this batch include two stacks of ASTM D638 tensile samples (Figure
+\ref{fig:agentic_sls_batch_t_tensile_samples}) and ASTM D790 flexural samples
+(Figure \ref{fig:agentic_sls_batch_t_flexural_samples}) arranged in the shown
+layout to provide adequate coverage to the print surface. With the adjustment to
+fill energy density, tested sample exhibited almost double the previous tensile
+properties of Batch S (Table \ref{tab:agentic-sls-material-3}) providing
+positive feedback to the agentic system.
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.34\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/batch_t_tensile_samples.jpeg}
+        \caption{Batch T Tensile}
+        \label{fig:agentic_sls_batch_t_tensile_samples}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.60\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/batch_t_flexural_samples.jpeg}
+        \caption{Batch T Flexural}
+        \label{fig:agentic_sls_batch_t_flexural_samples}
+    \end{subfigure}
+    
+    \caption{
+        Agentically optimized PA12 Blend tensile and flexural samples adjusted
+        to print with an elevated fill energy density for Batch T. Portions of
+        samples towards the bottom right of the print surface displayed poor
+        sintering, as seen with brittle ends in both flexural and tensile
+        samples around this area.
+    }
+    \label{fig:agentic_sls_batch_t_samples}
+\end{figure}
+
+With these findings, the agentic system was asked to further optimize the print
+parameters to provide a more even distribution of ideal tensile and flexural
+properties around the print surface (Batch U). For this the previous print
+parameters were kept the same with the only adjustment made to the print surface
+temperature, elevating it to 172 \textdegree C. Tensile (Figure
+\ref{fig:agentic_sls_batch_u_tensile_samples}) and flexural (Figure
+\ref{fig:agentic_sls_batch_t_flexural_samples}) exhibited ideal sintering
+specifically towards the bottom right of the print surface where the sample
+showed brittleness in previous Batch T. Obtained mechanical properties from the
+tensile samples showed a slight increase in the tensile modulus of the samples
+of around 3 MPa, however the greatest increase was observed in the ultimate
+tensile strength of 44.4 MPa from 35.2 MPa, approximately 25\% increase from
+that of Batch T. Flexural properties also exhibited similar results increasing
+to 1830 MPa for the flexural modulus and 60.6 MPa for the flexural strength.
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.34\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/batch_u_tensile_samples.jpeg}
+        \caption{Batch U Tensile}
+        \label{fig:agentic_sls_batch_u_tensile_samples}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.60\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/batch_u_flexural_samples.jpeg}
+        \caption{Batch U Flexural}
+        \label{fig:agentic_sls_batch_u_flexural_samples}
+    \end{subfigure}
+    \caption{
+        Batch U printed with agentic system recommended surface temperature
+        adjustment to 172 \textdegree C resulted in optimal sintering throughout
+        all samples with minor brittleness towards the bottom right of the print
+        surface.
+    }
+    \label{fig:agentic_sls_batch_u_samples}
+\end{figure}
+
+Reference samples and properties advertised in TDS for Formlabs PA12 White and
+PA12 Glass Fiber achieve higher tensile modulus values (TDS 1950 MPa and TDS
+2800 MPa respectively) compared to that of PA12 Blend (1678 MPa). However, the
+ultimate tensile strength of PA12 Blend (44.4 MPa) is greater than that of PA12
+GF (TDS 38.0 MPa and REF 26.5 MPa) but less than that of PA12 White (TDS 47.0
+MPa), though greater than that of PA12 White REF at 40.0 MPa (Figure
+\ref{fig:agentic_sls_material_3_tensile}). Flexural modulus from PA12 Blend
+(1830 MPa) is greater than that of both the REF and TDS of PA12 White (1519 MPa
+and 1500 MPa respectively), but less than that of PA12 GF (TDS 2400.0 MPa and
+REF 2251.0 MPa). The flexural strength however, is greater than both PA12 White
+(TDS 56.0 MPa and REF 58.0 MPa) and PA12 GF (TDS 56.0 MPa and REF 50.9 MPa) at
+60.6 MPa for PA12 Blend (Figure \ref{fig:agentic_sls_material_3_flexural}). This
+aligns with initial expectations that PA12 Blend would exhibit a mixture of
+mechanical properties between PA12 White and PA12 Glass Fiber, sometimes
+exceeded reference and TDS properties of both materials in the case of flexural
+strength.
+
+\begin{figure}[htbp]
+    \centering
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/D638_pa12_blend_best.png}
+        \caption{PA12 Blend Tensile Samples}
+        \label{fig:agentic_sls_material_3_tensile}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapters/6_agentic_sls/D790_pa12_blend_best.png}
+        \caption{PA12 Blend Flexural Samples}
+        \label{fig:agentic_sls_material_3_flexural}
+    \end{subfigure}
+    \caption{
+        PA 12 Blend tensile and flexural properties show gradual improvement
+        with each subsequent batch. Best sample from Batch U exhibits greater
+        ultimate tensile strength and flexural strength than reference
+        materials.
+    }
+    \label{fig:agentic_sls_material_3_batch_comparisons}
+\end{figure}
+
+\section{Discussion}
+
+\subsection{Baseline Mechanical Properties}
+
+Table \ref{tab:agentic-sls-materials-baseline} provides a listing of the
+baseline mechanical properties used for the optimization of materials 1, 2, and
+3. Powders manufactured from Formlabs include Reference (REF) samples printed by
+Formlabs Formnow service through their Fuse series of printers along with their
+respective properties listed in the Technical Data Sheet (TDS). In both PA12
+White and PA12 Glass Fiber (GF) it is observed that the TDS exhibits greater
+values than that obtained through testing via reference samples. These
+deviations are rather minor for Formlabs PA12 White but are significantly
+greater for PA12 GF, exhibiting deviations of up to 30\% from that of the
+manufacturer's specification. One potential explanation for this could be the
+print orientation of the reference sample as visible layer lines on the PA12 GF
+D638 sample indicate that the manufacturer printed this sample vertically.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lcccc}
+    \toprule
+    & \multicolumn{2}{c}{Tensile} & \multicolumn{2}{c}{Flexural} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+    Material & $E_t^{*}$ & UTS$^{*}$ & $E_f^{*}$ & $\sigma_f^{*}$ \\
+    & (MPa) & (MPa) & (MPa) & (MPa) \\
+    \midrule
+    Formlabs PA12 White (TDS)           & $\bm{1950.0}$ & $\bm{47.0}$ & $1500.0$ & $56.0$ \\
+    Formlabs PA12 White (REF)           & $1920.0$ & $40.0$ & $\bm{1519.0}$ & $\bm{58.0}$ \\
+    \midrule
+    Formlabs PA12 Glass Fiber (TDS)     & $\bm{2800.0}$ & $\bm{38.0}$ & $\bm{2400.0}$ & $\bm{56.0}$ \\
+    Formlabs PA12 Glass Fiber (REF)     & $2577.0$ & $26.5$ & $2251.0$ & $50.9$ \\
+    \midrule
+    Sinterit PA11 Onyx (TDS)            & $\bm{1680.0}$ & $\bm{55.0}$ & $\bm{1290.0}$ & $\bm{54.2}$ \\
+    \bottomrule
+    \multicolumn{5}{l}{\footnotesize $^{*}$Best-specimen value of five tested
+      per ASTM D638 (\(E_t\), UTS) and D790 (\(E_f\), \(\sigma_f\))} \\
+  \end{tabular}
+  \caption{
+    Baseline tensile and flexural properties obtained from Technical Data Sheet
+    (TDS) and manufacturer printed Reference (REF) samples. Reference samples
+    printed with Fuse series printers from Formlabs Formnow manufacturing
+    service.
+  }
+  \label{tab:agentic-sls-materials-baseline}
+\end{table}
+
+\subsection{Build Layout}
+For Material 2 of PA11 Onyx, Batch Q and Batch R achieve tensile modulus values
+close to that of the manufacturer published specification, however these
+mechanical properties were not observed uniformly across the print bed. This was
+reflected in the two stacks of ASTM D638 tensile samples which were printed
+where a trend of decreasing mechanical properties were observed from the
+recoater side to the overflow side in both stacks. In Batch Q (Figure
+\ref{fig:agentic_sls_batch_q_build_layout_tensile_modulus}), the samples with
+the highest tensile modulus were found to be closest to the recoater side of the
+print chamber where samples closer to the overflow showcased insufficient
+sintering, even breaking before testing such is with the case on sample A7 of
+Batch Q. Batch R displays the same trend as samples with the highest tensile
+modulus are positioned closer to the recoater side of the print chamber (Figure
+\ref{fig:agentic_sls_batch_r_build_layout_tensile_modulus}). This may be due to
+uneven heating of the print chamber surface where temperatures are higher
+towards the recoater and along the Y direction.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/batch_r_build_layout_tensile_modulus.png
+    }
+    \caption{
+        Samples 1 and 8 showcase the highest tensile modulus values and are
+        closest to the recoater.
+    }
+    \label{fig:agentic_sls_batch_r_build_layout_tensile_modulus}
+\end{figure}
+
+Material 3 confirms this trend with Batch S, T, and U for Nylon 12 Blend. Batch
+S (Figure \ref{fig:agentic_sls_batch_s_build_layout_tensile_modulus}) and Batch
+T (Figure \ref{fig:agentic_sls_batch_t_build_layout_tensile_modulus}) show a
+similar trend in mechanical properties with placement along the print surface.
+Batch U produced the best results and does show a more even distribution of
+tensile modulus however a gradient of properties is still visible (Figure
+\ref{fig:agentic_sls_batch_u_build_layout_tensile_modulus}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/batch_u_build_layout_tensile_modulus.png
+    }
+    \caption{
+        Samples 1 and 8 showcase the highest tensile modulus values and are
+        closest to the recoater.
+    }
+    \label{fig:agentic_sls_batch_u_build_layout_tensile_modulus}
+\end{figure}
+
+\section{Conclusion}
+
+With initial calibration on Material 1 (PA12 GF) and further tuning with
+Material 2 (PA11 Onyx), the agentic system is able to tune selective laser
+sintering process parameters, optimizing for tensile and flexural properties,
+achieving mechanical properties that exceed that of the reference samples on
+Material 3 (PA12 Blend). Using knowledge from previous builds and their
+respective mechanical properties and minimal guidance from the user, the agentic
+system was able to optimize process parameters over a small number of iterations
+to achieve comparable TDS specified mechanical properties for various materials.
+This work showcases the ability for an agentic system to continually learn from
+updated data, enabling the intelligent automation of complex tasks such as
+process parameter optimization for selective laser sintering.
+
+\section{Appendix}
+
+\subsection{Manufactured Samples}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{chapters/6_agentic_sls/batch_s_tensile_samples.jpeg}
+    \caption{
+        Initial set of tensile samples (Batch S) printed with Nylon 12 Blend
+        (25\%  PA12 GF and 75\% PA12 White by volume) exhibits a relatively
+        lighter color than Material 1 or Material 2.
+    }
+    \label{fig:agentic_sls_batch_s_tensile_samples}
+\end{figure}
 
 
-% %---------------------------------------------------------------------
+\subsection{Layout Dependent Tensile Properties}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/batch_q_build_layout_tensile_modulus.png
+    }
+    \caption{
+        Batch Q Samples printed with PA11 Onyx showcased a trend of weaker
+        mechanical properties with increasing x and decreasing y positioning on
+        the print chamber. Sample 7 displayed low stiffness and fractured before
+        tensile load values recorded.
+    }
+    \label{fig:agentic_sls_batch_q_build_layout_tensile_modulus}
+\end{figure}
 
-% \section{
-% Proposed Work: Continual Learning enabled Additive Manufacturing Large Language
-% Model
-% }
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/batch_s_build_layout_tensile_modulus.png
+    }
+    \caption{
+        Batch S Samples printed with PA12 Blend displays similar trend of
+        varying mechanical properties with respect to placement along the print
+        surface. Lower stack was only printed due to run out of powder during
+        print.
+    }
+    \label{fig:agentic_sls_batch_s_build_layout_tensile_modulus}
+\end{figure}
 
-% In this work a continual learning pipeline will be developed to further
-% integrate the collected results from agentic system into the large language
-% model. Continual learning is the ability for a system to incrementally update
-% and exploit available knowledge acquired throughout its lifetime
-% \cite{wang_comprehensive_2024, wu_continual_2024, scialom_fine-tuned_2022}. This
-% can be achieved through fine-tuning where the goal is to retain the existing
-% capabilities and avoid catastrophic forgetting while retraining with new updated
-% data \cite{scialom_fine-tuned_2022, jang_towards_2021, wang_comprehensive_2024}.
-% This catastrophic forgetting issue can be mitigated through augmenting the
-% original training data with the newly acquired data in a process called
-% Continual Learning via Rehearsal (CLR) \cite{scialom_fine-tuned_2022,
-% shin_continual_2017}
-
-% With this, dataset curation is of upmost importance to ensure fidelity in the
-% continual learning process. Background information regarding the expected
-% outcomes of this specific selective laser sintering process will be curated from
-% research articles and other technical specific to the polymer based SLS. Process
-% parameter related outcomes such as the dimensions of the sintered volume will be
-% sourced from simulations along with experimental literature finding if found.
-% Lastly, successful iterations of the previously mentioned agentic system will be
-% included as well in order to reinforce successful policy trajectories.
-% Integration of this continual learning pipeline is expected to enable enhanced
-% reasoning capabilities and this will be evaluated on the ratio of successful to
-% incorrect policy trajectories of the agentic system with and without continual
-% learning.
-
-% %---------------------------------------------------------------------
-
-% \section{Timeline}
-
-% My proposed milestones and timeline for completing the thesis are shown in Table~\ref{tb:milestone_timeline}.
-
-% \begin{table}[htb!]
-%   \centering
-%   \scriptsize
-%   \resizebox{\textwidth}{!}{\begin{tabular}{llllllll}
-%     \toprule
-%     Milestone & Timeline \\
-%     \midrule
-%     Data collection and System Development & February - April 2026 \\
-%     Experimental Testing and Evaluation & April - June 2026 \\
-%     Thesis Writing & June - July 2026 \\
-%     \midrule
-%     Thesis Defense & July 2026 \\
-%     \bottomrule
-%   \end{tabular}}
-%   \caption[Milestones and proposed timeline for completing the thesis]{Milestones and proposed timeline for completing the thesis.}
-%   \label{tb:milestone_timeline}
-% \end{table}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{
+        chapters/6_agentic_sls/batch_t_build_layout_tensile_modulus.png
+    }
+    \caption{
+        Batch T Samples printed with PA12 Blend exhibit greater tensile
+        properties with the similar dependence on location within the print
+        surface.
+    }
+    \label{fig:agentic_sls_batch_t_build_layout_tensile_modulus}
+\end{figure}
